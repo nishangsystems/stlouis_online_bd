@@ -4,7 +4,7 @@
         <!-- @if(($step != 100)) -->
             @switch($step)
                 @case(0)
-                    <form id="application_form" method="post" action="{{ route('student.application.start', [1, $application->id]) }}">
+                    <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [1, $application->id]) }}">
                         @csrf
                         <div class="px-5 py-5 border-top shadow bg-light">
                             <div class="row w-100">
@@ -30,7 +30,7 @@
                     </form>
                     @break
                 @case('18')
-                    <form id="application_form" method="post" action="{{ route('student.application.start', [1, $application->id]) }}">
+                    <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [1, $application->id]) }}">
                         @csrf
                         <div class="px-5 py-5 border-top shadow bg-light" style="font-size: 2rem; font-weight: 700;">
                             <a class="text-uppercase d-block w-100 alert-primary text-center py-5 border">
@@ -45,7 +45,7 @@
                     @break
 
                 @case(1)
-                    <form id="application_form" method="post" action="{{ route('student.application.start', [2, $application->id]) }}">
+                    <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [2, $application->id]) }}">
                         @csrf
                         <div class="py-2 row bg-light border-top shadow">
                             <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 1: {{ __('text.personal_details_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $application->degree->name }} PROGRAM</span></h4>
@@ -185,7 +185,7 @@
                     @break
             
                 @case(2)
-                    <form id="application_form" method="post" action="{{ route('student.application.start', [$application->degree->slug == 'msc'?3:4, $application->id]) }}">
+                    <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [$application->degree->slug == 'msc'?3:4, $application->id]) }}">
                         @csrf
                         <div class="py-2 row bg-light border-top shadow">
                             <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 2: {{ __('text.course_envisaged_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $application->degree->name }} PROGRAM</span></h4>
@@ -193,7 +193,7 @@
                                 <label class="text-secondary  text-capitalize">{{ __('text.first_choice_bilang') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="program_first_choice" required>
-                                        @forelse (\App\Models\SchoolUnits::where('unit_id', '4')->orderBy('name')->get() as $program)
+                                        @forelse ($programs as $program)
                                             <option value="{{ $program->id }}" {{ $application->program_first_choice == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
                                         @empty
                                             <option>{{ __('text.no_data_available') }}</option>
@@ -205,7 +205,7 @@
                                 <label class=" text-secondary text-capitalize">{{ __('text.second_choice_bilang') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="program_second_choice" required>
-                                        @forelse (\App\Models\SchoolUnits::where('unit_id', '4')->orderBy('name')->get() as $program)
+                                        @forelse ($programs as $program)
                                             <option value="{{ $program->id }}" {{ $application->program_second_choice == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
                                         @empty
                                             <option>{{ __('text.no_data_available') }}</option>
@@ -327,7 +327,7 @@
                     @break
             
                 @case(3)
-                    <form id="application_form" method="post" action="{{ route('student.application.start', [4, $application->id]) }}">
+                    <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [4, $application->id]) }}">
                         @csrf
                         <div class="py-2 row bg-light border-top shadow">
                             <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 3: {{ __('text.previous_higher_education_training_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $application->degree->name }} PROGRAM</span></h4>
@@ -427,7 +427,7 @@
                     @break
             
                 @case(4)
-                    <form id="application_form" method="post" action="{{ route('student.application.start', [5, $application->id]) }}">
+                    <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [5, $application->id]) }}">
                         @csrf
                         <div class="py-2 row bg-light border-top shadow">
                             <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 4: {{ __('text.financial_obligation_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $application->degree->name }} PROGRAM</span></h4>
@@ -480,7 +480,7 @@
                     @break
             
                 @case(5)
-                    <form id="application_form" method="post" action="{{ route('student.application.start', [6, $application->id]) }}">
+                    <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [6, $application->id]) }}">
                         @csrf
                         <div class="py-2 row text-capitalize bg-light">
                             <!-- hidden field for submiting application form -->
@@ -754,7 +754,7 @@
                     @break
 
                 @case(6)
-                    <form id="application_form" method="post" action="{{ route('student.application.start', [7, $application->id]) }}">
+                    <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [7, $application->id]) }}">
                         @csrf
                         <input type="hidden" name="submitted", value="1">
                         <div class="py-2 row bg-light border-top shadow">
@@ -773,41 +773,47 @@
                                     <p style="font-weight: 600;">Copiez l'identifiant de transaction financière de MTN et saisissez-le dans le formulaire de la page suivante avec le numéro de téléphone utilisé pour le paiement. Si vous pouvez capturer le message Momo de MTN, cela sera un avantage supplémentaire</p>
                                 </li>
                             </ul>
-                            <div class="col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary text-capitalize">{{ __('text.momo_number_used_in_payment_bilang') }}</label>
-                                <div class="">
-                                    <input type="tel" class="form-control text-primary"  name="momo_number" value="{{ $application->momo_number }}">
+                            <div class="col-sm-12 col-md-12 col-lg-12 d-flex">
+                                <div class="col-sm-10 col-md-8 col-lg-6 rounded bg-white py-5 my-3 shadow mx-auto">
+                                    <div class="py-4 text-info text-center ">You are about to make a payment of 5000 CFA for application fee
+                                    </div>
+                                    <div class="py-3">
+                                        <label class="text-secondary text-capitalize">{{ __('text.momo_number_used_in_payment_bilang') }}</label>
+                                        <div class="">
+                                            <input type="tel" class="form-control text-primary"  name="momo_number" value="{{ $application->momo_number }}">
+                                        </div>
+                                    </div>
+                                    <div class="py-3">
+                                        <label class="text-secondary text-capitalize">{{ __('text.word_amount_bilang') }} <span class="text-dabger">{{ __('text.with_country_code') }}</span></label>
+                                        <div class="">
+                                            <input readonly type="text" class="form-control text-primary"  name="amount" value="5000">
+                                        </div>
+                                    </div>
+                                    <div class="py-5 d-flex justify-content-center">
+                                        <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-xs btn-danger">{{ __('text.word_back') }}</a>
+                                        <input type="submit" class="px-4 py-1 btn btn-xs btn-primary" value="{{ __('text.save_and_continue') }}">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6 col-md-3 col-lg-3">
+                            <!-- <div class="py-2">
                                 <label class="text-secondary text-capitalize">{{ __('text.mom_transaction_id_bilang') }}</label>
                                 <div class="">
                                     <input type="text" class="form-control text-primary"  name="momo_transaction_id" value="{{ $application->momo_transaction_id }}">
                                 </div>
-                            </div>
-                            <div class="col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary text-capitalize">{{ __('text.word_amount_bilang') }} <span class="text-dabger">{{ __('text.with_country_code') }}</span></label>
-                                <div class="">
-                                    <input type="tel" class="form-control text-primary"  name="amount" value="{{ $application->amount }}">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-4 col-lg-3">
+                            </div> -->
+                            <!-- <div class="col-sm-6 col-md-4 col-lg-3">
                                 <label class="text-secondary text-capitalize">{{ __('text.screenshot_of_transaction_bilang') }}</label>
                                 <div class="">
-                                    <input type="file" class="form-control text-primary" accept="image/*"  name="momo_screenshot" oninput="momoPreview(event)">
+                                    <input type="file" class="form-control text-primary" accept="image/*"  name="momo_shot" oninput="momoPreview(event)">
                                 </div>
-                            </div>
-                            <div class="col-sm-6 col-md-4 col-lg-3">
+                            </div> -->
+                            <!-- <div class="col-sm-6 col-md-4 col-lg-3">
                                 <label class="text-secondary text-capitalize">{{ __('text.screenshot_of_transaction_bilang') }}</label>
                                 <div class="">
-                                    <img src="" width="100" height="100" class="img img-rounded" id="momo_image_preview">
+                                    <img src="{{ $application->momo_screenshot }}" width="100" height="100" class="img img-rounded" id="momo_image_preview">
                                 </div>
-                            </div>
+                            </div> -->
                             
-                            <div class="col-sm-12 col-md-12 col-lg-12 py-4 d-flex justify-content-center">
-                                <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-lg btn-danger">{{ __('text.word_back') }}</a>
-                                <input type="submit" class="px-4 py-1 btn btn-lg btn-primary" value="{{ __('text.save_and_continue') }}">
-                            </div>
                         </div>
                     </form>
                     @break

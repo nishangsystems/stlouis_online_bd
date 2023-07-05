@@ -53,4 +53,10 @@ class Campus extends Model
         # code...
         return $this->belongsToMany(Degree::class, CampusDegree::class, 'campus_id', 'degree_id');
     }
+
+    public function degreePrograms($degree_id)
+    {
+        # code...
+        return $this->belongsToMany(SchoolUnits::class, CampusProgramDegree::class, 'campus_id', 'program_id')->where('degree_id', $degree_id);
+    }
 }

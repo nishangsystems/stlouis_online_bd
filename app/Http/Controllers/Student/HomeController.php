@@ -1677,6 +1677,9 @@ class HomeController extends Controller
             $application->save();
             $data['application'] = $application;
         }
+        if($data['application']->degree_id != null){
+            $data['programs'] = $data['application']->campus->degreePrograms($data['application']->degree_id)->get();
+        }
         return view('student.online.fill_form', $data);
     }
 
@@ -1742,43 +1745,11 @@ class HomeController extends Controller
                 # code...
                 // return $request->all();
                 $validity = Validator::make($request->all(), [
-                    "momo_number"=> "672908238", "momo_transaction_id"=> "2363409879", "amount"=> "5000",
-                    "momo_screenshot"=> "file"
+                    "momo_number"=> "required", "momo_transaction_id"=> "required", "amount"=> "required|numeric",
+                    // "momo_screenshot"=> "file"
                 ]);
                 break;
             
-            // case 8:
-            //     # code...
-            //     // return $request->all();
-            //     $validity = Validator::make($request->all(), [
-            //         // 'employments'=>'required'
-            //     ]);
-            //     break;
-            
-            // case 9:
-            //     # code...
-            //     // return $request->all();
-            //     $validity = Validator::make($request->all(), [
-            //         'fee_payer'=>'required', 'fee_payer_name'=>'required', 'fee_payer_residence'=>'required',
-            //         'fee_payer_tel'=>'required', 'fee_payer_occupation'=>'required'
-            //     ]);
-            //     break;
-                
-            // case 10:
-            //     # code...
-            //     // return $request->all();
-            //     $validity = Validator::make($request->all(), [
-            //         'candidate_declaration'=>'required'
-            //     ]);
-            //     break;
-            
-            case 11:
-                # code...
-                // return $request->all();
-                $validity = Validator::make($request->all(), [
-                    'parent_declaration'=>'required'
-                ]);
-                break;
         }
 
         if($validity->fails()){
@@ -1786,7 +1757,7 @@ class HomeController extends Controller
         }
 
         // persist data
-        $data = $request->all();
+        $data = [];
         if($step == 4){
             $data_p1=[];
             $_data = $request->previous_training;
@@ -1807,25 +1778,27 @@ class HomeController extends Controller
                 $data['employments'] = json_encode($data_p2);
                 // return $data;
             }
+            $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
+            $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }
-
-
-        if($step ==7){
-            if($request->hasFile('momo_screenshot')){
-                $file = $request->file('momo_screenshot');
+        elseif($step ==7){
+            if($request->has('momo_shot')){
+                $file = $request->file('momo_shot');
                 $fname = '__momo_'.random_int(1000000, 9999999).$file->getClientOriginalExtension();
                 $file->storeAs('momo_shots', $fname, ['disk'=>'public_uploads']);
-                $path = public_path('uploads/momo_shots').'/'.$fname;
+                $path = asset('uploads/momo_shots').'/'.$fname;
                 $data['momo_screenshot'] = $path;
             }
+            $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
+            $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
+        }else{
+            $data = $request->all();
+            $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
+            $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }
 
-        $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
-        $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         // $application->update($data);
-
-
-        if($step == 11){
+        if($step == 7){
             // Form fully filled
             return redirect(route('student.home'))->with('success', 'Application form completely filled.');
         }
@@ -1865,10 +1838,10 @@ class HomeController extends Controller
         # code...
         $application = ApplicationForm::find($id);
         // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
-        $title = $application->degree??''.' APPLICATION FOR DOUALA-BONABERI'.' CAMPUS';
-        return view('student.online.form_dawnloadable', ['application'=>$application, 'title'=>$title]);
+        $title = ($application->degree->name??'').' APPLICATION FOR '.($application->campus->name??'').' CAMPUS';
+        // return view('student.online.form_dawnloadable', ['application'=>$application, 'title'=>$title]);
         $pdf = PDF::loadView('student.online.form_dawnloadable', ['application'=>$application, 'title'=>$title]);
-        $filename = 'APPLICATION FORM - '.$application->first_name.' '.$application->surname.'.pdf';
+        $filename = $title.' - '.$application->name.'.pdf';
         return $pdf->download($filename);
     }
 
@@ -1876,6 +1849,10 @@ class HomeController extends Controller
     {
         # code...
         $data['title'] = "Payment Data";
-        $data['payments'] = ApplicationForm::where('student_id', auth('student')->id())->whereNotNull('momo_number')->whereNotNull('momo_transaction_id')->get()
+        $data['payments'] = ApplicationForm::where('student_id', auth('student')->id())->whereNotNull('momo_number')->whereNotNull('momo_transaction_id')->get();
+        if(request('appl') != null){
+            $data['appl'] = ApplicationForm::find(request('appl'));
+        }
+        return view('student.online.payment_data', $data);
     }
 }

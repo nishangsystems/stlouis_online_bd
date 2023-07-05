@@ -51,4 +51,5 @@ class ApplicationForm extends Model
         # code...
         return $this->belongsTo(Degree::class, 'degree_id');
     }
+
 }
