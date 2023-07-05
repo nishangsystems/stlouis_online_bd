@@ -1871,4 +1871,11 @@ class HomeController extends Controller
         $filename = 'APPLICATION FORM - '.$application->first_name.' '.$application->surname.'.pdf';
         return $pdf->download($filename);
     }
+
+    public function payment_data ()
+    {
+        # code...
+        $data['title'] = "Payment Data";
+        $data['payments'] = ApplicationForm::where('student_id', auth('student')->id())->whereNotNull('momo_number')->whereNotNull('momo_transaction_id')->get()
+    }
 }
