@@ -26,7 +26,7 @@
 
     <STYLE>
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Times New Roman', Times, serif;
         }
         .input-group {
             position: relative;
@@ -203,124 +203,51 @@
                 <b class="arrow"></b>
             </li>
 
-           <!-- <li>
-                <a href="#" class="dropdown-toggle text-capitalize">
-                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-key"></i>
-                    <span class="menu-text">{{__('text.online_payments')}}</span>
-                    <b class="arrow fa fa-angle-down"></b>
+            <li>
+                <a href="{{route('student.programs.index')}}">
+                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
+                    <span class="menu-text text-capitalize">{{__('text.all_our_programs')}}</span>
                 </a>
-
-
-                <ul class="submenu">
-                    <li>
-                        <a href="{{route('student.pay_fee')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.pay_fee')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-
-                    <li>
-                        <a href="{{route('student.pay_others')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.other_payments')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-
-                    <li>
-                        <a href="{{route('student.platform_charge.pay')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.platform_charges')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-
-                    <li>
-                        <a href="{{route('student.result.pay')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.semester_results')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li>
-                        <a href="{{route('student.online.payments.history')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.word_history')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-                </ul>
-            </li> -->
-
-
-           <li>
-                <a href="#" class="dropdown-toggle text-capitalize">
-                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-money"></i>
-                    <span class="menu-text">{{__('text.finance_report')}}</span>
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-
-                <ul class="submenu">
-                    <li>
-                        <a href="{{route('student.fee.tution')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.word_tution')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-
-                    <li>
-                        <a href="{{route('student.fee.other_incomes')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.other_incomes')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-                </ul>
+                <b class="arrow"></b>
             </li>
 
-           <!-- <li>
-                <a href="#" class="dropdown-toggle text-capitalize">
-                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-flag"></i>
-                    <span class="menu-text">{{trans_choice('text.word_transcript', 2)}}</span>
-                    <b class="arrow fa fa-angle-down"></b>
+            <li>
+                <a href="{{route('student.payment.data')}}">
+                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
+                    <span class="menu-text text-capitalize">{{__('text.payment_data')}}</span>
                 </a>
+                <b class="arrow"></b>
+            </li>
 
+            <li>
+                <a href="{{route('student.application.start', 0)}}">
+                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
+                    <span class="menu-text text-capitalize">{{__('text.start_application')}}</span>
+                </a>
+                <b class="arrow"></b>
+            </li>
 
-                <ul class="submenu">
-                    <li>
-                        <a href="{{route('student.transcript.apply')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.word_apply')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
+            <li>
+                <a href="{{route('student.application.submit')}}">
+                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
+                    <span class="menu-text text-capitalize">{{__('text.submit_form')}}</span>
+                </a>
+                <b class="arrow"></b>
+            </li>
 
+            <li>
+                <a href="{{route('student.application.form.download')}}">
+                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
+                    <span class="menu-text text-capitalize">{{__('text.download_form')}}</span>
+                </a>
+                <b class="arrow"></b>
+            </li>
 
-                    <li>
-                        <a href="{{route('student.transcript.history')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.word_history')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-                </ul>
-            </li> -->
 
            <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
                     <i  style="color: {{$bg1}};" class="menu-icon fa fa-book"></i>
-                    <span class="menu-text">{{__('text.word_courses')}}</span>
+                    <span class="menu-text">{{__('text.accounts_and_users')}}</span>
                     <b class="arrow fa fa-angle-down"></b>
                 </a>
 
@@ -328,158 +255,15 @@
                 <ul class="submenu">
 
                     <li>
-                        <a href="{{route('student.courses.registration')}}" class="text-capitalize">
+                        <a href="{{route('logout')}}" class="text-capitalize">
                             <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.course_registration')}}
+                            {{__('text.word_logout')}}
                         </a>
                         <b class="arrow"></b>
                     </li>
-
-
-                    <li>
-                        <a href="{{route('student.courses.registered')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.my_courses')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-
-                    <li>
-                        <a href="{{route('student.courses.form_b')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.FORM_B')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
                 </ul>
             </li>
-            
-            
-            <li>
-                <a href="#" class="dropdown-toggle text-capitalize">
-                    <i  style="color: {{$bg1}};" class="fa fa-gift menu-icon   "></i>
-                    <span class="menu-text">{{__('text.resit_registration')}}</span>
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-
-                <ul class="submenu">
-                    <li>
-                        <a href="{{route('student.resit.registration')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="fa fa-recycle menu-icon"></i>
-                            {{__('text.word_register')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li>
-                        <a href="{{route('student.resit.index')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.word_history')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-                </ul>
-            </li>
-
-           <li>
-                <a href="#" class="dropdown-toggle text-capitalize">
-                    <i  style="color: {{$bg1}};" class="fa fa-circle menu-icon   "></i>
-                    <span class="menu-text">{{__('text.word_results')}}</span>
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-
-                <ul class="submenu">
-                    <li>
-                        <a href="{{route('student.result.ca')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.CA')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-
-
-                    <li>
-                        <a href="{{route('student.result.exam')}}" class="text-capitalize">
-                            <i  style="color: {{$bg1}};" class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.word_exams')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-                </ul>
-            </li>
-
-            @if ('XYZ'==='123')
-                <li>
-                    <a href="{{route('student.notification.home')}}" class="text-capitalize">
-                        <i  style="color: {{$bg1}};" class="fa fa-bell menu-icon   "></i>
-                        {{__('text.word_notifications')}}
-                    </a>
-                    <b class="arrow"></b>
-                </li>
-                
-                <li>
-                    <a href="{{route('student.stock.report', \App\Helpers\Helpers::instance()->getCurrentAccademicYear())}}" class="text-capitalize">
-                        <i  style="color: {{$bg1}};" class="menu-icon fa fa-list"></i>
-                        {{__('text.stock_details')}}
-                    </a>
-                    <b class="arrow"></b>
-                </li>
-            @endif
-
-            <li>
-                <a href="{{route('student.material.home')}}" class="text-capitalize">
-                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-file"></i>
-                    {{__('text.word_material')}}
-                </a>
-                <b class="arrow"></b>
-            </li>
-
-            <li>
-                <a href="{{route('faqs.index')}}" class="text-capitalize">
-                    <i  style="color: {{$bg1}};" class="fa fa-question menu-icon   "></i>
-                    {{__('text.word_faqs')}}
-                </a>
-                <b class="arrow"></b>
-            </li>
-
-            <li>
-                <a href="{{route('student.edit_profile')}}" class="text-capitalize">
-                    <i  style="color: {{$bg1}};" class="fa fa-user menu-icon   "></i>
-                    {{__('text.edit_profile')}}
-                </a>
-                <b class="arrow"></b>
-            </li>
-
-            <li>
-                <a href="{{route('student.reset_password')}}" class="text-capitalize">
-                    <i  style="color: {{$bg1}};" class="fa fa-refresh menu-icon   "></i>
-                    {{__('text.reset_password')}}
-                </a>
-                <b class="arrow"></b>
-            </li>
-
-            <li>
-                <a onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                   href="{{route('logout')}}">
-                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-lock"></i>
-                    <span class="menu-text">	Logout</span>
-                </a>
-                <b class="arrow"></b>
-            </li>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                {{ csrf_field() }}
-            </form>
-
-
         </ul><!-- /.nav-list -->
-
 
         <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
             <i id="sidebar-toggle-icon" class="ace-icon f ace-save-state"></i>
@@ -494,31 +278,41 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="#">Home</a>
                     </li>
-                    <li class="active">Dashboard</li>
+                    <li class="active">Student Dashboard</li>
                     <li class="active"> Full Name: <b style="color: #e30000">{{auth('student')->user()->name}}</b></li>
                     <li class="active text-capitalize"> {{__('text.word_matricule')}}: <b style="color: #e30000">{{auth('student')->user()->matric}}</b></li>
 
                 </ul><!-- /.breadcrumb -->
             </div>
 
-            <div class="m-5">
-                @if(Session::has('success'))
-                    <div class="alert alert-success fade in">
-                        <strong>Success!</strong> {{Session::get('success')}}
+            <div class=" ">
+                <div>
+                    <div id="user-profile-1" class="user-profile row">
+                        <div style="width:100%; padding-block:1.5rem; font-size:2rem; font-weight:600; padding-inline:2rem;" class="shadow bg-light mx-1">
+                            <span class="d-block w-100 text-danger text-center">PLEASE REMEMBER TO SUBMIT YOUR FORM AT THE END OF THIS PROCESS. PRINT OUT YOUR FORM AND DEPOSIT THEM AT THE REGISTRY <span class="text-dark">NEED HELP? CALL - </span>:<span class="text-primary">672137794</span></span>
+                            <span class="d-block w-100 text-danger text-center"><span class="text-primary">MOMO NUMBER -</span><span class="text-secondary"> NUMÉRO MOMO</span> :6 71 98 92 92 | MOMO NAME - <span class="text-secondary">NON SUR MOMO</span> :<span class="text-dark">EMELIE BERINYUY ASHUMBENG</span> | UNDERGRADUATE APPLICATION FEE - :<span class="text-primary">5,000 XAF</span> BACHELOR APPLICATION FEE - :<span class="text-primary">10,000 XAF </span> MASTERS APPLICATION FEE - :<span class="text-primary">20,000 XAF </span></span>
+                        </div>
                     </div>
-                @endif
-
-                @if(Session::has('error'))
-                    <div class="alert alert-danger fade in">
-                        <strong>Error!</strong> {{Session::get('error')}}
-                    </div>
-                @endif
-
-
-                <div class="mb-4 mx-3">
-                    <h4 class="font-weight-bold">{{ $title ?? '' }}</h4>
                 </div>
-                @yield('section')
+                <div class="mx-5 mb-5 mt-3">
+                    @if(Session::has('success'))
+                        <div class="alert alert-success fade in">
+                            <strong>Success!</strong> {{Session::get('success')}}
+                        </div>
+                    @endif
+
+                    @if(Session::has('error'))
+                        <div class="alert alert-danger fade in">
+                            <strong>Error!</strong> {{Session::get('error')}}
+                        </div>
+                    @endif
+
+
+                    <div class="mb-4 mx-3">
+                        <h4 class="font-weight-bold">{{ $title ?? '' }}</h4>
+                    </div>
+                    @yield('section')
+                </div>
             </div>
         </div>
     </div>

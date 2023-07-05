@@ -29,37 +29,19 @@ class CustomForgotPasswordController extends Controller
     }
 
     public function validatePasswordRequest(Request $request)
-    {//You can add validation login here
-        //dd($request->type);
-        $type = $request->type;
-        $email = $request->email;
-      if($type){
-            $user = Students::where('email', $email)->get();
-            //dd($user);
-            if ($user->count() == 0) {
-                return redirect()->back()->with('e','Student does not exist with this email');
-            }
-      }else{
-        $user = User::where('email',  $email)->get();
-        if ($user->count() == 0) {
-            return redirect()->back()->with('e','User does not exist with this email');
+    {
+        $validator = Validator::make($request->all(), ['email'=>'required|email', 'phone'=>'required']);
+        if($validator->fails()){
+            return back()->with('error', $validator->errors()->first());
         }
-      }
-      
-        //Create Password Reset Token
-        \DB::table('password_resets')->insert([
-            'email' =>  $email,
-            'token' => Str::random(64),
-            'created_at' => Carbon::now(),
-            'type' => ($type)?'1':'0'
-        ]);//Get the token just created above
-        $tokenData = \DB::table('password_resets')
-            ->where('email',  $email)->first();
-        if ($this->sendResetEmail($email,$tokenData->token)) {
-            return redirect()->back()->with('s', 'A reset link has been sent to your email address.');
-        } else {
-            return redirect()->back()->with('e','A Network Error occurred. Please try again.');
+
+        $record = Students::where(['email'=>$request->email, 'phone'=>$request->phone])->first();
+        if($record != null){
+            $record->password = \Illuminate\Support\Facades\Hash::make('12345678');
+            $record->save();
+            return redirect(route('login'))->with('success', __('text.password_reset'));
         }
+        return back()->with('error', __('text.missing_student'));
     }
 
     public function resetPassword(Request $request)

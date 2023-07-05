@@ -9,11 +9,11 @@ class CampusProgram extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['campus_id', 'program_level_id', 'fees', 'max-credit'];
+    protected $fillable = ['campus_id', 'program_id', 'fees', 'max-credit'];
 
-    public function program_level()
+    public function program()
     {
-        return $this->belongsTo(ProgramLevel::class);
+        return $this->belongsTo(SchoolUnits::class, 'program_id');
     }
 
     public function campus()

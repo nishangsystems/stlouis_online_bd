@@ -60,7 +60,6 @@ Route::post('recover_username', [CustomForgotPasswordController::class, 'recover
 
 Route::get('', 'WelcomeController@home');
 Route::get('home', 'WelcomeController@home');
-
 // Route::middleware('password_reset')->group(function(){
     // });
 
@@ -633,6 +632,21 @@ Route::prefix('student')->name('student.')->middleware(['isStudent', 'platform.c
     Route::get('transcript/pay', 'Student\HomeController@pay_transcript_charges')->name('transcript.pay');
 
     Route::get('online_payments/history', 'Student\HomeController@online_payment_history')->name('online.payments.history');
+
+
+
+    // ONLINE APPLICATION PORTAL ROUTES
+    Route::get('campus/programs/{campus_id}', [Controller::class, 'campusPrograms'])->name('campus.programs');
+    Route::get('campus/degrees/{campus_id}', [Controller::class, 'campusDegrees'])->name('campus.degrees');
+    Route::get('region/divisions/{region_id}', [Controller::class, 'regionDivisions'])->name('region.divisions');
+    Route::get('programs/all', [StudentHomeController::class, 'all_programs'])->name('programs.index');
+    Route::get('payment/data', [StudentHomeController::class, 'payment_data'])->name('payment.data');
+    Route::get('application/start/{step}/{id?}', [StudentHomeController::class, 'start_application'])->name('application.start');
+    Route::post('application/start/{step}/{id?}', [StudentHomeController::class, 'persist_application']);
+    Route::get('application/submit/{id?}', [StudentHomeController::class, 'submit_application'])->name('application.submit');
+    Route::post('application/submit/{id?}', [StudentHomeController::class, 'submit_application_save']);
+    Route::get('application/form/download/{id?}', [StudentHomeController::class, 'download_application_form'])->name('application.form.download');
+    Route::post('application/form/download/{id?}', [StudentHomeController::class, 'download_form']);
 });
 // Route::post('student/charges/pay', 'Student\HomeController@pay_charges_save')->name('student.charge.pay');
 Route::get('platform/pay', 'Student\HomeController@pay_platform_charges')->name('platform_charge.pay')->middleware('isStudent');

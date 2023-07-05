@@ -65,11 +65,11 @@
             display: none;
         }
     </STYLE>
-        @php
-			$bg1 = \App\Http\Controllers\HomeController::getColor('background_color_1');
-			$bg2 = \App\Http\Controllers\HomeController::getColor('background_color_2');
-			$bg3 = \App\Http\Controllers\HomeController::getColor('background_color_3');
-		@endphp
+    @php
+        $bg1 = \App\Http\Controllers\HomeController::getColor('background_color_1');
+        $bg2 = \App\Http\Controllers\HomeController::getColor('background_color_2');
+        $bg3 = \App\Http\Controllers\HomeController::getColor('background_color_3');
+    @endphp
 </head>
 
 <body class="no-skin">
@@ -85,7 +85,6 @@
 
     <script src="{{asset('libs')}}/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="{{asset('libs')}}/datatables.net-bs4/js/dataTables.responsive.min.js"></script>
-
 
     <script>
         $(function () {

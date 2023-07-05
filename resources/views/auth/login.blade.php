@@ -139,7 +139,7 @@
 											@csrf
 												<fieldset style="color: black;">
 													<label class="block clearfix">
-														<span class="text-capitalize">{{__('text.word_username')}}</span>
+														<span class="text-capitalize">{{__('text.word_email')}} / {{ __('text.phone_number') }}</span>
 														<span class="block input-icon input-icon-right" style="background-color: white !important;">
 															<input type="text" required class="form-control" value="{{old("username")}}" name="username" style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
 														</span>
@@ -216,6 +216,13 @@
 														<span class="text-capitalize">{{__('text.word_email')}}</span>
 														<span class="block input-icon input-icon-right">
 															<input type="email" required name="email" class="form-control"  style="border-radius: 0.5rem !important; background-color: white !important; color: black"/>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="text-capitalize">{{__('text.phone_number')}}</span>
+														<span class="block input-icon input-icon-right">
+															<input type="tel" required name="phone" class="form-control"  style="border-radius: 0.5rem !important; background-color: white !important; color: black"/>
 														</span>
 													</label>
 

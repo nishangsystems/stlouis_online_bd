@@ -45,7 +45,7 @@
 			#login-frame{
 				position: relative;
 				width: 350px;
-				height: 660px;
+				height: 600px;
 				min-height: fit-content;
 				margin-inline: auto;
 				border-radius: 24px;
@@ -120,7 +120,7 @@
 								<div class="widget-body" style="padding-inline: 3rem !important;">
 									<div class="widget-main">
 										<h4 class="bigger text-capitalize" style="color: black !important; font-size: xlarge;">
-											<b>{{__('text.completing_account_creation')}}</b>
+											<b>{{__('text.create_account')}}</b>
 										</h4>
 										{{-- <span style="font-size: small; margin-bottom: 1rem; color: black !important;">{{__('text.begin_account_creation')}}</span> --}}
 
@@ -128,9 +128,9 @@
 											@csrf
 											<fieldset>
 												<label class="block clearfix">
-													<span class="text-capitalize">{{__('text.first_name')}}</span>
+													<span class="text-capitalize">{{__('text.full_name')}} ({{ __('text.as_in_birth_certificate') }})</span>
 													<span class="block input-icon input-icon-right">
-														<input type="text" readonly required class="form-control" value="{{ $student_d->name ?? ''}}" name="name"  style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
+														<input type="text" required class="form-control" placeholder="{{ __('text.full_name') }}" name="name"  style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
 														<!--<i class="ace-icon fa fa-user"></i>-->
 													</span>
 													@error('name')
@@ -140,21 +140,9 @@
 													@enderror
 												</label>
 												<label class="block clearfix">
-													<span class="text-capitalize">{{__('text.phone_number')}}</span>
-													<span class="block input-icon input-icon-right">
-														<input type="number" required class="form-control" value="" name="phone"  style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
-														<!--<i class="ace-icon fa fa-user"></i>-->
-													</span>
-													@error('phone')
-														<span class="invalid-feedback red" role="alert">
-															<strong>{{ $message }}</strong>
-														</span>
-													@enderror
-												</label>
-												<label class="block clearfix">
 													<span class="text-capitalize">{{__('text.word_email')}}</span>
 													<span class="block input-icon input-icon-right">
-														<input type="email" required class="form-control" value="" name="email"  style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
+														<input type="email" required class="form-control" placeholder="{{ __('text.word_email') }}" name="email"  style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
 														<!--<i class="ace-icon fa fa-user"></i>-->
 													</span>
 													@error('email')
@@ -164,12 +152,12 @@
 													@enderror
 												</label>
 												<label class="block clearfix">
-													<span class="text-capitalize">{{__('text.word_username')}}</span>
+													<span class="text-capitalize">{{__('text.phone_number')}}</span>
 													<span class="block input-icon input-icon-right">
-														<input type="text" readonly required class="form-control" value="{{ $student_d->matric ?? ''}}" name="username"  style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
+														<input type="text" required class="form-control" name="phone" placeholder="{{ __('text.phone_number') }}"  style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
 														<!--<i class="ace-icon fa fa-user"></i>-->
 													</span>
-													@error('username')
+													@error('phone')
 														<span class="invalid-feedback red" role="alert">
 															<strong>{{ $message }}</strong>
 														</span>
@@ -211,7 +199,12 @@
 										</form>
 
 									</div><!-- /.widget-main -->
-
+									<div  class="clearfix" style="border: 0px; padding-inline: 1rem;">
+										<a href="{{route('login')}}" data-target="#login-box" class="form-control btn-black btn-sm text-center"  style="border-radius: 2rem; background-color: black; border: 1px solid black; color: white; text-transform: capitalize; font-weight: normal !important;">
+											<i class="ace-icon fa fa-arrow-left"></i>
+											{{__('text.back_to_login')}}
+										</a>
+									</div>
 								</div><!-- /.widget-body -->
 							</div><!-- /.forgot-box -->
 

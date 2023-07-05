@@ -321,4 +321,17 @@ class Students extends Authenticatable
         return $this->hasMany(Transaction::class, 'student_id');
     }
 
+
+    // FOR APPLICATION PORTAL ONLY
+    public function currentApplicationForms($year = null)
+    {
+        $year = $year == null ? Helpers::instance()->getCurrentAccademicYear() : $year;
+        return $this->hasMany(ApplicationForm::class, 'student_id')->where('application_forms.year_id', $year);
+    }
+
+    public function applicationForms()
+    {
+        return $this->hasMany(ApplicationForm::class, 'student_id');
+    }
+
 }

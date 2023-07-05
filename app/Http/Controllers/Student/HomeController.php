@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Student;
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\TransactionController;
+use App\Models\ApplicationForm;
 use App\Models\Batch;
+use App\Models\Campus;
 use App\Models\CampusProgram;
 use App\Models\CampusSemesterConfig;
 use App\Models\Charge;
@@ -1644,5 +1646,229 @@ class HomeController extends Controller
         $data['teachers'] = $teachers;
         $data['topics'] = Topic::where(['subject_id'=>$subject->id])->get();;
         return view('student.courses.content', $data);
+    }
+
+
+
+
+    /* ______________________________________________________________________________________
+    ONLINE APPLICATION SPECIFIC ACTIONS
+    _______________________________________________________________________________________ */
+    public function all_programs (Request $request)
+    {
+        # code...
+        $data['title'] = "Our programs";
+        $data['campuses'] = Campus::all();
+        return view('student.online.programs', $data);
+    }
+
+    public function start_application (Request $request, $step, $application_id = null)
+    {
+        # code...
+        $data['title'] = "HND APPLICATION FOR DOUALA-BONABERI";
+        $data['step'] = $step;
+        $data['campuses'] = Campus::all();
+        if($application_id != null){
+            $data['application'] = ApplicationForm::find($application_id);
+        }else{
+            $application = new ApplicationForm();
+            $application->student_id = auth('student')->id();
+            $application->year_id = Helpers::instance()->getCurrentAccademicYear();
+            $application->save();
+            $data['application'] = $application;
+        }
+        return view('student.online.fill_form', $data);
+    }
+
+    public function persist_application(Request $request, $step, $application_id)
+    {
+        # code...
+        // return $request->all();
+        switch ($step) {
+            case 1:
+                # code...
+                $validity = Validator::make($request->all(), [
+                    'campus_id'=>'required', 'degree_id'=>'required'
+                ]);
+                break;
+            
+            case 2:
+                # code...
+                // return $request->all();
+                $validity = Validator::make($request->all(), [
+                    "name"=>'required',"gender"=> "required","dob"=> "required", "pob"=> "required", "nationality"=> "required",
+                    "region"=> "required", "division"=> "required", "residence"=> "required", "phone"=> "required", "email"=> "required|email",
+                    "referer"=> "required", "high_school"=> "required", "campus_id"=> "required", "entry_qualification"=> "required"
+                ]);
+                break;
+            
+            case 3:
+                # code...
+                $validity = Validator::make($request->all(), [
+                    'program_first_choice'=>'required', 'program_second_choice'=>'required|different:program_first_choice',
+                ]);
+                break;
+            
+            case 4:
+                # code...
+                $validity = Validator::make($request->all(), [
+                    // 'first_spoken_language'=>'required', 'first_written_language'=>'required',
+                    'employments'=>'array', 'previous_training'=>'array'
+                ]);
+                break;
+                
+            case 5:
+                # code...
+                // return $request->all();
+                // $validity = Validator::make($request->all(), [
+                //     'has_health_problem'=>'required|', 'has_health_allergy'=>'required', 'has_disability'=>'required',
+                //     'health_problem'=>'required_if:has_health_problem,yes', 'health_allergy'=>'required_if:has_health_allergy,yes', 
+                //     'disability'=>'required_if:has_disability,yes',
+                // ]);
+                $validity = Validator::make($request->all(), [
+                    'fee_payer'=>'required', 'fee_payer_name'=>'required', 'fee_payer_residence'=>'required',
+                    'fee_payer_tel'=>'required', 'fee_payer_occupation'=>'required'
+                ]);
+                break;
+                
+            case 6:
+                $validity = Validator::make($request->all(), [
+                    
+                ]);
+                # code...
+                break;
+            
+            case 7:
+                # code...
+                // return $request->all();
+                $validity = Validator::make($request->all(), [
+                    "momo_number"=> "672908238", "momo_transaction_id"=> "2363409879", "amount"=> "5000",
+                    "momo_screenshot"=> "file"
+                ]);
+                break;
+            
+            // case 8:
+            //     # code...
+            //     // return $request->all();
+            //     $validity = Validator::make($request->all(), [
+            //         // 'employments'=>'required'
+            //     ]);
+            //     break;
+            
+            // case 9:
+            //     # code...
+            //     // return $request->all();
+            //     $validity = Validator::make($request->all(), [
+            //         'fee_payer'=>'required', 'fee_payer_name'=>'required', 'fee_payer_residence'=>'required',
+            //         'fee_payer_tel'=>'required', 'fee_payer_occupation'=>'required'
+            //     ]);
+            //     break;
+                
+            // case 10:
+            //     # code...
+            //     // return $request->all();
+            //     $validity = Validator::make($request->all(), [
+            //         'candidate_declaration'=>'required'
+            //     ]);
+            //     break;
+            
+            case 11:
+                # code...
+                // return $request->all();
+                $validity = Validator::make($request->all(), [
+                    'parent_declaration'=>'required'
+                ]);
+                break;
+        }
+
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+
+        // persist data
+        $data = $request->all();
+        if($step == 4){
+            $data_p1=[];
+            $_data = $request->previous_training;
+            // return $_data;
+            if($_data != null){
+                foreach ($_data['school'] as $key => $value) {
+                    $data_p1[] = ['school'=>$value, 'year'=>$_data['year'][$key], 'course'=>$_data['course'][$key], 'certificate'=>$_data['certificate'][$key]];
+                }
+                $data['previous_training'] = json_encode($data_p1);
+                // return $data;
+            }
+            $data_p2 = [];
+            $e_data = $request->employments;
+            if($e_data != null){
+                foreach ($e_data['employer'] as $key => $value) {
+                    $data_p2[] = ['employer'=>$value, 'post'=>$e_data['post'][$key], 'start'=>$e_data['start'][$key], 'end'=>$e_data['end'][$key], 'type'=>$e_data['type'][$key]];
+                }
+                $data['employments'] = json_encode($data_p2);
+                // return $data;
+            }
+        }
+
+
+        if($step ==7){
+            if($request->hasFile('momo_screenshot')){
+                $file = $request->file('momo_screenshot');
+                $fname = '__momo_'.random_int(1000000, 9999999).$file->getClientOriginalExtension();
+                $file->storeAs('momo_shots', $fname, ['disk'=>'public_uploads']);
+                $path = public_path('uploads/momo_shots').'/'.$fname;
+                $data['momo_screenshot'] = $path;
+            }
+        }
+
+        $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
+        $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
+        // $application->update($data);
+
+
+        if($step == 11){
+            // Form fully filled
+            return redirect(route('student.home'))->with('success', 'Application form completely filled.');
+        }
+        $step = $request->step;
+        return redirect(route('student.application.start', [$step, $application_id]));
+    }
+
+    public function submit_application(Request $request){
+        $applications = auth('student')->user()->currentApplicationForms()->where('submitted', 0)->get();
+        $data['title'] = "Submit Application";
+        $data['applications'] = $applications;
+        return view('student.online.submit_form', $data);
+    }
+
+    public function submit_application_save(Request $request, $appl_id)
+    {
+        # code...
+        $application = ApplicationForm::find($appl_id);
+        if($application != null){
+            $application->submitted = 1;
+            $application->save();
+            return back()->with('success', 'Application submitted.');
+        }
+        return back()->with('error', 'Application could not be found.');
+    }
+
+    public function download_application_form()
+    {
+        # code...
+        $data['title'] = "Download Application Form";
+        $data['applications'] = auth('student')->user()->applicationForms;
+        return view('student.online.download_form', $data);
+    }
+
+    public function download_form(Request $request, $id)
+    {
+        # code...
+        $application = ApplicationForm::find($id);
+        // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
+        $title = $application->degree??''.' APPLICATION FOR DOUALA-BONABERI'.' CAMPUS';
+        return view('student.online.form_dawnloadable', ['application'=>$application, 'title'=>$title]);
+        $pdf = PDF::loadView('student.online.form_dawnloadable', ['application'=>$application, 'title'=>$title]);
+        $filename = 'APPLICATION FORM - '.$application->first_name.' '.$application->surname.'.pdf';
+        return $pdf->download($filename);
     }
 }

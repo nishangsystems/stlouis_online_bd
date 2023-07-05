@@ -18,6 +18,7 @@ class SchoolUnits extends Model
         'parent_id',
         'grading_type_id',
         'resit_cost',
+        'degree_type'
     ];
 
     public function gradingType()

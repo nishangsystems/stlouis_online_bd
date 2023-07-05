@@ -22,7 +22,7 @@ class CustomLoginController extends Controller
     }
     
      public function registration(){
-        return view('auth.registration');
+        return $this->registration();
     } 
 
     public function showRegistrationForm()
@@ -113,17 +113,12 @@ class CustomLoginController extends Controller
         //Attempt to log the user in
 
         // return $request->all();
-        if( Auth::guard('student')->attempt(['matric'=>$request->username,'password'=>$request->password], $request->remember)){
+        if( (Auth::guard('student')->attempt(['email'=>$request->username,'password'=>$request->password], $request->remember)) || (Auth::guard('student')->attempt(['phone'=>$request->username,'password'=>$request->password], $request->remember))){
             // return "Spot 1";
             return redirect()->intended(route('student.home'));
         }else{
             if( Auth::attempt(['username'=>$request->username,'password'=>$request->password]) ||  Auth::attempt(['matric'=>$request->username,'password'=>$request->password])){
-                // return "Spot 2";
-                if(Auth::user()->type == 'teacher'){
-                    return redirect()->route('user.home')->with('success','Welcome to Teachers Dashboard '.Auth::user()->name);
-                }else{
-                    return redirect()->route('admin.home')->with('success','Welcome to Admin Dashboard '.Auth::user()->name);
-                }
+                return redirect()->route('admin.home')->with('success','Welcome to Admin Dashboard '.Auth::user()->name);
             }
         }
         // return "Spot 3";
