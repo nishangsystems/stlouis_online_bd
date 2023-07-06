@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ApplicationForm extends Model
 {
     use HasFactory;
+
+    protected $connection = 'mysql2';
     protected $fillable = [
         'student_id', 'year_id', 'gender', 'name', 'dob', 'pob', 'region', 'division', 'residence', 'phone', 'email',
         'program_first_choice', 'program_second_choice', 'first_spoken_language', 'first_written_language', 'second_spoken_language', 

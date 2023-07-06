@@ -17,7 +17,9 @@ class User extends Authenticatable
      * The attributes that are mass assignable.
      *
      * @var array
+
      */
+    protected $connection = 'mysql2';
     protected $fillable = [
         'name',
         'email',
@@ -81,13 +83,5 @@ class User extends Authenticatable
         return $this->hasMany(UserRole::class);
     }
 
-    public function isMaster($year, $class)
-    {
-        return ClassMaster::where([
-            'batch_id' => $year,
-            'department_id' => $class,
-            'user_id' => $this->id
-        ])->count() > 0;
-    }
 
 }

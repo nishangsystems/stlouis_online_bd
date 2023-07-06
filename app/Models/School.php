@@ -12,6 +12,7 @@ class School extends Model
     protected $table = 'schools';
 
     protected $fillable = ['name', 'contact', 'address', 'logo_path'];
+    protected $connection = 'mysql2';
 
     public function campuses()
     {

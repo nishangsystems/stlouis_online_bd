@@ -10,6 +10,7 @@ class Region extends Model
     use HasFactory;
 
     protected $table = 'regions';
+    protected $connection = 'mysql2';
 
     public function divisions(){
         return $this->hasMany(Division::class, 'region_id');

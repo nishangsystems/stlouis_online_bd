@@ -9,4 +9,5 @@ class Division extends Model
 {
     use HasFactory;
     protected $table = 'divisions';
+    protected $connection = 'mysql2';
 }

@@ -11,6 +11,7 @@ class Config extends Model
 
     protected $fillable = ['year_id', 'start_date', 'end_date'];
     protected $dates =  ['start_date', 'end_date'];
+    protected $connection = 'mysql2';
 
     public function batch(){
         return $this->belongsTo(Batch::class, 'year_id');
