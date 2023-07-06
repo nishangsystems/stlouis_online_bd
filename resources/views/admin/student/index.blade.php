@@ -63,7 +63,7 @@
             success: function(response) {
                 let html = '';
                 let k = 1;
-                // console.log(response);
+                console.log(response);
                 response.forEach(element => {
                     // console.log(element);
                     html += `
@@ -76,19 +76,9 @@
                         <td class="d-flex justify-content-end  align-items-start text-capitalize">
                             <a class="btn btn-sm btn-primary m-1" href="${element.show_link}"><i class="fa fa-info-circle"> {{__('text.word_view')}}</i></a> |
                             <a class="btn btn-sm btn-success m-1" href="${element.edit_link}"><i class="fa fa-edit"> {{__('text.word_edit')}}</i></a>|
-                            <a onclick="event.preventDefault();
-                                confirm('Are you sure you want to delete student: ${element.name}?') ? document.getElementById('${element.id}-delete').submit() : null" class=" btn btn-danger btn-sm m-1"><i class="fa fa-trash"> {{__('text.word_delete')}}</i></a>
-                            <form id="${element.id}-delete" action="${element.delete_link}" method="POST" style="display: none;">
-                                @method('DELETE')
-                                {{ csrf_field() }}
-                            </form>
+                            
                             <a class="btn btn-sm btn-warning m-1" onclick="confirm('Are you sure you want to reset pasword for ${element.name}?') ? $('#id_${element.id}').submit() : null"><i class="fa fa-edit"> {{__('text.reset_password')}}</i></a>|
                             <form action="${element.password_reset}" method="post" id="id_${element.id}" class="hidden">@csrf</form>
-                            <a class="btn btn-sm btn-secondary m-1" onclick="confirm('Your are about to change student status for ${element.name}?') ? (window.location='${element.activate_link}') : null">
-                                <i class="fa fa-cog">
-                                     ${element.active == true ? "{{__('text.word_disactivate')}}" : "{{__('text.word_activate')}}"} 
-                                </i>
-                            </a>
                         </td>
                     </tr>
                     `.replace('__SID__', element.id).replace('__ACTIVE__', element.active);

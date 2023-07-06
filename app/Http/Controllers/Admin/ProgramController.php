@@ -6,6 +6,8 @@ use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\Batch;
 use App\Models\ClassSubject;
+use App\Models\Config;
+use App\Models\EntryQualification;
 use App\Models\Level;
 use App\Models\ProgramLevel;
 use App\Models\School;
@@ -864,5 +866,77 @@ class ProgramController extends Controller
         $program->grading_type_id = $request->grading_type;
         $program->save();
         return back()->with('success', __('text.word_done'));
+    }
+
+    public function open_admission(Request $request)
+    {
+        # code...
+        $data['title'] = "Configure Admission Session.";
+        $data['sessions'] = Config::all();
+        $data['current_session'] = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
+        // return $data;
+        return view('admin.setting.config_admission', $data);
+    }
+
+    public function set_open_admission(Request $request)
+    {
+        # code...
+        $validity = Validator::make($request->all(), ['start_date'=>'required|date', 'end_date'=>'required|date']);
+        if($validity->fails()){return back()->with('error', $validity->errors()->first());}
+
+        $config = ['start_date'=>$request->start_date, 'end_date'=>$request->end_date];
+        Config::updateOrInsert(['year_id'=>Helpers::instance()->getCurrentAccademicYear()], $config);
+        return back()->with('success', __('text.word_done'));
+    }
+
+    public function applicants_report_by_degree(Request $request)
+    {
+        # code...
+    }
+
+    public function applicants_report_by_program(Request $request)
+    {
+        # code...
+    }
+
+    public function finance_report_general()
+    {
+        # code...
+    }
+
+    public function config_programs(Request $request, $cid = null)
+    {
+        # code...
+        $data['title'] = "Configure Programs Per Entry Qualification";
+        // return $data;
+
+        
+        $qlf = json_decode($this->api_service->certificates());
+        if($qlf != null){
+            $data['certs'] = $qlf->data;
+            $data['cert'] = collect($qlf->data)->where('id', $cid)->first();
+            if($data['cert'] != null){
+                $data['cert_programs'] = collect(json_decode($this->api_service->certificatePrograms($cid))->data)->pluck('id')->toArray();
+                $progs = json_decode($this->api_service->programs());
+                // return $progs;
+                if($progs != null){
+                    $data['programs'] = $progs->data;
+                }
+            }
+        }
+        // return $data;
+        return view('admin.setting.config_program', $data);
+    }
+
+    public function set_config_programs(Request $request, $entry_id)
+    {
+        # code...
+        $validity = Validator::make($request->all(), ['programs'=>'required|array']);
+        if($validity->fails()){return back()->with('error', $validity->errors()->first());}
+
+        // save program configuration
+        $programs = $request->programs;
+        $response = $this->api_service->setCertificatePrograms($entry_id, $programs);
+        return back()->with('message', $response);
     }
 }

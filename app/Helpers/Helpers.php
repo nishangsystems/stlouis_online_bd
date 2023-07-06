@@ -367,4 +367,9 @@ class Helpers
         return $years;
     }
 
+    public function getApiRoot(){
+        $api_root = File::where('name', 'api_root')->first();
+        return $api_root == null ? null : $api_root->path;
+    }
+
 }

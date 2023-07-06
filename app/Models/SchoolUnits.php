@@ -107,7 +107,7 @@ class SchoolUnits extends Model
 
     public function programLevels()
     {
-        return $this->hasManyThrough(Level::class, ProgramLevel::class);
+        return $this->hasManyThrough(Level::class, ProgramLevel::class, 'level_id', 'program_id');
     }
 
     public function classes()
@@ -124,4 +124,5 @@ class SchoolUnits extends Model
     {
         return $this->resit_cost == null;
     }
+
 }

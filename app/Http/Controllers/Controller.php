@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helpers;
+use App\Http\Services\ApiService;
 use App\Http\Controllers\SMS\Helpers as SMSHelpers;
 use App\Models\Campus;
 use App\Models\CampusProgram;
 use App\Models\ClassSubject;
+use App\Models\File;
 use App\Models\Region;
 use App\Models\Students;
 use App\Models\TeachersSubject;
@@ -32,12 +34,13 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     var $current_accademic_year;
-    public function __construct()
+    var $api_service;
+    public function __construct(ApiService $apiService)
     {
         # code...
         $this->current_accademic_year = Helpers::instance()->getCurrentAccademicYear();
         ini_set('max_execution_time', 360);
-
+        $this->api_service = $apiService;
     }
 
     public function set_local(Request $request, $lang)
@@ -220,19 +223,35 @@ class Controller extends BaseController
     }
 
 
-    public static function campusPrograms($campus_id){
-        return Campus::find($campus_id)->programs;
-    }
+    // public static function campusPrograms($campus_id){
+    //     return Campus::find($campus_id)->programs;
+    // }
 
-    public static function campusDegrees($campus_id)
+    // public static function campusDegrees($campus_id)
+    // {
+    //     # code...
+    //     return Campus::find($campus_id)->degrees;
+    // }
+
+    // public function regionDivisions($region_id)
+    // {
+    //     # code...
+    //     return Region::find($region_id)->divisions;
+    // }
+
+    public function create_api_root()
     {
         # code...
-        return Campus::find($campus_id)->degrees;
+        return view('api_root');
     }
 
-    public function regionDivisions($region_id)
+    public function save_api_root (Request $request)
     {
         # code...
-        return Region::find($region_id)->divisions;
+        $request->validate(['api_root'=>'required|url']);
+
+        $instance = new File(['name'=>'api_root', 'path'=>$request->api_root]);
+        $instance->save();
+        return back()->with('success', 'Done');
     }
 }
