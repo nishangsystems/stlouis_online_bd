@@ -145,7 +145,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 });
 
 
-Route::prefix('student')->name('student.')->middleware(['isStudent', 'platform.charges'])->group(function () {
+Route::prefix('student')->name('student.')->middleware('isStudent')->group(function () {
     Route::get('', 'Student\HomeController@index')->name('home');
     Route::get('edit_profile', 'Student\HomeController@edit_profile')->name('edit_profile');
     Route::post('update_profile', 'Student\HomeController@update_profile')->name('update_profile');
@@ -222,6 +222,8 @@ Route::prefix('student')->name('student.')->middleware(['isStudent', 'platform.c
 
 
     // ONLINE APPLICATION PORTAL ROUTES
+    Route::get('campus/degree/certs/programs/{campus_id}/{degree_id}/{cert_id}', [Controller::class, 'campusDegreeCertPrograms'])->name('campus.degree.cert.programs');
+    Route::get('campus/program/levels/{campus_id}/{program_id}', [Controller::class, 'campusProgramLevels'])->name('campus.program.levels');
     Route::get('campus/programs/{campus_id}', [Controller::class, 'campusPrograms'])->name('campus.programs');
     Route::get('campus/degrees/{campus_id}', [Controller::class, 'campusDegrees'])->name('campus.degrees');
     Route::get('region/divisions/{region_id}', [Controller::class, 'regionDivisions'])->name('region.divisions');

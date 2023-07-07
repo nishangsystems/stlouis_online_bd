@@ -905,5 +905,12 @@ return [
     'word_submit'=>'submit',
     'word_preview'=>'preview',
     'word_applicant'=>'applicant',
-    'telephone_number_bilang'=>'telephone number / numero de telephone'
+    'telephone_number_bilang'=>'telephone number / numero de telephone',
+    'with_country_code'=>'with country code',
+    'word_stage'=>'stage',
+    'view_and_or_edit_stage'=>'view and or edit stage',
+    '2nd_language_spoken_bilang'=>'2nd language spoken / ',
+    '2nd_language_written_bilang'=>'2nd language written / ',
+    '1st_language_spoken_bilang'=>'1st language spoken / ',
+    '1st_language_written_bilang'=>'1st language written / ',
 ];

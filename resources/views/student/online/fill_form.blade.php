@@ -48,11 +48,11 @@
                     <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [2, $application->id]) }}">
                         @csrf
                         <div class="py-2 row bg-light border-top shadow">
-                            <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 1: {{ __('text.personal_details_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $application->degree->name }} PROGRAM</span></h4>
+                            <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 1: {{ __('text.personal_details_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->deg_name }} PROGRAM</span></h4>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-5">
                                 <label class="text-secondary  text-capitalize">{{ __('text.word_name_bilang') }}</label>
                                 <div class="">
-                                    <input type="text" class="form-control text-primary"  name="name" value="{{ $application->name }}" required>
+                                    <input type="text" class="form-control text-primary"  name="name" value="{{ auth('student')->user()->name }}" readonly required>
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
@@ -115,13 +115,13 @@
                             <div class="py-2 col-sm-6 col-md-4 col-lg-5">
                                 <label class="text-secondary  text-capitalize">{{ __('text.telephone_number_bilang') }}</label>
                                 <div class="">
-                                    <input type="tel" class="form-control text-primary"  name="phone" value="{{ $application->phone }}" required>
+                                    <input type="tel" class="form-control text-primary"  name="phone" value="{{ auth('student')->user()->phone }}" readonly required>
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                                 <label class="text-secondary  text-capitalize">{{ __('text.word_email_bilang') }}</label>
                                 <div class="">
-                                    <input type="email" class="form-control text-primary"  name="email" value="{{ $application->email }}" required>
+                                    <input type="email" class="form-control text-primary"  name="email" value="{{ auth('student')->user()->email }}" required readonly>
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
@@ -164,15 +164,9 @@
                                 <div class="">
                                     <select class="form-control text-primary"  name="entry_qualification" required>
                                         <option value=""></option>
-                                        <option value="Advance Level Science" {{ $application->entry_qualification== 'Advance Level Science' ? 'selected' : '' }}>Advance Level Science</option>
-                                        <option value="Advance Level Arts" {{ $application->entry_qualification== 'Advance Level Arts' ? 'selected' : '' }}>Advance Level Arts</option>
-                                        <option value="HND" {{ $application->entry_qualification== 'HND' ? 'selected' : '' }}>HND</option>
-                                        <option value="BACC" {{ $application->entry_qualification== 'BACC' ? 'selected' : '' }}>BACC</option>
-                                        <option value="HPD" {{ $application->entry_qualification== 'HPD' ? 'selected' : '' }}>HPD</option>
-                                        <option value="BTS" {{ $application->entry_qualification== 'BTS' ? 'selected' : '' }}>BTS</option>
-                                        <option value="DSEP" {{ $application->entry_qualification== 'DSEP' ? 'selected' : '' }}>DSEP</option>
-                                        <option value="Bachelor Degree" {{ $application->entry_qualification== 'Bachelor Degree' ? 'selected' : '' }}>Bachelor Degree</option>
-                                        <option value="Commercial" {{ $application->entry_qualification== 'Commercial' ? 'selected' : '' }}>Commercial</option>
+                                        @foreach ($certs as $cert)
+                                            <option value="{{ $cert->id }}" {{ $application->entry_qualification== $cert->id ? 'selected' : '' }}>{{ $cert->certi }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -185,14 +179,14 @@
                     @break
             
                 @case(2)
-                    <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [$application->degree->slug == 'msc'?3:4, $application->id]) }}">
+                    <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [ 3, $application->id]) }}">
                         @csrf
                         <div class="py-2 row bg-light border-top shadow">
-                            <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 2: {{ __('text.course_envisaged_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $application->degree->name }} PROGRAM</span></h4>
+                            <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 2: {{ __('text.course_envisaged_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->deg_name }} PROGRAM</span></h4>
                             <div class="col-sm-6 col-md-4 col-lg-3">
                                 <label class="text-secondary  text-capitalize">{{ __('text.first_choice_bilang') }}</label>
                                 <div class="">
-                                    <select class="form-control text-primary"  name="program_first_choice" required>
+                                    <select class="form-control text-primary"  name="program_first_choice" required oninput="loadCplevels(event)">
                                         @forelse ($programs as $program)
                                             <option value="{{ $program->id }}" {{ $application->program_first_choice == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
                                         @empty
@@ -216,13 +210,8 @@
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                                 <label class="text-secondary  text-capitalize">{{ __('text.word_level_bilang') }}</label>
                                 <div class="">
-                                    <select class="form-control text-primary"  name="level" required>
-                                        <option value="100" {{ $application->level == '100' ? 'selected' : '' }}>100</option>
-                                        <option value="Year 1" {{ $application->level == 'Year 1' ? 'selected' : '' }}>Year 1</option>
-                                        <option value="Year 2" {{ $application->level == 'Year 2' ? 'selected' : '' }}>Year 2</option>
-                                        <option value="Year 3" {{ $application->level == 'Year 3' ? 'selected' : '' }}>Year 3</option>
-                                        <option value="Degree Program" {{ $application->level == 'Degree Program' ? 'selected' : '' }}>Degree Program</option>
-                                        <option value="Masters|Maitrise" {{ $application->level == 'Masters|Maitrise' ? 'selected' : '' }}>Masters|Maitrise</option>
+                                    <select class="form-control text-primary"  name="level" required id="cplevels">
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -230,8 +219,10 @@
                                 <label class="text-secondary  text-capitalize">{{ __('text.1st_language_spoken_bilang') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="first_spoken_language" required>
-                                        <option value="male" {{ $application->first_spoken_language == 'male' ? 'selected' : '' }}>{{ __('text.word_male') }}</option>
-                                        <option value="female" {{ $application->first_spoken_language == 'female' ? 'selected' : '' }}>{{ __('text.word_female') }}</option>
+                                        <option></option>
+                                        @foreach (config('languages') as $key => $lang)
+                                            <option value="{{ $lang }}" {{ $application->first_spoken_language == $lang ? 'selected' : '' }}>{{ $lang }}</option>   
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -239,8 +230,10 @@
                                 <label class="text-secondary  text-capitalize">{{ __('text.1st_language_written_bilang') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="first_written_language" required>
-                                        <option value="male" {{ $application->first_written_language == 'male' ? 'selected' : '' }}>{{ __('text.word_male') }}</option>
-                                        <option value="female" {{ $application->first_written_language == 'female' ? 'selected' : '' }}>{{ __('text.word_female') }}</option>
+                                        <option></option>
+                                        @foreach (config('languages') as $key => $lang)
+                                            <option value="{{ $lang }}" {{ $application->first_spoken_language == $lang ? 'selected' : '' }}>{{ $lang }}</option>   
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -248,8 +241,10 @@
                                 <label class="text-secondary  text-capitalize">{{ __('text.2nd_language_spoken_bilang') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="second_spoken_language" required>
-                                        <option value="male" {{ $application->second_spoken_language == 'male' ? 'selected' : '' }}>{{ __('text.word_male') }}</option>
-                                        <option value="female" {{ $application->second_spoken_language == 'female' ? 'selected' : '' }}>{{ __('text.word_female') }}</option>
+                                        <option></option>
+                                        @foreach (config('languages') as $key => $lang)
+                                            <option value="{{ $lang }}" {{ $application->first_spoken_language == $lang ? 'selected' : '' }}>{{ $lang }}</option>   
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -257,8 +252,10 @@
                                 <label class="text-secondary  text-capitalize">{{ __('text.2nd_language_written_bilang') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="second_written_language" required>
-                                        <option value="male" {{ $application->second_written_language == 'male' ? 'selected' : '' }}>{{ __('text.word_male') }}</option>
-                                        <option value="female" {{ $application->second_written_language == 'female' ? 'selected' : '' }}>{{ __('text.word_female') }}</option>
+                                        <option></option>
+                                        @foreach (config('languages') as $key => $lang)
+                                            <option value="{{ $lang }}" {{ $application->first_spoken_language == $lang ? 'selected' : '' }}>{{ $lang }}</option>   
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -330,7 +327,7 @@
                     <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [4, $application->id]) }}">
                         @csrf
                         <div class="py-2 row bg-light border-top shadow">
-                            <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 3: {{ __('text.previous_higher_education_training_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $application->degree->name }} PROGRAM</span></h4>
+                            <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 3: {{ __('text.previous_higher_education_training_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->deg_name }} PROGRAM</span></h4>
                             <div class="col-sm-12 col-md-12 col-lg-12 py-2">
                                 <table class="border">
                                     <thead>
@@ -430,11 +427,12 @@
                     <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [5, $application->id]) }}">
                         @csrf
                         <div class="py-2 row bg-light border-top shadow">
-                            <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 4: {{ __('text.financial_obligation_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $application->degree->name }} PROGRAM</span></h4>
+                            <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 4: {{ __('text.financial_obligation_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->deg_name }} PROGRAM</span></h4>
                             <div class="col-sm-12 col-md-8 col-lg-8">
                                 <label class="text-secondary  text-capitalize">{{ __('text.who_is_responsible_for_your_fee_bilang') }}</label>
                                 <div class="">
                                     <select class="form-control text-capitalize text-primary" name="fee_payer" required>
+                                        <option></option>
                                         <option value="father" {{ $application->fee_payer =='father' ? 'selected' : '' }}>{{ __('text.word_father') }}</option>
                                         <option value="mother" {{ $application->fee_payer =='mother' ? 'selected' : '' }}>{{ __('text.word_mother') }}</option>
                                         <option value="ant" {{ $application->fee_payer =='ant' ? 'selected' : '' }}>{{ __('text.word_ant') }}</option>
@@ -484,7 +482,7 @@
                         @csrf
                         <div class="py-2 row text-capitalize bg-light">
                             <!-- hidden field for submiting application form -->
-                            <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 5: {{ __('text.preview_and_submit_form_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $application->degree->name }} PROGRAM</span></h4>
+                            <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 5: {{ __('text.preview_and_submit_form_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->deg_name }} PROGRAM</span></h4>
                             
                             <!-- STAGE 1 PREVIEW -->
                             <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 1: <a href="{{ route('student.application.start', [2, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 1</a></h4>
@@ -521,13 +519,13 @@
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                                 <label class="text-secondary  text-capitalize">{{ __('text.word_region_of_origin_bilang') }}</label>
                                 <div class="">
-                                    <label class="form-control text-primary border-0 ">{{ $application->region }}</label>
+                                    <label class="form-control text-primary border-0 ">{{ $application->_region->region }}</label>
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                                 <label class="text-secondary  text-capitalize">{{ __('text.word_division_bilang') }}</label>
                                 <div class="">
-                                    <label class="form-control text-primary border-0 "  name="division" required>{{ $application->division }}</label>
+                                    <label class="form-control text-primary border-0 "  name="division" required>{{ $application->_division->name }}</label>
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
@@ -557,13 +555,13 @@
                             <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                                 <label class="text-secondary  text-capitalize">{{ __('text.word_campus_bilang') }}</label>
                                 <div class="">
-                                    <label class="form-control text-primary border-0 ">{{ $application->campus->name??'' }}</label>
+                                    <label class="form-control text-primary border-0 ">{{ $campus->name??'' }}</label>
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                                 <label class="text-secondary  text-capitalize">{{ __('text.word_entry_qualification_bilang') }}</label>
                                 <div class="">
-                                    <label class="form-control text-primary border-0 ">{{ $application->entry_qualification }}</label>
+                                    <label class="form-control text-primary border-0 ">{{ $cert->certi ?? '' }}</label>
                                 </div>
                             </div>
 
@@ -573,19 +571,19 @@
                             <div class="col-sm-6 col-md-4 col-lg-3">
                                 <label class="text-secondary  text-capitalize">{{ __('text.first_choice_bilang') }}</label>
                                 <div class="">
-                                    <label class="form-control text-primary border-0">{{ $application->programFirstChoice->name??null }}</label>
+                                    <label class="form-control text-primary border-0">{{ $program1->name ?? '' }}</label>
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-4 col-lg-3">
                                 <label class=" text-secondary text-capitalize">{{ __('text.second_choice_bilang') }}</label>
                                 <div class="">
-                                    <label class="form-control text-primary border-0">{{ $application->programSecondChoice->name??null }}</label>
+                                    <label class="form-control text-primary border-0">{{ $program2->name ?? '' }}</label>
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                                 <label class="text-secondary  text-capitalize">{{ __('text.word_level_bilang') }}</label>
                                 <div class="">
-                                    <label class="form-control text-primary border-0">{{ $application->level->name??null }}</label>
+                                    <label class="form-control text-primary border-0">{{ $application->level??null }}</label>
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
@@ -656,7 +654,7 @@
                                 </div>
                             </div>
 
-                            @if($application->degree->slug == 'msc')
+                            @if($degree->deg_name == 'MASTER DEGREE PROGRAMS')
                                 <!-- STAGE 3 -->
                                 <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 3: <a href="{{ route('student.application.start', [4, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 3</a></h4>
                                 <h4 class="py-3 border-bottom border-top bg-white text-dark my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;"> {{ __('text.previous_higher_education_training_bilang') }}</h4>
@@ -731,7 +729,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary text-capitalize">{{ __('text.word_tel') }}<span class="text-dabger">{{ __('text.with_country_code') }}</span></label>
+                                <label class="text-secondary text-capitalize">{{ __('text.word_tel') }} (<span class="text-dabger">{{ __('text.with_country_code') }}</span>)</label>
                                 <div class="">
                                     <label class="form-control text-primary border-0">{{ $application->fee_payer_tel }}</label>
                                 </div>
@@ -975,7 +973,7 @@
                     console.log(data);
                     let html = `<option>{{ __('text.select_degree_type') }}</option>`;
                     data.forEach(element => {
-                        html+=`<option value="${element.id}">${element.name}</option>`
+                        html+=`<option value="${element.id}">${element.deg_name}</option>`
                     });
                     $('#degree_types').html(html);
                 }
@@ -995,6 +993,43 @@
                     $('#divisions').html(html);
                 }
             })
+        }
+
+        let campusDegreeCertPorgrams = function(event){
+            cert_id = event.target.value;
+            campus_id = "{{ $application->campus_id }}";
+            degree_id = "{{ $application->degree_id }}";
+
+            url = "{{ route('student.campus.degree.cert.programs', ['__CmpID__', '__DegID__', '__CertID__']) }}".replace('__CmpID__', camus_id).replace('__DegID__').replace('__CertID__');
+            $.ajax({
+                method: 'get', url: url,
+                success: function(data){
+                    console.log(data);
+                    let html = `<option></option>`;
+                    data.forEach(element=>{
+                        html += `<option value="${element.id}">${element.certi}</option>`;
+                    })
+
+                }
+            })
+        }
+
+        let loadCplevels = function(event){
+            campus_id = "{{ $application->campus_id }}";
+            program_id = event.target.value;
+
+            url = "{{ route('student.campus.program.levels', ['__CmpID__', '__PrgID__']) }}".replace('__CmpID__', campus_id).replace('__PrgID__', program_id);
+            $.ajax({
+                method : 'get', url : url, 
+                success : function(data){
+                    console.log(data);
+                    let html = `<option></option>`;
+                    data.forEach(element=>{
+                        html += `<option value="${element.level}">${element.level}</option>`;
+                    })
+                    $('#cplevels').html(html);
+                }
+            });
         }
     </script>
 @endsection

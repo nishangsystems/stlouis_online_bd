@@ -24,17 +24,17 @@ class ApplicationForm extends Model
         return $this->belongsTo(Students::class, 'student_id');
     }
 
-    public function programFirstChoice()
-    {
-        # code...
-        return $this->belongsTo(SchoolUnits::class, 'program_first_choice');
-    }
+    // public function programFirstChoice()
+    // {
+    //     # code...
+    //     return $this->belongsTo(SchoolUnits::class, 'program_first_choice');
+    // }
 
-    public function programSecondChoice()
-    {
-        # code...
-        return $this->belongsTo(SchoolUnits::class, 'program_second_choice');
-    }
+    // public function programSecondChoice()
+    // {
+    //     # code...
+    //     return $this->belongsTo(SchoolUnits::class, 'program_second_choice');
+    // }
 
     public function year()
     {
@@ -42,16 +42,16 @@ class ApplicationForm extends Model
         return $this->belongsTo(Batch::class, 'year_id');
     }
 
-    public function campus()
+    public function _region()
     {
         # code...
-        return $this->belongsTo(Campus::class, 'campus_id');
+        return $this->belongsTo(Region::class, 'region');
     }
 
-    public function degree()
+    public function _division()
     {
         # code...
-        return $this->belongsTo(Degree::class, 'degree_id');
+        return $this->belongsTo(Division::class, 'division');
     }
 
 }

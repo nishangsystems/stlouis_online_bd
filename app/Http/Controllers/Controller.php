@@ -38,9 +38,9 @@ class Controller extends BaseController
     public function __construct(ApiService $apiService)
     {
         # code...
+        $this->api_service = $apiService;
         $this->current_accademic_year = Helpers::instance()->getCurrentAccademicYear();
         ini_set('max_execution_time', 360);
-        $this->api_service = $apiService;
     }
 
     public function set_local(Request $request, $lang)
@@ -227,17 +227,17 @@ class Controller extends BaseController
     //     return Campus::find($campus_id)->programs;
     // }
 
-    // public static function campusDegrees($campus_id)
-    // {
-    //     # code...
-    //     return Campus::find($campus_id)->degrees;
-    // }
+    public function campusDegrees($campus_id)
+    {
+        # code...
+        return json_decode($this->api_service->campusDegrees($campus_id))->data;
+    }
 
-    // public function regionDivisions($region_id)
-    // {
-    //     # code...
-    //     return Region::find($region_id)->divisions;
-    // }
+    public function regionDivisions($region_id)
+    {
+        # code...
+        return Region::find($region_id)->divisions;
+    }
 
     public function create_api_root()
     {
@@ -253,5 +253,18 @@ class Controller extends BaseController
         $instance = new File(['name'=>'api_root', 'path'=>$request->api_root]);
         $instance->save();
         return back()->with('success', 'Done');
+    }
+
+    public function campusDegreeCertPrograms(Request $request, $campus_id, $degree_id, $cert_id)
+    {
+        # code...
+        return json_decode($this->api_service->campusDegreeCertificatePrograms($campus_id, $degree_id, $cert_id))->data;
+    }
+
+
+    public function campusProgramLevels($campus_id, $program_id)
+    {
+        # code...
+        return json_decode($this->api_service->campusProgramLevels($campus_id, $program_id))->data;
     }
 }
