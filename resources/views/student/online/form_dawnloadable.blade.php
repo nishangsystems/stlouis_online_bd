@@ -26,11 +26,11 @@
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.word_region_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->region }}</span>
+                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->_region->region }}</span>
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.word_division_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->division }}</span>
+                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->_division->name }}</span>
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.word_residence_bilang') }}</span>
@@ -50,11 +50,11 @@
             <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">2</span>{{ __('text.course_envisaged_bilang') }}</h4>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.first_choice_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->programFirstChoice->name }}</span>
+                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $program1->name }}</span>
             </div>
             <div class="row py-2">
                 <label class="col-sm-12 col-md-3 text-secondary text-capitalize">{{ __('text.second_choice_bilang') }}</label>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->programSecondChoice->name }}</span>
+                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $program2->name }}</span>
             </div>
         </div>
                     

@@ -9,7 +9,7 @@
                         <div class="px-5 py-5 border-top shadow bg-light">
                             <div class="row w-100">
                                 <div class="col-sm-12 col-md-6">
-                                    <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.word_campus') }}</span><br><span style="font-weight: 400;">{{ __('text.word_campus_french') }}</span></label>
+                                    <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.word_campus') }}</span></label>
                                     <select name="campus_id" class="form-control text-primary"  oninput="setDegreeTypes(event)">
                                         <option>{{ __('text.select_campus') }}</option>
                                         @foreach ($campuses as $campus)
@@ -18,7 +18,7 @@
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-md-6">
-                                    <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.word_degree') }}</span><br><span style="font-weight: 400;">{{ __('text.word_degree_french') }}</span></label>
+                                    <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.word_degree') }}</span></label>
                                     <select name="degree_id" class="form-control text-primary"  id="degree_types">                                    
                                     </select>
                                 </div>
@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary  text-capitalize">{{ __('text.word_region_of_origin_bilang') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.region_of_origin') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="region" required oninput="loadDivisions(event)">
                                         <option value=""></option>
@@ -99,7 +99,7 @@
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary  text-capitalize">{{ __('text.word_division_bilang') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.word_division') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="division" required id="divisions">
                                         
@@ -125,7 +125,7 @@
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary  text-capitalize">{{ __('text.where_did_you_hear_about_us_bilang') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.where_did_you_hear_about_us') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="referer" required>
                                         <option value=""></option>
@@ -143,13 +143,13 @@
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary  text-capitalize">{{ __('text.last_attended_high_school_bilang') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.last_attended_high_school') }}</label>
                                 <div class="">
                                     <input type="text" class="form-control text-primary"  name="high_school" value="{{ $application->high_school }}" required>
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary  text-capitalize">{{ __('text.word_campus_bilang') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.word_campus') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="campus_id" required>
                                         <option value=""></option>
@@ -160,7 +160,7 @@
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary  text-capitalize">{{ __('text.word_entry_qualification_bilang') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.entry_qualification') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="entry_qualification" required>
                                         <option value=""></option>
@@ -208,7 +208,7 @@
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary  text-capitalize">{{ __('text.word_level_bilang') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.word_level') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="level" required id="cplevels">
                                         
@@ -240,7 +240,7 @@
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                                 <label class="text-secondary  text-capitalize">{{ __('text.2nd_language_spoken_bilang') }}</label>
                                 <div class="">
-                                    <select class="form-control text-primary"  name="second_spoken_language" required>
+                                    <select class="form-control text-primary"  name="second_spoken_language">
                                         <option></option>
                                         @foreach (config('languages') as $key => $lang)
                                             <option value="{{ $lang }}" {{ $application->first_spoken_language == $lang ? 'selected' : '' }}>{{ $lang }}</option>   
@@ -251,7 +251,7 @@
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                                 <label class="text-secondary  text-capitalize">{{ __('text.2nd_language_written_bilang') }}</label>
                                 <div class="">
-                                    <select class="form-control text-primary"  name="second_written_language" required>
+                                    <select class="form-control text-primary"  name="second_written_language">
                                         <option></option>
                                         @foreach (config('languages') as $key => $lang)
                                             <option value="{{ $lang }}" {{ $application->first_spoken_language == $lang ? 'selected' : '' }}>{{ $lang }}</option>   
@@ -485,7 +485,7 @@
                             <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 5: {{ __('text.preview_and_submit_form_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->deg_name }} PROGRAM</span></h4>
                             
                             <!-- STAGE 1 PREVIEW -->
-                            <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 1: <a href="{{ route('student.application.start', [2, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 1</a></h4>
+                            <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 1: <a href="{{ route('student.application.start', [1, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 1</a></h4>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-5">
                                 <label class="text-secondary  text-capitalize">{{ __('text.word_surname_bilang') }}</label>
                                 <div class="">
@@ -517,7 +517,7 @@
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary  text-capitalize">{{ __('text.word_region_of_origin_bilang') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.region_of_origin') }}</label>
                                 <div class="">
                                     <label class="form-control text-primary border-0 ">{{ $application->_region->region }}</label>
                                 </div>
@@ -547,19 +547,19 @@
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-4">
-                                <label class="text-secondary  text-capitalize">{{ __('text.where_did_you_hear_about_us_bilang') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.where_did_you_hear_about_us') }}</label>
                                 <div class="">
                                     <label class="form-control text-primary border-0 ">{{ $application->referer }}</label>
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-4">
-                                <label class="text-secondary  text-capitalize">{{ __('text.word_campus_bilang') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.word_campus') }}</label>
                                 <div class="">
                                     <label class="form-control text-primary border-0 ">{{ $campus->name??'' }}</label>
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-4">
-                                <label class="text-secondary  text-capitalize">{{ __('text.word_entry_qualification_bilang') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.entry_qualification') }}</label>
                                 <div class="">
                                     <label class="form-control text-primary border-0 ">{{ $cert->certi ?? '' }}</label>
                                 </div>
@@ -567,7 +567,7 @@
 
 
                             <!-- STAGE 2 -->
-                            <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 2: <a href="{{ route('student.application.start', [3, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 2</a></h4>
+                            <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 2: <a href="{{ route('student.application.start', [2, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 2</a></h4>
                             <div class="col-sm-6 col-md-4 col-lg-3">
                                 <label class="text-secondary  text-capitalize">{{ __('text.first_choice_bilang') }}</label>
                                 <div class="">
@@ -581,7 +581,7 @@
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary  text-capitalize">{{ __('text.word_level_bilang') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.word_level') }}</label>
                                 <div class="">
                                     <label class="form-control text-primary border-0">{{ $application->level??null }}</label>
                                 </div>
@@ -656,7 +656,7 @@
 
                             @if($degree->deg_name == 'MASTER DEGREE PROGRAMS')
                                 <!-- STAGE 3 -->
-                                <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 3: <a href="{{ route('student.application.start', [4, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 3</a></h4>
+                                <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 3: <a href="{{ route('student.application.start', [3, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 3</a></h4>
                                 <h4 class="py-3 border-bottom border-top bg-white text-dark my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;"> {{ __('text.previous_higher_education_training_bilang') }}</h4>
                                 <div class="col-sm-12 col-md-12 col-lg-12 py-2">
                                     <table class="border">
@@ -709,7 +709,7 @@
                             @endif
 
                             <!-- STAGE 4 -->
-                            <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 4: <a href="{{ route('student.application.start', [5, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 4</a></h4>
+                            <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 4: <a href="{{ route('student.application.start', [4, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 4</a></h4>
                             <div class="col-sm-12 col-md-8 col-lg-8">
                                 <label class="text-secondary  text-capitalize">{{ __('text.who_is_responsible_for_your_fee_bilang') }}</label>
                                 <div class="">
@@ -776,13 +776,13 @@
                                     <div class="py-4 text-info text-center ">You are about to make a payment of 5000 CFA for application fee
                                     </div>
                                     <div class="py-3">
-                                        <label class="text-secondary text-capitalize">{{ __('text.momo_number_used_in_payment_bilang') }}</label>
+                                        <label class="text-secondary text-capitalize">{{ __('text.momo_number_used_in_payment') }}</label>
                                         <div class="">
                                             <input type="tel" class="form-control text-primary"  name="momo_number" value="{{ $application->momo_number }}">
                                         </div>
                                     </div>
                                     <div class="py-3">
-                                        <label class="text-secondary text-capitalize">{{ __('text.word_amount_bilang') }} <span class="text-dabger">{{ __('text.with_country_code') }}</span></label>
+                                        <label class="text-secondary text-capitalize">{{ __('text.word_amount') }} <span class="text-dabger">{{ __('text.with_country_code') }}</span></label>
                                         <div class="">
                                             <input readonly type="text" class="form-control text-primary"  name="amount" value="5000">
                                         </div>

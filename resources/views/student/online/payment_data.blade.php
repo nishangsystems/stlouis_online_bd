@@ -15,9 +15,9 @@
                     @foreach ($payments as $key => $payment)
                         <tr class="border-bottom">
                             <td class="border-left border-right">{{ $k++ }}</td>
-                            <td class="border-left border-right">{{ $payment->name }}</td>
-                            <td class="border-left border-right">{{ $payment->campus->name }}</td>
-                            <td class="border-left border-right">{{ $payment->degree->name }}</td>
+                            <td class="border-left border-right">{{ $payment->name??'' }}</td>
+                            <td class="border-left border-right">{{ $payment->campus->name??'' }}</td>
+                            <td class="border-left border-right">{{ $payment->degree->deg_name??'' }}</td>
                             <td class="border-left border-right">
                                 <a href="{{ Request::url() }}?appl={{ $payment->id }}"  class="btn btn-sm btn-primary">{{ __('text.word_view') }}</a>
                             </td>

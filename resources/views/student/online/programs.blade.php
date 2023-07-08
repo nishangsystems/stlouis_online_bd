@@ -20,15 +20,15 @@
                                     <thead><tr class="text-capitalize border-bottom">
                                         <th class="border-left border-right">{{ __('text.sn') }}</th>
                                         <th class="border-left border-right">{{ __('text.word_program') }}</th>
-                                        <th class="border-left border-right">{{ __('text.degree_type') }}</th>
+                                        {{-- <th class="border-left border-right">{{ __('text.degree_type') }}</th> --}}
                                     </tr></thead>
                                     <tbody>
                                     @php($k = 1)
-                                        @foreach ($campus->programs()->orderBy('name')->get() as $program)
+                                        @foreach ($campus->programs??[] as $program)
                                         <tr class="border-bottom">  
                                             <td class="border-left border-right">{{ $k++ }}</td>
                                             <td class="border-left border-right">{{ $program->name }}</td>
-                                            <td class="border-left border-right">{{  $program->degree_type  }}</td>
+                                            {{-- <td class="border-left border-right">{{  $program->degree_type  }}</td> --}}
                                         </tr>
                                         @endforeach
                                     </tbody>

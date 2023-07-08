@@ -173,7 +173,12 @@ class HomeController extends Controller
     {
         # code...
         $data['title'] = "Our programs";
-        $data['campuses'] = json_decode($this->api_service->campuses());
+        $data['campuses'] = json_decode($this->api_service->campuses())->data;
+        foreach ($data['campuses'] as $key => $value) {
+            # code...
+            $data['campuses'][$key]->programs = collect(json_decode($this->api_service->campusPrograms($value->id))->data)->unique();
+        }
+        // return $data;
         return view('student.online.programs', $data);
     }
 
@@ -377,16 +382,34 @@ class HomeController extends Controller
         return view('student.online.download_form', $data);
     }
 
-    public function download_form(Request $request, $id)
+    public function download_form(Request $request, $application_id)
     {
         # code...
-        $application = ApplicationForm::find($id);
-        // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
-        $title = ($application->degree->name??'').' APPLICATION FOR '.($application->campus->name??'').' CAMPUS';
-        // return view('student.online.form_dawnloadable', ['application'=>$application, 'title'=>$title]);
-        $pdf = PDF::loadView('student.online.form_dawnloadable', ['application'=>$application, 'title'=>$title]);
-        $filename = $title.' - '.$application->name.'.pdf';
-        return $pdf->download($filename);
+        try{
+            $application = ApplicationForm::find($application_id);
+            $data['campuses'] = json_decode($this->api_service->campuses())->data;
+            $data['application'] = ApplicationForm::find($application_id);
+            $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
+            $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
+            $data['certs'] = json_decode($this->api_service->certificates())->data;
+            
+            $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
+            $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
+            $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
+            $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
+            
+            // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
+            $title = ($application->degree->name??'').' APPLICATION FOR '.($application->campus->name??'').' CAMPUS';
+            $data['title'] = $title;
+
+            if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
+            // return view('student.online.form_dawnloadable', $data);
+            $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
+            $filename = $title.' - '.$application->name.'.pdf';
+            return $pdf->download($filename);
+        }catch(Throwable $th){
+            if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
+        }
     }
 
     public function payment_data ()
@@ -396,6 +419,11 @@ class HomeController extends Controller
         $data['payments'] = ApplicationForm::where('student_id', auth('student')->id())->whereNotNull('momo_number')->whereNotNull('momo_transaction_id')->get();
         if(request('appl') != null){
             $data['appl'] = ApplicationForm::find(request('appl'));
+        }
+        foreach ($data['payments'] as $key => $value) {
+            # code...
+            $data['payments'][$key]->campus = collect(json_decode($this->api_service->campuses())->data)->where('id', $value->campus_id)->first();
+            $data['payments'][$key]->degree = collect(json_decode($this->api_service->degrees())->data)->where('id', $value->degree_id)->first();
         }
         return view('student.online.payment_data', $data);
     }
