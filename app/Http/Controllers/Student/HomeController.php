@@ -190,15 +190,15 @@ class HomeController extends Controller
         $data['step'] = $step;
         // return $this->api_service->campuses();
         $data['campuses'] = json_decode($this->api_service->campuses())->data;
-        if($application_id != null){
-            $data['application'] = ApplicationForm::find($application_id);
-        }else{
+        $application = ApplicationForm::where(['student_id'=>auth('student')->id(), 'year_id'=>Helpers::instance()->getCurrentAccademicYear()])->first();
+        if($application == null){
             $application = new ApplicationForm();
             $application->student_id = auth('student')->id();
             $application->year_id = Helpers::instance()->getCurrentAccademicYear();
             $application->save();
-            $data['application'] = $application;
         }
+        $data['application'] = $application;
+
         if($data['application']->degree_id != null){
             $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
         }
@@ -434,7 +434,7 @@ class HomeController extends Controller
     }
 
     public function submit_application(Request $request){
-        $applications = auth('student')->user()->currentApplicationForms()->where('submitted', 0)->get();
+        $applications = auth('student')->user()->currentApplicationForms()->whereNotNull('transaction_id')->get();
         $data['title'] = "Submit Application";
         $data['applications'] = $applications;
         return view('student.online.submit_form', $data);

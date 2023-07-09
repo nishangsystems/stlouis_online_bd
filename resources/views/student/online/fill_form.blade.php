@@ -13,13 +13,16 @@
                                     <select name="campus_id" class="form-control text-primary"  oninput="setDegreeTypes(event)">
                                         <option>{{ __('text.select_campus') }}</option>
                                         @foreach ($campuses as $campus)
-                                            <option value="{{ $campus->id }}">{{ $campus->name }}</option>  
+                                            <option value="{{ $campus->id }}" {{ $application->campus_id == $campus->id ? 'selected' : '' }}>{{ $campus->name }}</option>  
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-md-6">
                                     <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.word_degree') }}</span></label>
-                                    <select name="degree_id" class="form-control text-primary"  id="degree_types">                                    
+                                    <select name="degree_id" class="form-control text-primary"  id="degree_types">  
+                                        @if($application->degree_id != null)
+                                                                                        
+                                        @endif                                  
                                     </select>
                                 </div>
                             </div>
@@ -82,7 +85,7 @@
                                     <select class="form-control text-primary"  name="nationality" required>
                                         <option></option>
                                         @foreach(config('all_countries.list') as $key=>$value)
-                                            <option value="{{ $value['name'] }}" {{ $application->nationality== $value['name'] ? 'selected' : '' }}>{{ $value['name']}}</option>
+                                            <option value="{{ $value['name'] }}" {{ $application->nationality== $value['name'] ? 'selected' : ($value['name'] == 'Cameroon' ? 'selected' : '') }}>{{ $value['name']}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -187,6 +190,7 @@
                                 <label class="text-secondary  text-capitalize">{{ __('text.first_choice_bilang') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="program_first_choice" required oninput="loadCplevels(event)">
+                                        <option>{{ __('text.select_program') }}</option>
                                         @forelse ($programs as $program)
                                             <option value="{{ $program->id }}" {{ $application->program_first_choice == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
                                         @empty
@@ -199,6 +203,7 @@
                                 <label class=" text-secondary text-capitalize">{{ __('text.second_choice_bilang') }}</label>
                                 <div class="">
                                     <select class="form-control text-primary"  name="program_second_choice" required>
+                                        <option>{{ __('text.select_program') }}</option>
                                         @forelse ($programs as $program)
                                             <option value="{{ $program->id }}" {{ $application->program_second_choice == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
                                         @empty
@@ -884,6 +889,13 @@
 @section('script')
     <script>
 
+
+        $(document).ready(function(){
+            if("{{ $application->degree_id }}" != null){
+                loadCampusDegrees('{{ $application->campus_id }}');
+            }
+        });
+
         // momo preview generator
         let momoPreview = function(event){
             let file = event.target.files[0];
@@ -966,6 +978,10 @@
 
         let setDegreeTypes = function(event){
             let campus = event.target.value;
+            loadCampusDegrees(campus);
+        }
+
+        let loadCampusDegrees = function(campus){
             url = `{{ route('student.campus.degrees', '__CID__') }}`.replace('__CID__', campus);
             $.ajax({
                 method: 'get', url: url,
@@ -973,7 +989,7 @@
                     console.log(data);
                     let html = `<option>{{ __('text.select_degree_type') }}</option>`;
                     data.forEach(element => {
-                        html+=`<option value="${element.id}">${element.deg_name}</option>`
+                        html+=`<option value="${element.id}" ${ '{{ $application->degree_id }}' == element.id ? 'selected' : '' } >${element.deg_name}</option>`;
                     });
                     $('#degree_types').html(html);
                 }
