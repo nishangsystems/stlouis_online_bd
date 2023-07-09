@@ -44,6 +44,7 @@ use Throwable;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Exception;
 use GuzzleHttp\Exception\ConnectException;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Http;
 
@@ -281,8 +282,9 @@ class HomeController extends Controller
             case 7:
                 # code...
                 // return $request->all();
+                // momo-number validated with country code for cameroon: 237
                 $validity = Validator::make($request->all(), [
-                    "momo_number"=> "required", "momo_transaction_id"=> "required", "amount"=> "required|numeric",
+                    "momo_number"=> "required|size:9", "amount"=> "required|numeric|min:1",
                     // "momo_screenshot"=> "file"
                 ]);
                 break;
@@ -292,6 +294,7 @@ class HomeController extends Controller
         if($validity->fails()){
             return back()->with('error', $validity->errors()->first());
         }
+        // return $request->all();
 
         // persist data
         $data = [];
@@ -319,15 +322,37 @@ class HomeController extends Controller
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }
         elseif($step ==7){
-            if($request->has('momo_shot')){
-                $file = $request->file('momo_shot');
-                $fname = '__momo_'.random_int(1000000, 9999999).$file->getClientOriginalExtension();
-                $file->storeAs('momo_shots', $fname, ['disk'=>'public_uploads']);
-                $path = asset('uploads/momo_shots').'/'.$fname;
-                $data['momo_screenshot'] = $path;
+            
+            // MAKE API CALL TO PERFORM PAYMENT OF APPLICATION FEE
+            // check if token exist and hasn't expired or get new token otherwise
+            if(cache('tranzak_api_token') == null or Carbon::parse(cache('tranzak_api_token_expire'))->isAfter(now())){
+                // get and cache different token
+                $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>config('tranzak.app_id'), 'appKey'=>config('tranzak.api_key')]);
+                if($response->status() == 200){
+                    // return json_decode($response->body())->data;
+                    // return Carbon::createFromTimestamp(time() + json_decode($response->body())->data->expiresIn);
+                    // cache token and token expirationtot session
+                    cache(['tranzak_api_token'=> json_decode($response->body())->data->token]);
+                    cache(['tranzak_api_token_expire'=>Carbon::createFromTimestamp(time() + json_decode($response->body())->data->expiresIn)]);
+                }
             }
-            $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
-            $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
+            // Assumed there is a valid api token
+            // Moving the performing the payment request proper
+            $headers = ['Authorization'=>'Bearer '.cache('tranzak_api_token')];
+            $request_data = ['mobileWalletNumber'=>'237'.$request->momo_number, 'mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST. LOUIS HIGHER INSTITUTE"];
+            $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
+            if($_response->status() == 200){
+                // return json_decode($_response->body())->data;
+                // save transaction and track it status
+
+                session()->put('processing_tranzak_transaction_details', json_encode(json_decode($_response->body())->data));
+                // return $this->pending_payment(array_push((), ['application_id']));
+                return redirect()->to(route('student.application.payment.processing', $application_id))->with(['data'=>json_decode($_response->body())->data]);
+            }
+
+            // END OF PAYMENT PROCESS
+            // $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
+            // $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }else{
             $data = $request->all();
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
@@ -353,6 +378,59 @@ class HomeController extends Controller
         }
         $step = $request->step;
         return redirect(route('student.application.start', [$step, $application_id]));
+    }
+
+    public function pending_payment(Request $request, $application_id)
+    {
+        # code...
+        $data['title'] = "Processing Transaction";
+        $data['form_id'] = $application_id;
+        $data['transaction'] = json_decode(session()->get('processing_tranzak_transaction_details'));
+        // return $data;
+        return view('student.online.processing_payment', $data);
+        
+    }
+
+    public function pending_complete(Request $request, $appl_id)
+    {
+        # code...
+        $transaction_status = json_decode($request->qstring);
+        // return $transaction_status;
+        switch ($transaction_status->status) {
+            case 'SUCCESSFUL':
+                # code...
+                // save transaction and update application_form
+                $transaction = ['request_id'=>$transaction_status->requestId, 'amount'=>$transaction_status->amount, 'currency_code'=>$transaction_status->currencyCode, 'purpose'=>"application fee", 'mobile_wallet_number'=>$transaction_status->mobileWalletNumber, 'transaction_ref'=>$transaction_status->mchTransactionRef, 'app_id'=>$transaction_status->appId, 'transaction_id'=>$transaction_status->transactionId, 'transaction_time'=>$transaction_status->transactionTime, 'payment_method'=>$transaction_status->payer->paymentMethod, 'payer_user_id'=>$transaction_status->payer->userId, 'payer_name'=>$transaction_status->payer->name, 'payer_account_id'=>$transaction_status->payer->accountId, 'merchant_fee'=>$transaction_status->merchant->fee, 'merchant_account_id'=>$transaction_status->merchant->accountId, 'net_amount_recieved'=>$transaction_status->merchant->netAmountReceived];
+                $transaction_instance = new Transaction($transaction);
+                $transaction_instance->save();
+
+                $appl = ApplicationForm::find($appl_id);
+                $appl->transaction_id = $transaction_instance->id;
+                $appl->save();
+                return redirect(route('student.home'))->with('success', "Payment successful.");
+                break;
+            
+            case 'CANCELLED':
+                # code...
+                // notify user
+                return redirect(route('student.home'))->with('message', 'Payment Not Made. The request was cancelled.');
+                break;
+            
+            case 'FAILED':
+                # code...
+                return redirect(route('student.home'))->with('error', 'Payment failed.');
+                break;
+            
+            case 'REVERSED':
+                # code...
+                return redirect(route('student.home'))->with('message', 'Payment failed. The request was reversed.');
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+        return redirect(route('student.home'))->with('error', 'Payment failed. Unrecognised transaction status.');
     }
 
     public function submit_application(Request $request){

@@ -18,18 +18,15 @@ class StudentResourceMain extends JsonResource
     public function toArray($request)
     {
         $stud = Students::find($this->id);
-        $class_name = ProgramLevel::find($this->class_id)->name();
-        $campus_name = $stud->campus->name;
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'matric' => $this->matric,
-            'active'=>$this->active,
+            'email' => $this->email,
+            'phone'=>$this->phone,
             'show_link' => route('admin.student.show',[$this->id]),
             'edit_link' => route('admin.student.edit', [$this->id]),
             'password_reset' => route('admin.student.password.reset',[$this->id]),
-            'class_name' => $class_name,
-            'campus_name' => $campus_name
+            
         ];
     }
 }

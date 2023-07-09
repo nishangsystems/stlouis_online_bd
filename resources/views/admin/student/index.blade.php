@@ -29,11 +29,9 @@
                     <tr class="text-capitalize">
                         <th>#</th>
                         <th>{{__('text.word_name')}}</th>
-                        <th>{{__('text.word_matricule')}}</th>
-                        <th>{{__('text.word_campus')}}</th>
-                        <th>{{__('text.word_class')}}</th>
+                        <th>{{__('text.word_email')}}</th>
+                        <th>{{__('text.word_phone')}}</th>
                         <th></th>
-
                     </tr>
                 </thead>
                 <tbody id="table_body">
@@ -70,9 +68,8 @@
                     <tr>
                         <td>${k++}</td>
                         <td>${element.name}</td>
-                        <td>${element.matric}</td>
-                        <td>${element.campus_name}</td>
-                        <td>${element.class_name}</td>
+                        <td>${element.email}</td>
+                        <td>${element.phone}</td>
                         <td class="d-flex justify-content-end  align-items-start text-capitalize">
                             <a class="btn btn-sm btn-primary m-1" href="${element.show_link}"><i class="fa fa-info-circle"> {{__('text.word_view')}}</i></a> |
                             <a class="btn btn-sm btn-success m-1" href="${element.edit_link}"><i class="fa fa-edit"> {{__('text.word_edit')}}</i></a>|

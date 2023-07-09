@@ -129,7 +129,7 @@
                     </a>
 
                     <ul class="dropdown-menu">
-                        @foreach(\App\Models\Batch::join('student_classes', ['student_classes.year_id'=>'batches.id'])->where('student_id', Auth('student')->user()->id)->orderBy('name')->get() as $batch)
+                        @foreach(\App\Models\Batch::orderBy('name')->get() as $batch)
                             <li>
                                 <a href="{{ route('mode',$batch->id) }}">{{$batch->name}}</a>
                             </li>

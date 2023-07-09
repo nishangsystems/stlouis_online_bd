@@ -55,7 +55,7 @@ class StudentController extends Controller
         $data['school_units'] = DB::table('school_units')->where('parent_id', 0)->get()->toArray();
         $data['years'] = $this->years;
         // $data['students'] = DB::table('students')->whereYear('students.created_at', $curent_year)->get()->toArray();
-        $data['students'] = Students::join('student_classes', 'student_classes.student_id', '=', 'students.id')->get(['students.*', 'student_classes.class_id']);
+        $data['students'] = Students::all();
         return view('admin.student.index')->with($data);
     }
     public function getStudentsPerClass(Request $request)

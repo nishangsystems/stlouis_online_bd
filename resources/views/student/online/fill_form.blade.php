@@ -776,15 +776,15 @@
                                     <div class="py-4 text-info text-center ">You are about to make a payment of 5000 CFA for application fee
                                     </div>
                                     <div class="py-3">
-                                        <label class="text-secondary text-capitalize">{{ __('text.momo_number_used_in_payment') }}</label>
+                                        <label class="text-secondary text-capitalize">{{ __('text.momo_number_used_in_payment') }} (<span class="text-danger">{{ __('text.without_country_code') }}</span>)</label>
                                         <div class="">
                                             <input type="tel" class="form-control text-primary"  name="momo_number" value="{{ $application->momo_number }}">
                                         </div>
                                     </div>
                                     <div class="py-3">
-                                        <label class="text-secondary text-capitalize">{{ __('text.word_amount') }} <span class="text-dabger">{{ __('text.with_country_code') }}</span></label>
+                                        <label class="text-secondary text-capitalize">{{ __('text.word_amount') }} </label>
                                         <div class="">
-                                            <input readonly type="text" class="form-control text-primary"  name="amount" value="5000">
+                                            <input readonly type="text" class="form-control text-primary"  name="amount" value="{{ $degree->amount }}">
                                         </div>
                                     </div>
                                     <div class="py-5 d-flex justify-content-center">

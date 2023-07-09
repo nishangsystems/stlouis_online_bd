@@ -15,7 +15,7 @@ class ApplicationForm extends Model
         'program_first_choice', 'program_second_choice', 'first_spoken_language', 'first_written_language', 'second_spoken_language', 
         'second_written_language', 'has_health_problem', 'has_health_allergy', 'has_disability', 'health_problem', 'health_allergy', 'disability',
         'awaiting_results', 'previous_training', 'employments', 'fee_payer', 'fee_payer_name', 'fee_payer_residence',
-        'fee_payer_tel', 'fee_payer_occupation', 'candidate_declaration', 'parent_declaration', 'submitted', 'campus_id', 'degree_id'
+        'fee_payer_tel', 'fee_payer_occupation', 'candidate_declaration', 'parent_declaration', 'campus_id', 'degree_id', 'transaction_id'
     ];
 
     public function student()
@@ -24,17 +24,11 @@ class ApplicationForm extends Model
         return $this->belongsTo(Students::class, 'student_id');
     }
 
-    // public function programFirstChoice()
-    // {
-    //     # code...
-    //     return $this->belongsTo(SchoolUnits::class, 'program_first_choice');
-    // }
-
-    // public function programSecondChoice()
-    // {
-    //     # code...
-    //     return $this->belongsTo(SchoolUnits::class, 'program_second_choice');
-    // }
+    public function transaction()
+    {
+        # code...
+        return $this->belongsTo(Transaction::class, 'transaction_id');
+    }
 
     public function year()
     {
