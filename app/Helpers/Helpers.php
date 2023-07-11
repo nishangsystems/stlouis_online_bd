@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\Batch;
 use App\Models\Charge;
+use App\Models\Config;
 use App\Models\File;
 use App\Models\PlatformCharge;
 use App\Models\ProgramLevel;
@@ -370,6 +371,13 @@ class Helpers
     public function getApiRoot(){
         $api_root = File::where('name', 'api_root')->first();
         return $api_root == null ? null : $api_root->path;
+    }
+
+    public function application_open()
+    {
+        # code...
+        $config = Config::where('year_id', Self::getCurrentAccademicYear())->first();
+        return ($config != null) and (now()->isBetween(Carbon::parse($config->start_date), Carbon::parse($config->end_date)));
     }
 
 }
