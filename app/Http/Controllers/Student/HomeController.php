@@ -189,6 +189,10 @@ class HomeController extends Controller
     {
         try {
 
+            if(auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->count() > 0){
+                return back()->with('error', "You are allowed to submit only one application form per year");
+            }
+
             // check if application is open now
             if(!(Helpers::instance()->application_open())){
                 return redirect(route('student.home'))->with('error', 'Application closed for '.Batch::find(Config::all()->last()->year_id)->name);
@@ -510,6 +514,7 @@ class HomeController extends Controller
     {
         # code...
         $data['title'] = "Download Application Form";
+        $data['_this'] = $this;
         $data['applications'] = auth('student')->user()->applicationForms->whereNotNull('transaction_id');
         return view('student.online.download_form', $data);
     }

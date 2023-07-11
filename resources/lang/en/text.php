@@ -935,4 +935,7 @@ return [
     'word_reports'=>'reports',
     'word_certificate'=>'certificate',
     'stlo_portal'=>'st. louis online application portal',
+    'word_admit'=>'admit',
+    'program_first_choice'=>"program: 1st choice",
+    'program_second_choice'=>"program: 2nd choice",
 ];

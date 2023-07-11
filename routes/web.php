@@ -132,13 +132,15 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::post('charges/set', 'Admin\HomeController@save_charges')->name('charges.save');
 
     // APPLICATION PLATFORM ROUTES ONLY
-    Route::get('admission/campus/degrees/{cid?}', [ProgramController::class, 'config_degree'])->name('admission.campus.degrees');
+    Route::get('admission/campus/degrees/{cid?}', [ProgramController::class, 'config_degrees'])->name('admission.campus.degrees');
     Route::post('admission/campus/degrees/{cid?}', [ProgramController::class, 'set_config_degrees']);
     Route::get('admission/open/{id?}', [ProgramController::class, 'open_admission'])->name('admission.open');
     Route::post('admission/open/{id?}', [ProgramController::class, 'set_open_admission']);
     Route::get('admission/programs/{cid?}', [ProgramController::class, 'config_programs'])->name('admission.programs.config');
     Route::post('admission/programs/{cid?}', [ProgramController::class, 'set_config_programs']);
-
+    Route::get('admission/admit/{id}', [ProgramController::class, 'admit_student'])->name('admission.admit');
+    Route::get('admission/show/{id}', [ProgramController::class, 'application_details'])->name('admission.show');
+    Route::get('applications', [ProgramController::class, 'applications'])->name('applications.all');
     Route::prefix('reports')->name('reports.')->group(function(){
         Route::get('degree/{degree?}', [ProgramController::class, 'applicants_report_by_degree'])->name('applicants.by_degree');
         Route::get('program/{program?}', [ProgramController::class, 'applicants_report_by_program'])->name('applicants.by_program');

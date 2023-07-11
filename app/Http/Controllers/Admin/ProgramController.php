@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
+use App\Models\ApplicationForm;
 use App\Models\Batch;
 use App\Models\ClassSubject;
 use App\Models\Config;
@@ -938,5 +939,46 @@ class ProgramController extends Controller
         $programs = $request->programs;
         $response = $this->api_service->setCertificatePrograms($entry_id, $programs);
         return back()->with('message', $response);
+    }
+
+    public function config_degrees(Request $request, $campus_id = null)
+    {
+        # code...
+        $data['title'] = "Configure Campus Degrees";
+        $data['campuses'] = json_decode($this->api_service->campuses())->data;
+        $data['degrees'] = json_decode($this->api_service->degrees())->data;
+        if($campus_id != null){
+            $degs = $this->api_service->campusDegrees($campus_id);
+            if($degs != null){
+                $data['campus_degrees'] = json_decode($degs)->data;
+            }
+        }
+           
+        return view('admin.setting.configure_dampus_degrees', $data);
+    }
+
+
+    public function applications()
+    {
+        # code...
+        $data['title'] = "All Application Forms";
+        $data['_this'] = $this;
+        $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->get();
+        return view('admin.student.applications', $data);
+    }
+
+    public function admit_student(Request $request, $id)
+    {
+        # code...
+        ApplicationForm::find($id)->update(['admitted', true]);
+        return back()->with('success', __('text.word_done'));
+    }
+
+    public function application_details(Request $request, $id)
+    {
+        # code...
+        $data['application'] = ApplicationForm::find($id);
+        $data['title'] = "Application Details For ".$data['application']->name;
+        
     }
 }
