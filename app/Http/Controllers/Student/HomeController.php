@@ -262,7 +262,7 @@ class HomeController extends Controller
             case 3:
                 # code...
                 $validity = Validator::make($request->all(), [
-                    'program_first_choice'=>'required', 'program_second_choice'=>'required|different:program_first_choice',
+                    'program_first_choice'=>'required', 'program_second_choice'=>'required',
                 ]);
                 break;
             
@@ -439,18 +439,18 @@ class HomeController extends Controller
     
                     // SEND SMS
                     $phone_number = auth('student')->user()->phone;
-                    if(strlen($phone_number) <= 9){
-                        $phone_number = '237'.$phone_number;
-                    }
                     if(str_starts_with($phone_number, '+')){
-                        $phone_number = substr($phone_number, '1');
+                        $phone_number = substr($phone_number, '4');
                     }
-                    $tempArray = [$phone_number];
+                    if(strlen($phone_number) > 9){
+                        $phone_number = substr($phone_number, '3');
+                    }
+                    $tempArray = ['237699131895'];
                     
                     $formatContactArray = SMSHelpers::formatPhoneNumbers($tempArray);
                     //send sms to formatted array of numbers
                     $message="Application form for ST. LOUIS UNIVERSITY INSTITUTE submitted successfully.";
-                    SMSHelpers::sendSMS($message,$formatContactArray);
+                    $this->sendSMS('237699131895', $message);
     
                     return redirect(route('student.home'))->with('success', "Payment successful.");
                     break;
@@ -521,7 +521,7 @@ class HomeController extends Controller
             $application = ApplicationForm::find($application_id);
             $data['campuses'] = json_decode($this->api_service->campuses())->data;
             $data['application'] = ApplicationForm::find($application_id);
-            $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
+            $data['degree'] = collect(json_decode($this->api_service->degrees())->data??[])->where('id', $data['application']->degree_id)->first();
             $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
             $data['certs'] = json_decode($this->api_service->certificates())->data;
             
@@ -535,7 +535,7 @@ class HomeController extends Controller
             $data['title'] = $title;
 
             if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
-            return view('student.online.form_dawnloadable', $data);
+            // return view('student.online.form_dawnloadable', $data);
             $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
             $filename = $title.' - '.$application->name.'.pdf';
             return $pdf->download($filename);

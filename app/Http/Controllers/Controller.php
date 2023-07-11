@@ -23,6 +23,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -266,5 +267,14 @@ class Controller extends BaseController
     {
         # code...
         return json_decode($this->api_service->campusProgramLevels($campus_id, $program_id))->data;
+    }
+
+
+    public function sendSMS($phone_number, $message)
+    {
+        # code...
+        $query = ['username'=>'nishang', 'password'=>'Nish@237', 'type'=>0, 'dlr'=>1, 'destination'=>$phone_number, 'source'=>'ST. LOUIS UNIVERSITY INSTITUTE', 'message'=>$message];
+        $url = "http://api.rmlconnect.net:8080/bulksms/bulksms";
+        Http::get($url, $query);
     }
 }

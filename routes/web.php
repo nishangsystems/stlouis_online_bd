@@ -132,6 +132,8 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::post('charges/set', 'Admin\HomeController@save_charges')->name('charges.save');
 
     // APPLICATION PLATFORM ROUTES ONLY
+    Route::get('admission/campus/degrees/{cid?}', [ProgramController::class, 'config_degree'])->name('admission.campus.degrees');
+    Route::post('admission/campus/degrees/{cid?}', [ProgramController::class, 'set_config_degrees']);
     Route::get('admission/open/{id?}', [ProgramController::class, 'open_admission'])->name('admission.open');
     Route::post('admission/open/{id?}', [ProgramController::class, 'set_open_admission']);
     Route::get('admission/programs/{cid?}', [ProgramController::class, 'config_programs'])->name('admission.programs.config');

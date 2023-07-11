@@ -263,6 +263,14 @@
 
                         <b class="arrow"></b>
                     </li>
+                    <li>
+                        <a href="{{route('admin.admission.campus.degrees')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.configure_programs')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
                 </ul>
             </li>
             <li>

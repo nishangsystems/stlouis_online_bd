@@ -758,7 +758,6 @@
             @case(6)
                 <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [7, $application->id]) }}">
                     @csrf
-                    <input type="hidden" name="submitted", value="1">
                     <div class="py-2 row bg-light border-top shadow">
                         <!-- <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;"> {{ __('text.how_to_apply_for_for_a_program_bilang') }}</h4>
                         <ul class="col-sm-11 col-md-11 col-lg-11 my-5" style="list-style-type:upper-roman;">
@@ -777,7 +776,7 @@
                         </ul> -->
                         <div class="col-sm-12 col-md-12 col-lg-12 d-flex">
                             <div class="col-sm-10 col-md-8 col-lg-6 rounded bg-white py-5 my-3 shadow mx-auto">
-                                <div class="py-4 text-info text-center ">You are about to make a payment of 5000 CFA for application fee
+                                <div class="py-4 text-info text-center ">You are about to make a payment of {{ degree->amount }} CFA for application fee
                                 </div>
                                 <div class="py-3">
                                     <label class="text-secondary text-capitalize">{{ __('text.momo_number_used_in_payment') }} (<span class="text-danger">{{ __('text.without_country_code') }}</span>)</label>

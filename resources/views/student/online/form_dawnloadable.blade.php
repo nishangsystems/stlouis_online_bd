@@ -129,61 +129,63 @@
             {{-- pair end --}}
             
         </div>
-                    
-        <div class="py-5 mx-5">
-            <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">6</span>{{ __('text.previous_higher_education_training_bilang') }}</h4>
-            <div class="row py-2">
-                <table class="border border-black text-black">
-                    <thead>
-                        <tr class="text-capitalize">
-                            <th class="text-center border border-black" style="border: 1px solid black">{{ __('text.word_school_bilang') }}</th>
-                            <th class="text-center border border-black" style="border: 1px solid black">{{ __('text.word_year_bilang') }}</th>
-                            <th class="text-center border border-black" style="border: 1px solid black">{{ __('text.word_course_bilang') }}</th>
-                            <th class="text-center border border-black" style="border: 1px solid black">{{ __('text.word_certificate_bilang') }}</th>
-                        <tr>
-                    </thead>
-                    <tbody id="previous_trainings">
-                        @foreach (json_decode($application->previous_training) as $key=>$training)
-                            <tr class="text-capitalize" style="font-weight: 600; font-style: italic;">
-                                <td class="border border-black" style="border: 1px solid black">{{ $training->school }}</td>
-                                <td class="border border-black" style="border: 1px solid black">{{ $training->year }}</td>
-                                <td class="border border-black" style="border: 1px solid black">{{ $training->course }}</td>
-                                <td class="border border-black" style="border: 1px solid black">{{ $training->certificate }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-                    
-        <div class="py-5 mx-5">
-            <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">7</span>{{ __('text.employment_history_bilang') }}</h4>
-            <div class="row py-2">
-                <table class="border">
-                    <thead>
-                        <tr class="text-capitalize">
-                            <th class="text-center border" style="border: 1px solid black">{{ __('text.employer_name_and_address_bilang') }}</th>
-                            <th class="text-center border" style="border: 1px solid black">{{ __('text.post_held_bilang') }}</th>
-                            <th class="text-center border" style="border: 1px solid black">{{ __('text.word_from_bilang') }}</th>
-                            <th class="text-center border" style="border: 1px solid black">{{ __('text.word_to_bilang') }}</th>
-                            <th class="text-center border" style="border: 1px solid black">{{ __('text.full_or_parttime_bilang') }}</th>
-                        <tr>
-                    </thead>
-                    <tbody id="employments">
-                        @foreach (json_decode($application->employments) as $key=>$emp)
+
+        @if($application == 'MASTER DEGREE PROGRAMS')
+            <div class="py-5 mx-5">
+                <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">6</span>{{ __('text.previous_higher_education_training_bilang') }}</h4>
+                <div class="row py-2">
+                    <table class="border border-black text-black">
+                        <thead>
                             <tr class="text-capitalize">
-                                <td class="border" style="border: 1px solid black">{{ $emp->employer }}</td>
-                                <td class="border" style="border: 1px solid black">{{ $emp->post }}</td>
-                                <td class="border" style="border: 1px solid black">{{ $emp->start }}</td>
-                                <td class="border" style="border: 1px solid black">{{ $emp->end }}</td>
-                                <td class="border" style="border: 1px solid black">{{ $emp->type }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                <th class="text-center border border-black" style="border: 1px solid black">{{ __('text.word_school_bilang') }}</th>
+                                <th class="text-center border border-black" style="border: 1px solid black">{{ __('text.word_year_bilang') }}</th>
+                                <th class="text-center border border-black" style="border: 1px solid black">{{ __('text.word_course_bilang') }}</th>
+                                <th class="text-center border border-black" style="border: 1px solid black">{{ __('text.word_certificate_bilang') }}</th>
+                            <tr>
+                        </thead>
+                        <tbody id="previous_trainings">
+                            @foreach (json_decode($application->previous_training) as $key=>$training)
+                                <tr class="text-capitalize" style="font-weight: 600; font-style: italic;">
+                                    <td class="border border-black" style="border: 1px solid black">{{ $training->school }}</td>
+                                    <td class="border border-black" style="border: 1px solid black">{{ $training->year }}</td>
+                                    <td class="border border-black" style="border: 1px solid black">{{ $training->course }}</td>
+                                    <td class="border border-black" style="border: 1px solid black">{{ $training->certificate }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            
-        </div>
+                        
+            <div class="py-5 mx-5">
+                <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">7</span>{{ __('text.employment_history_bilang') }}</h4>
+                <div class="row py-2">
+                    <table class="border">
+                        <thead>
+                            <tr class="text-capitalize">
+                                <th class="text-center border" style="border: 1px solid black">{{ __('text.employer_name_and_address_bilang') }}</th>
+                                <th class="text-center border" style="border: 1px solid black">{{ __('text.post_held_bilang') }}</th>
+                                <th class="text-center border" style="border: 1px solid black">{{ __('text.word_from_bilang') }}</th>
+                                <th class="text-center border" style="border: 1px solid black">{{ __('text.word_to_bilang') }}</th>
+                                <th class="text-center border" style="border: 1px solid black">{{ __('text.full_or_parttime_bilang') }}</th>
+                            <tr>
+                        </thead>
+                        <tbody id="employments">
+                            @foreach (json_decode($application->employments) as $key=>$emp)
+                                <tr class="text-capitalize">
+                                    <td class="border" style="border: 1px solid black">{{ $emp->employer }}</td>
+                                    <td class="border" style="border: 1px solid black">{{ $emp->post }}</td>
+                                    <td class="border" style="border: 1px solid black">{{ $emp->start }}</td>
+                                    <td class="border" style="border: 1px solid black">{{ $emp->end }}</td>
+                                    <td class="border" style="border: 1px solid black">{{ $emp->type }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>      
+        @endif       
                     
         <div class="py-5 mx-5">
             <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">8</span>{{ __('text.financial_obligation_bilang') }}</h4>
