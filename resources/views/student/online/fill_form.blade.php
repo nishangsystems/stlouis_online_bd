@@ -776,7 +776,7 @@
                         </ul> -->
                         <div class="col-sm-12 col-md-12 col-lg-12 d-flex">
                             <div class="col-sm-10 col-md-8 col-lg-6 rounded bg-white py-5 my-3 shadow mx-auto">
-                                <div class="py-4 text-info text-center ">You are about to make a payment of {{ degree->amount }} CFA for application fee
+                                <div class="py-4 text-info text-center ">You are about to make a payment of {{ $degree->amount }} CFA for application fee
                                 </div>
                                 <div class="py-3">
                                     <label class="text-secondary text-capitalize">{{ __('text.momo_number_used_in_payment') }} (<span class="text-danger">{{ __('text.without_country_code') }}</span>)</label>
@@ -796,24 +796,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="py-2">
-                            <label class="text-secondary text-capitalize">{{ __('text.mom_transaction_id_bilang') }}</label>
-                            <div class="">
-                                <input type="text" class="form-control text-primary"  name="momo_transaction_id" value="{{ $application->momo_transaction_id }}">
-                            </div>
-                        </div> -->
-                        <!-- <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary text-capitalize">{{ __('text.screenshot_of_transaction_bilang') }}</label>
-                            <div class="">
-                                <input type="file" class="form-control text-primary" accept="image/*"  name="momo_shot" oninput="momoPreview(event)">
-                            </div>
-                        </div> -->
-                        <!-- <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary text-capitalize">{{ __('text.screenshot_of_transaction_bilang') }}</label>
-                            <div class="">
-                                <img src="{{ $application->momo_screenshot }}" width="100" height="100" class="img img-rounded" id="momo_image_preview">
-                            </div>
-                        </div> -->
+                        
                         
                     </div>
                 </form>
