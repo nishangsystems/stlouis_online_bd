@@ -1,65 +1,65 @@
 @extends('student.printable')
 @section('section')
-    <div class="py-3">
+    <div class="py-1">
         
-        <div class="py-5 mx-5">
-            <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">1</span>{{ __('text.personal_details_bilang') }}</h4>
+        <div class="py-2 mx-5">
+            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">1</span>{{ __('text.personal_details_bilang') }}</h4>
             <div class="row py-2">
-                <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.word_gender_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->gender }}</span>
+                <span class="d-block mr-5 text-secondary col-md-4  text-capitalize">{{ __('text.word_gender_bilang') }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->gender }}</span>
             </div>
             <div class="row py-2">
-                <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.word_surname_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ explode(" ", $application->name)[0] }}</span>
+                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_surname_bilang') }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ explode(" ", $application->name)[0] }}</span>
             </div>
             <div class="row py-2">
-                <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.first_name_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->name }}</span>
+                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.first_name_bilang') }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->name }}</span>
             </div>
             <div class="row py-2">
-                <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.date_of_birth_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->dob }}</span>
+                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.date_of_birth_bilang') }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->dob }}</span>
             </div>
             <div class="row py-2">
-                <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.place_of_birth_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->pob }}</span>
+                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.place_of_birth_bilang') }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->pob }}</span>
             </div>
             <div class="row py-2">
-                <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.word_region_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->_region->region }}</span>
+                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_region_bilang') }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->_region->region }}</span>
             </div>
             <div class="row py-2">
-                <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.word_division_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->_division->name }}</span>
+                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_division_bilang') }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->_division->name }}</span>
             </div>
             <div class="row py-2">
-                <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.word_residence_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->residence }}</span>
+                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_residence_bilang') }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->residence }}</span>
             </div>
             <div class="row py-2">
-                <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.telephone_number_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->phone }}</span>
+                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.telephone_number_bilang') }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->phone }}</span>
             </div>
             <div class="row py-2">
-                <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.word_email_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $application->email }}</span>
-            </div>
-        </div>
-                    
-        <div class="py-5 mx-5">
-            <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">2</span>{{ __('text.course_envisaged_bilang') }}</h4>
-            <div class="row py-2">
-                <span class="d-block mr-5 text-secondary  text-capitalize">{{ __('text.first_choice_bilang') }}</span>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $program1->name }}</span>
-            </div>
-            <div class="row py-2">
-                <label class="col-sm-12 col-md-3 text-secondary text-capitalize">{{ __('text.second_choice_bilang') }}</label>
-                <span class="d-block text-uppercase text-black" style="font-weight: 600; font-style: italic;">{{ $program2->name }}</span>
+                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_email_bilang') }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->email }}</span>
             </div>
         </div>
                     
-        <div class="py-5 mx-5">
-            <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">3</span>{{ __('text.language_proficiency_bilang') }}</h4>
+        <div class="py-2 mx-5">
+            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">2</span>{{ __('text.course_envisaged_bilang') }}</h4>
+            <div class="row py-2">
+                <span class="d-block mr-5 text-secondary  text-capitalize col-md-4">{{ __('text.first_choice_bilang') }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $program1->name }}</span>
+            </div>
+            <div class="row py-2">
+                <span class="d-block mr-5 text-secondary  text-capitalize col-md-4">{{ __('text.second_choice_bilang') }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $program2->name }}</span>
+            </div>
+        </div>
+                    
+        <div class="py-2 mx-5">
+            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">3</span>{{ __('text.language_proficiency_bilang') }}</h4>
             <div class="row py-2">
                 <table class="border border-dark">
                     <thead><tr>
@@ -84,8 +84,8 @@
             </div>
         </div>
                     
-        <div class="py-5 mx-5">
-            <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">4</span>{{ __('text.medical_history_bilang') }}</h4>
+        <div class="py-2 mx-5">
+            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">4</span>{{ __('text.medical_history_bilang') }}</h4>
             {{-- pair start --}}
             <div class="row py-2">
                 <span class="text-secondary text-capitalize mr-5">{{ __('text.any_known_health_problem_bilang') }}</span>
@@ -119,8 +119,8 @@
             
         </div>
                     
-        <div class="py-5 mx-5">
-            <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">5</span>{{ __('text.entry_qualification_bilang') }}</h4>
+        <div class="py-2 mx-5">
+            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">5</span>{{ __('text.entry_qualification_bilang') }}</h4>
             {{-- pair start --}}
             <div class="row py-2">
                 <span class="text-secondary  text-capitalize mr-5">{{ __('text.awaiting_results_bilang') }}</span>
@@ -131,8 +131,8 @@
         </div>
 
         @if($application == 'MASTER DEGREE PROGRAMS')
-            <div class="py-5 mx-5">
-                <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">6</span>{{ __('text.previous_higher_education_training_bilang') }}</h4>
+            <div class="py-2 mx-5">
+                <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">6</span>{{ __('text.previous_higher_education_training_bilang') }}</h4>
                 <div class="row py-2">
                     <table class="border border-black text-black">
                         <thead>
@@ -157,8 +157,8 @@
                 </div>
             </div>
                         
-            <div class="py-5 mx-5">
-                <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">7</span>{{ __('text.employment_history_bilang') }}</h4>
+            <div class="py-2 mx-5">
+                <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">7</span>{{ __('text.employment_history_bilang') }}</h4>
                 <div class="row py-2">
                     <table class="border">
                         <thead>
@@ -187,8 +187,8 @@
             </div>      
         @endif       
                     
-        <div class="py-5 mx-5">
-            <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">8</span>{{ __('text.financial_obligation_bilang') }}</h4>
+        <div class="py-2 mx-5">
+            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">8</span>{{ __('text.financial_obligation_bilang') }}</h4>
             {{-- pair start --}}
             <div class="row py-2">
                 <span class="text-secondary  text-capitalize mr-5">{{ __('text.who_is_responsible_for_your_fee_bilang') }}</span>
@@ -215,8 +215,8 @@
             
         </div>           
     
-        <div class="py-5 mx-5">
-            <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">9</span>{{ __('text.declaration_by_candidate_bilang') }}</h4>
+        <div class="py-2 mx-5">
+            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">9</span>{{ __('text.declaration_by_candidate_bilang') }}</h4>
             {{-- pair start --}}
             <div class="py-2" style="font-size: large;">
                 <p class="py-2">{!! __('text.student_application_confirmation', ['name'=>$application->first_name .' '. $application->surname, 'school'=>'ST LOUIS UNIVERSITY INSTITUTE, DOUALA.']) !!}</p>
@@ -226,8 +226,8 @@
             
         </div>
 
-        <div class="py-5 mx-5">
-            <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">10</span>{{ __('text.declaration_by_parent_or_guardian_bilang') }}</h4>
+        <div class="py-2 mx-5">
+            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">10</span>{{ __('text.declaration_by_parent_or_guardian_bilang') }}</h4>
             {{--  pair start --}}
             <div class="py-2" style="font-size: large;">
                 <p class="py-2">{!! __('text.parent_application_confirmation', ['name'=>$application->fee_payer_name]) !!}</p>
@@ -242,7 +242,7 @@
             
         </div>
 
-        <div class="py-5 mx-5">
+        <div class="py-2 mx-5">
             {{-- <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;">{{ __('text.admission_information') }}</h4> --}}
             <div class=" py-2 text-dark" style="font-size: 1.5rem;">
                 <div class="row"><b class="text-primary d-block py-2 col-sm-12">B. BONAMOUSSADI CAMPUS</b></div>

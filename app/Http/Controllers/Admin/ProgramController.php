@@ -981,4 +981,42 @@ class ProgramController extends Controller
         $data['title'] = "Application Details For ".$data['application']->name;
         
     }
+
+
+
+    
+    public function print_application_form(Request $request, $id)
+    {
+        # code...
+    }
+
+    public function edit_application_form(Request $request, $id)
+    {
+        # code...
+    }
+
+    public function uncompleted_distant_application_form(Request $request, $id)
+    {
+        # code...
+    }
+
+    public function distant_application_form(Request $request, $id)
+    {
+        # code...
+    }
+
+    public function application_letter(Request $request, $id)
+    {
+        # code...
+    }
+
+    public function admit_application_form(Request $request, $id)
+    {
+        # code...
+    }
+
+    public function application_form_change_program(Request $request, $id)
+    {
+        # code...
+    }
 }

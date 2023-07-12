@@ -141,6 +141,15 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::get('admission/admit/{id}', [ProgramController::class, 'admit_student'])->name('admission.admit');
     Route::get('admission/show/{id}', [ProgramController::class, 'application_details'])->name('admission.show');
     Route::get('applications', [ProgramController::class, 'applications'])->name('applications.all');
+    Route::name('applications.')->prefix('applications')->group(function(){
+        Route::get('print_form/{id?}', [ProgramController::class, 'print_application_form'])->name('print_form');
+        Route::get('edit/{id?}', [ProgramController::class, 'edit_application_form'])->name('update');
+        Route::get('admit/{id?}', [ProgramController::class, 'admit_application_form'])->name('admit');
+        Route::get('distant/uncompleted/{id?}', [ProgramController::class, 'uncompleted_distant_application_form'])->name('distant.uncompleted');
+        Route::get('distant/{id?}', [ProgramController::class, 'distant_application_form'])->name('distant');
+        Route::get('admission_letter/{id?}', [ProgramController::class, 'application_letter'])->name('admission_letter');
+        Route::get('program/change/{id?}', [ProgramController::class, 'application_form_change_program'])->name('change_program');
+    });
     Route::prefix('reports')->name('reports.')->group(function(){
         Route::get('degree/{degree?}', [ProgramController::class, 'applicants_report_by_degree'])->name('applicants.by_degree');
         Route::get('program/{program?}', [ProgramController::class, 'applicants_report_by_program'])->name('applicants.by_program');

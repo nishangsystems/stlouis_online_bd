@@ -275,7 +275,7 @@
             </li>
             @endif
             
-            @if (\Auth::user()->hasPermissionTo('basic_settings'))
+            @if (\Auth::user()->hasPermissionTo('access_reports'))
             <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
                     <i  style="color: {{$bg1}}"class="menu-icon  fa fa-cog"></i>
@@ -347,7 +347,7 @@
             <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
                     <i  style="color: {{$bg1}}"class="menu-icon  fa fa-cog"></i>
-                    <span class="menu-text"> {{__('text.word_applicants')}}</span>
+                    <span class="menu-text"> {{__('text.applicants_center')}}</span>
 
                     <b class="arrow fa fa-angle-down"></b>
                 </a>
@@ -359,6 +359,62 @@
                         <a href="{{route('admin.applications.all')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.word_applications')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.applications.print_form')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.print_form')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.applications.update')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.update_applicant')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.applications.admit')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.admit_student')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.applications.distant')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.distant_applicant')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.applications.distant.uncompleted')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.uncompleted_distant')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.applications.admission_letter')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.admission_letters')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.applications.change_program')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.change_program')}}
                         </a>
 
                         <b class="arrow"></b>

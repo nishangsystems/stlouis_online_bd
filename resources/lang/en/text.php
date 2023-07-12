@@ -938,4 +938,6 @@ return [
     'word_admit'=>'admit',
     'program_first_choice'=>"program: 1st choice",
     'program_second_choice'=>"program: 2nd choice",
+    'applicants_center'=>'applicants center',
+    ''
 ];
