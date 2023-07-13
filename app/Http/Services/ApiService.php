@@ -66,4 +66,10 @@ class ApiService{
         return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.campus_programs').'/'.$campus_id)->body();
     }
 
+    public function setCampusDegrees($campus_id, $degrees)
+    {
+        # code...
+        return Http::post(Helpers::instance()->getApiRoot().'/'.config('api_routes.campus_degrees').'/'.$campus_id, ['degrees'=>$degrees])->body();
+    }
+
 }

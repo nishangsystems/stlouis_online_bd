@@ -258,7 +258,7 @@
                     <li>
                         <a href="{{route('admin.admission.programs.config')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.configure_programs')}}
+                            {{__('text.certificate_programs')}}
                         </a>
 
                         <b class="arrow"></b>
@@ -355,22 +355,22 @@
                 <b class="arrow"></b>
 
                 <ul class="submenu">
-                    <li>
+                    {{-- <li>
                         <a href="{{route('admin.applications.all')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.word_applications')}}
                         </a>
 
                         <b class="arrow"></b>
-                    </li>
-                    <li>
+                    </li> --}}
+                    {{-- <li>
                         <a href="{{route('admin.applications.print_form')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.print_form')}}
                         </a>
 
                         <b class="arrow"></b>
-                    </li>
+                    </li> --}}
                     <li>
                         <a href="{{route('admin.applications.update')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>

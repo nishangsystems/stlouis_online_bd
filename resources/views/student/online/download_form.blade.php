@@ -19,7 +19,7 @@
                         <td class="border-left border-right">{{ $appl->name }}</td>
                         <td class="border-left border-right">{{ $programs->where('id', $appl->program_first_choice)->first()->name .' / '.$programs->where('id', $appl->program_second_choice)->first()->name??'' }}</td>
                         <td class="border-left border-right d-flex flex-wrap">
-                            <form method="post" action="{{ route('student.application.form.download', $appl->id) }}">@csrf
+                            <form method="post" action="{{ route('student.application.form.download', $appl->id) }}" target="new">@csrf
                                 <input type="submit" class="btn btn-xs btn-primary mx-2" value="{{ __('text.word_download') }}">
                             </form>
                         </td>

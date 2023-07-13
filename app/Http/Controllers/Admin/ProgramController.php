@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Student\HomeController;
 use App\Models\ApplicationForm;
 use App\Models\Batch;
 use App\Models\ClassSubject;
@@ -17,6 +18,7 @@ use App\Models\StudentClass;
 use App\Models\Students;
 use App\Models\Subjects;
 use App\Session;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -950,11 +952,24 @@ class ProgramController extends Controller
         if($campus_id != null){
             $degs = $this->api_service->campusDegrees($campus_id);
             if($degs != null){
-                $data['campus_degrees'] = json_decode($degs)->data;
+                $data['campus_degrees'] = collect(json_decode($degs)->data)->pluck('id')->toArray();
             }
         }
            
-        return view('admin.setting.configure_dampus_degrees', $data);
+        return view('admin.setting.configure_campus_degrees', $data);
+    }
+
+    public function set_config_degrees(Request $request, $cid)
+    {
+        # code...
+        $validity = Validator::make($request->all(), ['campus_degrees'=>'array']);
+        if($validity->fails()){return back()->with('error', $validity->errors()->first());}
+        // return $request->all();
+        if(($resp = json_decode($this->api_service->setCampusDegrees($cid, $request->campus_degrees??[]))->data) == '1'){
+            return back()->with('success', 'Updated successfully');
+        }else{
+            return back()->with('error', $resp);
+        };
     }
 
 
@@ -967,7 +982,7 @@ class ProgramController extends Controller
         return view('admin.student.applications', $data);
     }
 
-    public function admit_student(Request $request, $id)
+    public function admit_student(Request $request, $id = null)
     {
         # code...
         ApplicationForm::find($id)->update(['admitted', true]);
@@ -985,14 +1000,94 @@ class ProgramController extends Controller
 
 
     
-    public function print_application_form(Request $request, $id)
+    public function print_application_form(Request $request, $id = null)
     {
         # code...
+        if($id == null){
+            $data['title'] = "Print Student Application Form";
+            $data['_this'] = $this;
+            $data['action'] = __('text.word_print');
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->get();
+            return view('admin.student.applications', $data);
+        }
+
+        $application = ApplicationForm::find($id);
+        $data['campuses'] = json_decode($this->api_service->campuses())->data;
+        $data['application'] = ApplicationForm::find($id);
+        $data['degree'] = collect(json_decode($this->api_service->degrees())->data??[])->where('id', $data['application']->degree_id)->first();
+        $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
+        $data['certs'] = json_decode($this->api_service->certificates())->data;
+        
+        $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
+        $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
+        $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
+        $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
+        
+        // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
+        $title = "APPLICATION FORM FOR ".$data['degree']->deg_name;
+        $data['title'] = $title;
+
+        if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $id]))->with('message', "Make sure your form is correctly filled and try again.");}
+        // return view('student.online.form_dawnloadable', $data);
+        $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
+        $filename = $title.' - '.$application->name.'.pdf';
+        return $pdf->download($filename);
     }
 
-    public function edit_application_form(Request $request, $id)
+    public function edit_application_form(Request $request, $id = null)
     {
         # code...
+        if($id == null){
+            $data['title'] = "Print Student Application Form";
+            $data['_this'] = $this;
+            $data['action'] = __('text.word_edit');
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            return view('admin.student.applications', $data);
+        }
+
+        // check if application is open now
+        if(!(Helpers::instance()->application_open())){
+            return redirect(route('student.home'))->with('error', 'Application closed for '.Batch::find(Config::all()->last()->year_id)->name);
+        }
+        # code...
+        // return $this->api_service->campuses();
+        $data['campuses'] = json_decode($this->api_service->campuses())->data;
+        $data['application'] = ApplicationForm::find($id);
+
+        if($data['application']->degree_id != null){
+            $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
+        }
+        if($data['application']->campus_id != null){
+            $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
+        }
+        if($data['application']->degree_id != null){
+            $data['certs'] = json_decode($this->api_service->certificates())->data;
+        }
+        if($data['application']->entry_qualification != null){
+            $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
+            $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
+        }
+        if($data['application']->program_first_choice != null){
+            $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
+            $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
+            // return $data;
+        }
+        
+        $data['title'] = "APPLICATION FORM FOR ".$data['degree']->deg_name;
+        return view('admin.student.edit_form', $data);
+        
+    }
+    public function update_application_form(Request $request, $id)
+    {
+        # code...
+        $validity = Validator::make($request->all(), ['name'=>'required', 'program_first_choice'=>'required', 'program_second_choice'=>'required']);
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+
+        $data = ['name'=>$request->name, 'program_first_choice'=>$request->program_first_choice, 'program_second_choice'=>$request->program_second_choice];
+        ApplicationForm::find($id)->update($data);
+        return back()->with('success', __('text.word_done'));
     }
 
     public function uncompleted_distant_application_form(Request $request, $id)
@@ -1010,9 +1105,18 @@ class ProgramController extends Controller
         # code...
     }
 
-    public function admit_application_form(Request $request, $id)
+    public function admit_application_form(Request $request, $id=null)
     {
         # code...
+        if($id == null){
+            $data['title'] = "Admit Student";
+            $data['_this'] = $this;
+            $data['action'] = __('text.word_admit');
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', 0)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            return view('admin.student.applications', $data);
+        }
+        ApplicationForm::find($id)->update(['admitted'=>true]);
+        return redirect(route('admin.applications.admit'))->with('success', __('text.word_done'));
     }
 
     public function application_form_change_program(Request $request, $id)

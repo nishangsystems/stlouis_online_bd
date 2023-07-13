@@ -2,7 +2,7 @@
 @section('section')
     <div class="py-3">
         <div class="py-2">
-            <table cellpadding="0" cellspacing="0" border="0" class="table table-dark table-stripped" id="hidden-table-info">
+            <table cellpadding="0" cellspacing="0" border="0" class="table table-light table-stripped" id="hidden-table-info">
                 <thead>
                     <tr class="text-capitalize border-bottom border-dark">
                         <th class="border-left border-right" rowspan="2">#</th>
@@ -33,8 +33,7 @@
                             <td class="border-left border-right">{{ collect(json_decode($_this->api_service->programs())->data)->where('id', $appl->program_second_choice)->first()->name }}</td>
                             <td class="border-left border-right">
                                 @if($appl->admitted != true)
-                                    <a href="{{ route('admin.admission.admit', $appl->id) }}" class="btn btn-xs btn-primary">{{ __('text.word_admit') }}</a>
-                                    <a href="{{ route('admin.admission.show', $appl->id) }}" class="btn btn-xs btn-info mx-1 my-1">{{ __('text.word_details') }}</a>
+                                    <a href="{{ Request::url().'/'.$appl->id }}" class="btn btn-xs btn-primary">{{ $action }}</a>
                                 @endif
                             </td>
                         </tr>

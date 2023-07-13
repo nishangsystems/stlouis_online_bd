@@ -130,7 +130,7 @@
             
         </div>
 
-        @if($application == 'MASTER DEGREE PROGRAMS')
+        @if($degree->deg_name == 'MASTER DEGREE PROGRAMS')
             <div class="py-2 mx-5">
                 <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">6</span>{{ __('text.previous_higher_education_training_bilang') }}</h4>
                 <div class="row py-2">
@@ -245,27 +245,27 @@
         <div class="py-2 mx-5">
             {{-- <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;">{{ __('text.admission_information') }}</h4> --}}
             <div class=" py-2 text-dark" style="font-size: 1.5rem;">
-                <div class="row"><b class="text-primary d-block py-2 col-sm-12">B. BONAMOUSSADI CAMPUS</b></div>
-                <div class="row border-bottom"><span class="col-sm-12 col-md-4">BANK:</span> <b class="col-sm-12 col-md-8">AZIRE COOPERATIVE CREDIT UNION</b>.</div>
-                <div class="row border-bottom"><span class="col-sm-12 col-md-4">ACCOUNT NAME/ NOM DE COMPTE:</span> <b class="col-sm-12 col-md-8">ST LOUIS HIGHER INSTITUTE OF AGRICULTURE</b></div>
-                <div class="row border-bottom"><span class="col-sm-12 col-md-4">ACCOUNT NO/ DE COMPTE:</span> <b class="col-sm-12 col-md-8">PN08_1252</b></div>
-                <div class="row"><b class="text-primary d-block py-2 col-sm-12">B. BONAMOUSSADI CAMPUS</b></div>
-                <div class="row border-bottom"><span class="col-sm-12 col-md-4">BANK:</span> <b class="col-sm-12 col-md-8">OPUS SECURITATIS SOLIDARITY LIMITED (OPSEC) (CATHOLIC CREDIT UNION)</b></div>
-                <div class="row border-bottom"><span class="col-sm-12 col-md-4">ACCOUNT NO:</span> <b class="col-sm-12 col-md-8">300737</b></div>
-                <div class="row border-bottom"><span class="col-sm-12 col-md-4">ACCOUNT NAME:</span> <b class="col-sm-12 col-md-8">ST LOUIS HIGHER INSTITUTE OF MEDICAL STUDIES</b></div>
+                <div class="row"><b class="text-primary d-block py-2 col-sm-12 text-uppercase">{{ $campus->name }}</b></div>
+                @foreach ($application->campus_banks()->get() as $bank)
+                    <div class="row border-bottom"><span class="col-sm-12 col-md-4">BANK:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->bank_name }}</b>.</div>
+                    <div class="row border-bottom"><span class="col-sm-12 col-md-4">ACCOUNT NAME/ NOM DE COMPTE:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->account_name }}</b></div>
+                    <div class="row border-bottom"><span class="col-sm-12 col-md-4">ACCOUNT NO/ DE COMPTE:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->account_number }}</b></div>
+                    <hr>
+                @endforeach
+
                 <div class="border-bottom py-2">
-                    <p class=" py-3">Request a receipt for every amount paid at the bank and present it in school alongside a photocopy for cross
+                    <p class=" py-1">Request a receipt for every amount paid at the bank and present it in school alongside a photocopy for cross
                     checking. <b>Yourapplication shan only be processed upon payment of the Application fee</b>. Toujours demander
                     un reçu pour chaque montant paye a la banque et le presenter a l'ecoomat de l'institute avec deux (02) photocopies
                     pour verification. <b>Votre demande ne sera traitée qu'apres paiement (a la banque) des frais de dossier
                     Admission Criteria /Criteres</b></p>
-                    <p class=" py-3">We admit science students With <b>2-25 points</b> in any of the departments of the St Louis of Medical Studies and the
+                    <p class=" py-1">We admit science students With <b>2-25 points</b> in any of the departments of the St Louis of Medical Studies and the
                     Institute of Engineering and Technology. study. Art students are usually admitted With <b>4-25 points</b> and can onlv
                     study Nursing or Midwifery.</p>
-                    <p class=" py-3">We shall exceptionally admit arts students With <b>2 points</b> especially earned in the social sciences like <b>Economics</b>
+                    <p class=" py-1">We shall exceptionally admit arts students With <b>2 points</b> especially earned in the social sciences like <b>Economics</b>
                     and <b>Geography</b>. This admission is <b>conditional and they must prove their worth</b> and stay along With the rest of
                     the class otherwise they will be discontinued at the end of the year.</p>
-                    <p class=" py-3"><b>Les candidats avec un BACC scientifique peuvent être admis dans toutes les filières de l'Institut Médicales
+                    <p class=" py-1"><b>Les candidats avec un BACC scientifique peuvent être admis dans toutes les filières de l'Institut Médicales
                     et de Technologie. Nous admettons ceux qui ont le BACC GI, G3 et A, uniquement dans les programmes
                     suivants ; Soins Infirmier, Sage-Femme ou Agriculture. Cette admission est conditionnelle et ces candidats
                     devront prouver leur valeur en avançant avec le reste de la promotion sinon a la fin de l'année ils seront

@@ -949,5 +949,8 @@ return [
     'change_program'=>'change program',
     'word_first'=>'first',
     'word_second'=>'second',
+    'campus_degrees'=>'campus degrees',
+    'certificate_programs'=>'certificate programs',
+    'preview_and_submit_form_bilang'=>'preview and submit form',
     ''
 ];

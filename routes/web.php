@@ -144,6 +144,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::name('applications.')->prefix('applications')->group(function(){
         Route::get('print_form/{id?}', [ProgramController::class, 'print_application_form'])->name('print_form');
         Route::get('edit/{id?}', [ProgramController::class, 'edit_application_form'])->name('update');
+        Route::post('edit/{id?}', [ProgramController::class, 'update_application_form']);
         Route::get('admit/{id?}', [ProgramController::class, 'admit_application_form'])->name('admit');
         Route::get('distant/uncompleted/{id?}', [ProgramController::class, 'uncompleted_distant_application_form'])->name('distant.uncompleted');
         Route::get('distant/{id?}', [ProgramController::class, 'distant_application_form'])->name('distant');

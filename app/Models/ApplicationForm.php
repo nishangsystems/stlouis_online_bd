@@ -48,4 +48,9 @@ class ApplicationForm extends Model
         return $this->belongsTo(Division::class, 'division');
     }
 
+    public function campus_banks()
+    {
+        return CampusBank::where('campus_id', $this->campus_id);
+    }
+
 }
