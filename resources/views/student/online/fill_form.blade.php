@@ -268,7 +268,7 @@
                             <div>
                                 <select class="form-control" name="has_health_problem" required>
                                     <option value="yes" {{ $application->has_health_problem == 'yes' ? 'selected' : '' }}>{{ __('text.word_yes') }}</option>
-                                    <option value="no" {{ $application->has_health_problem == 'no' ? 'selected' : '' }}>{{ __('text.word_no') }}</option>
+                                    <option value="no" {{ $application->has_health_problem == 'no' ? 'selected' : '' }} selected>{{ __('text.word_no') }}</option>
                                 </select>
                             </div>
                         </div>
@@ -283,7 +283,7 @@
                             <div>
                                 <select class="form-control" name="has_health_allergy" required>
                                     <option value="yes" {{ $application->has_health_allergy == 'yes' ? 'selected' : '' }}>{{ __('text.word_yes') }}</option>
-                                    <option value="no" {{ $application->has_health_allergy == 'no' ? 'selected' : '' }}>{{ __('text.word_no') }}</option>
+                                    <option value="no" {{ $application->has_health_allergy == 'no' ? 'selected' : '' }} selected>{{ __('text.word_no') }}</option>
                                 </select>
                             </div>
                         </div>
@@ -298,7 +298,7 @@
                             <div>
                                 <select class="form-control" name="has_disability" required>
                                     <option value="yes" {{ $application->has_disability == 'yes' ? 'selected' : '' }}>{{ __('text.word_yes') }}</option>
-                                    <option value="no" {{ $application->has_disability == 'no' ? 'selected' : '' }}>{{ __('text.word_no') }}</option>
+                                    <option value="no" {{ $application->has_disability == 'no' ? 'selected' : ''}} selected>{{ __('text.word_no') }}</option>
                                 </select>
                             </div>
                         </div>
@@ -313,6 +313,7 @@
                             <label class="text-secondary  text-capitalize">{{ __('text.awaiting_results_bilang') }}</label>
                             <div class="">
                                 <select class="form-control text-primary"  name="awaiting_results" required>
+                                    <option selected></option>
                                     <option value="yes" {{ $application->awaiting_results == 'yes' ? 'selected' : '' }}>{{ __('text.word_yes') }}</option>
                                     <option value="no" {{ $application->awaiting_results == 'no' ? 'selected' : '' }}>{{ __('text.word_no') }}</option>
                                 </select>
@@ -491,7 +492,7 @@
                         <!-- STAGE 1 PREVIEW -->
                         <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 1: <a href="{{ route('student.application.start', [1, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 1</a></h4>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-5">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_surname_bilang') }}</label>
+                            <label class="text-secondary  text-capitalize">{{ __('text.word_name') }}</label>
                             <div class="">
                                 <label class="form-control text-primary border-0 ">{{ $application->name }}</label>
                             </div>
@@ -759,21 +760,7 @@
                 <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [7, $application->id]) }}">
                     @csrf
                     <div class="py-2 row bg-light border-top shadow">
-                        <!-- <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;"> {{ __('text.how_to_apply_for_for_a_program_bilang') }}</h4>
-                        <ul class="col-sm-11 col-md-11 col-lg-11 my-5" style="list-style-type:upper-roman;">
-                            <li class="py-2">
-                                <p>Pay an application Fee of <span class="text-danger">5,000 Frs</span> to <span class="text-danger">6 71 98 92 92</span> with Momo Name :<span class="text-danger">EMELIE BERINYUY ASHUMBENG</span></p>
-                                <p style="font-weight: 600;">Payer des frais de dossier de <span class="text-danger">5 000 Frs</span> au <span class="text-danger">6 71 98 92 92</span> avec Momo Nom :<span class="text-danger">EMELIE BERINYUY ASHUMBENG</span></p>
-                            </li>
-                            <li class="py-2">
-                                <p>Copy the Financial Transaction Id from MTN and input in the Form on the next Page together with the Telephone Number used in Payment. If you can screenshot the Momo message from MTN it will of added advantage</p>
-                                <p style="font-weight: 600;">Copiez l'identifiant de transaction financière de MTN et saisissez-le dans le formulaire de la page suivante avec le numéro de téléphone utilisé pour le paiement. Si vous pouvez capturer le message Momo de MTN, cela sera un avantage supplémentaire</p>
-                            </li>
-                            <li class="py-2">
-                                <p>After Filling out the form Click on Save and continue to complete the application process. Note that the process is only complete when you receive an SMS text message from St. Louis after which you will print our your application form and submit to your school secretariate</p>
-                                <p style="font-weight: 600;">Copiez l'identifiant de transaction financière de MTN et saisissez-le dans le formulaire de la page suivante avec le numéro de téléphone utilisé pour le paiement. Si vous pouvez capturer le message Momo de MTN, cela sera un avantage supplémentaire</p>
-                            </li>
-                        </ul> -->
+                        
                         <div class="col-sm-12 col-md-12 col-lg-12 d-flex">
                             <div class="col-sm-10 col-md-8 col-lg-6 rounded bg-white py-5 my-3 shadow mx-auto">
                                 <div class="py-4 text-info text-center ">You are about to make a payment of {{ $degree->amount }} CFA for application fee
@@ -802,7 +789,7 @@
                 </form>
                 @break
         @endswitch
-        <!-- <div class="py-2">
+        {{-- <!-- <div class="py-2">
             <h4 class="text-dark my-4 text-uppercase">{{ __('text.admission_information') }}</h4>
             <div class=" py-2 text-dark" style="font-size: 1.5rem;">
                 <div class="row"><b class="text-primary d-block py-2 col-sm-12">B. BONAMOUSSADI CAMPUS</b></div>
@@ -862,7 +849,7 @@
                     @endforeach
                 </tbody>
             </table>
-        </div> -->
+        </div> --> --}}
     </div>
 @endsection
 @section('script')

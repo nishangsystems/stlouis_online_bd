@@ -198,7 +198,6 @@ class HomeController extends Controller
                 return redirect(route('student.home'))->with('error', 'Application closed for '.Batch::find(Config::all()->last()->year_id)->name);
             }
             # code...
-            $data['title'] = "HND APPLICATION FOR DOUALA-BONABERI";
             $data['step'] = $step;
             // return $this->api_service->campuses();
             $data['campuses'] = json_decode($this->api_service->campuses())->data;
@@ -229,6 +228,8 @@ class HomeController extends Controller
                 $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
                 // return $data;
             }
+            
+            $data['title'] = (isset($data['degree']) and ($data['degree'] != null)) ? $data['degree']->deg_name." APPLICATION FOR DOUALA-BONABERI" : "APPLICATION FOR DOUALA-BONABERI";
             return view('student.online.fill_form', $data);
         } catch (\Throwable $th) {
             //throw $th;
@@ -456,7 +457,7 @@ class HomeController extends Controller
                     $message="Application form for ST. LOUIS UNIVERSITY INSTITUTE submitted successfully.";
                     $this->sendSMS('237699131895', $message);
     
-                    return redirect(route('student.home'))->with('success', "Payment successful.");
+                    return redirect(route('student.application.form.download'))->with('success', "Payment successful.");
                     break;
                 
                 case 'CANCELLED':
@@ -536,7 +537,7 @@ class HomeController extends Controller
             $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
             
             // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
-            $title = ($application->degree->name??'').' APPLICATION FOR '.($application->campus->name??'').' CAMPUS';
+            $title = "APPLICATION FORM FOR ".$data['degree']->deg_name;
             $data['title'] = $title;
 
             if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
