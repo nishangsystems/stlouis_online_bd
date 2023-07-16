@@ -271,10 +271,6 @@
                     devront prouver leur valeur en avançant avec le reste de la promotion sinon a la fin de l'année ils seront
                     conseiller de se retirer.</b></p>
                 </div>
-                <div class="border-bottom py-2">
-                    <p class="py-2">ST LOUIS HIGHER INSTITUTE OF MEDICÄL STUDIES</p>
-                    <p class="py-2">ST LOUIS HIGHER INSTITUTION OF ENGIENEERING AND TECHONOLOGY DOUALA - CAMEROON</p>
-                </div>
             </div>
         </div>        
     </div>
