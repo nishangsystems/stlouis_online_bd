@@ -153,6 +153,15 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('program/change/{id?}', [ProgramController::class, 'application_form_change_program'])->name('change_program');
         Route::post('program/change/{id?}', [ProgramController::class, 'change_program']);
         Route::post('change_program/{id?}', [ProgramController::class, 'change_program_save'])->name('_change.program');
+
+        Route::get('start/{step}/{id?}', [ProgramController::class, 'start_application'])->name('start');
+        Route::post('start/{step}/{id?}', [ProgramController::class, 'persist_application']);
+        Route::get('submit/{id?}', [ProgramController::class, 'submit_application'])->name('submit');
+        Route::post('submit/{id?}', [ProgramController::class, 'submit_application_save']);
+        Route::get('form/download/{id?}', [ProgramController::class, 'download_application_form'])->name('form.download');
+        Route::post('form/download/{id?}', [ProgramController::class, 'download_form']);
+        Route::get('payment/processing/{form_id}', [ProgramController::class, 'pending_payment'])->name('payment.processing');
+        Route::get('payment/complete/{form_id}', [ProgramController::class, 'pending_complete'])->name('payment.complete');
     });
     Route::prefix('reports')->name('reports.')->group(function(){
         Route::get('degree/{degree?}', [ProgramController::class, 'applicants_report_by_degree'])->name('applicants.by_degree');

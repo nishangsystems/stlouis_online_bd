@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="{{asset('assets/css/fonts.googleapis.com.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/css/ace.min.css')}}" class="ace-main-stylesheet" id="main-ace-style" />
     <link rel="stylesheet" href="{{asset('assets/css/ace-part2.min.css')}}" class="ace-main-stylesheet" />
-    <![endif]-->
     <link rel="stylesheet" href="{{asset('assets/css/ace-skins.min.css')}}"/>
     <link rel="stylesheet" href="{{asset('assets/css/ace-rtl.min.css')}}"/>
     <script src="{{asset('assets/js/ace-extra.min.js')}}"></script>

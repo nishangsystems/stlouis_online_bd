@@ -355,22 +355,22 @@
                 <b class="arrow"></b>
 
                 <ul class="submenu">
-                    {{-- <li>
-                        <a href="{{route('admin.applications.all')}}" class="text-capitalize">
+                    <li>
+                        <a href="{{ route('admin.applications.start') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.word_applications')}}
+                            {{__('text.start_application')}}
                         </a>
 
                         <b class="arrow"></b>
-                    </li> --}}
-                    {{-- <li>
+                    </li>
+                    <li>
                         <a href="{{route('admin.applications.print_form')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.print_form')}}
                         </a>
 
                         <b class="arrow"></b>
-                    </li> --}}
+                    </li>
                     <li>
                         <a href="{{route('admin.applications.update')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
