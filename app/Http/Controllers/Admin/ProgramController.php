@@ -1121,7 +1121,7 @@ class ProgramController extends Controller
             // return $data;
         }
         
-        $data['title'] = "APPLICATION FORM FOR ".$data['degree']->deg_name;
+        $data['title'] = "APPLICATION FORM ".( array_key_exists('degree', $data) ? "FOR ".$data['degree']->deg_name : null);
         return view('admin.student.show_form', $data);
     }
 
