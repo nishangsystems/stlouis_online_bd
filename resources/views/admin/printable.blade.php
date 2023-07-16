@@ -36,6 +36,7 @@
     <STYLE>
         body {
             font-family: Arial, Helvetica, sans-serif;
+            background: white;
         }
         .input-group {
             position: relative;

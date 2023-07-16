@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\RolePermissions;
 use Illuminate\Http\Request;
 
 class RolesController extends Controller{
@@ -28,9 +29,10 @@ class RolesController extends Controller{
             ]);
             \DB::beginTransaction();
             try{
+                // return $request->all();
                 $role = new \App\Models\Role();
                 $role->name = $request->name;
-                $role->slug = str_replace(" ","_",strtolower($request->name));
+                $role->slug = str_replace(" ", "_", strtolower($request->name));
                 $role->save();
 
                 foreach($request->permissions as $perm){
@@ -82,7 +84,7 @@ class RolesController extends Controller{
         if(!auth()->user()->can('manage_permissions')){
             return redirect(route('admin.roles.index'))->with('error', __('text.operation_not_allowed'));
         }
-        $data['role'] = \App\Models\Role::whereSlug($slug)->first();
+        $data['role'] = Role::where('slug', $slug)->first();
         if(!$data['role']){
             abort(404);
         }
@@ -103,14 +105,15 @@ class RolesController extends Controller{
         \DB::beginTransaction();
         try{
             if($slug !== 'admin' || $slug !== 'teacher' || $slug !== 'parent'){
-                $role = \App\Models\Role::whereSlug($slug)->first();
+                // return $request->all();
+                $role = Role::where('slug', $slug)->first();
                 $role->name = $request->name;
                 $role->save();
                 foreach ($role->permissionsR as $pem){
                     $pem->delete();
                 }
                 foreach($request->permissions as $perm){
-                    \DB::table('roles_permissions')->insert([
+                    RolePermissions::insert([
                         'role_id' => $role->id,
                         'permission_id'=>$perm,
                     ]);

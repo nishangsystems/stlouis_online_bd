@@ -1140,11 +1140,21 @@ class ProgramController extends Controller
             return view('admin.student.applications', $data);
         }
         // print admission letter
-        $data['title'] = "ADMISSION FORM";
-        \
-        $pdf  = Pdf::loadView('admin.student.admission_letter', $data);
+        $appl = ApplicationForm::find($id);
+        $data['title'] = "ADMISSION LETTER";
+        $data['name'] = $appl->name;
+        $data['matric'] = $appl->matric;
+        $data['director_name'] = "Mr. Behonh Tolly J. Olivier";
+        $data['dean_name'] = "Dr. Derick N. Awambeng";
+        $data['fee_dateline'] = "3rd October 2022.";
+        $data['help_email'] = "admission@slui.org";
+        
+        $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first();
+        $data['program'] = collect(json_decode($this->api_service->programs())->data)->where('id', $appl->program_first_choice)->first();
+        // return view('admin.student.admission_letter', $data);
+        $pdf = Pdf::loadView('admin.student.admission_letter', $data);
 
-        return $pdf->download('Admission_Letter_'.)
+        return $pdf->download("Admission_Letter_{$appl->matric}.pdf");
     }
 
     public function admit_application_form(Request $request, $id=null)

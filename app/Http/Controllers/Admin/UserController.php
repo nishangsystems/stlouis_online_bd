@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ClassMaster;
 use App\Models\Matriculation;
+use App\Models\Role;
 use App\Models\TeachersSubject;
 use App\Models\User;
 use App\Models\UserRole;
@@ -29,10 +30,8 @@ class UserController extends Controller
             $data['type'] = \request('role') ? \request('role') : \request('type');
             $data['title'] = "Role ".($data['type'] ?? " Users");
             if(\request()->has('role')){
-                $data['users'] = DB::table('roles')->where('slug', '=', $request->role)
-                    ->join('users_roles', 'users_roles.role_id', '=', 'roles.id')
-                    ->join('users', 'users.id', '=', 'users_roles.user_id')
-                    ->get('users.*');
+                $data['users'] = Role::where('slug', '=', $request->role)->first()->users;
+                    // ->get('users.*');
             }else{
                 $data['users'] = \App\Models\User::where('type', request('type', 'teacher'))->get();
             }
@@ -96,7 +95,7 @@ class UserController extends Controller
         $pattern->save();
         if($request->type != "teacher"){
             $user_role = new \App\Models\UserRole();
-            $user_role->role_id = DB::table('roles')->where('slug', '=', $request->type)->first()->id;
+            $user_role->role_id = Role::where('slug', $request->type)->first()->id;
             $user_role->user_id = $user->id;
             $user_role->save();
         }
