@@ -1172,7 +1172,7 @@ class ProgramController extends Controller
             // GENERATE MATRICULE
             $application = ApplicationForm::find($id);
             if(($programs = json_decode($this->api_service->programs())->data) != null){
-                $program = $programs->where('id', $application->program_first_choice)->first()??null;
+                $program = collect($programs)->where('id', $application->program_first_choice)->first()??null;
                 if($program != null){
                     dd($program);
                     $year = substr(Batch::find(Helpers::instance()->getCurrentAccademicYear())->name, 2, 2);
