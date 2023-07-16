@@ -356,7 +356,7 @@
 
                 <ul class="submenu">
                     <li>
-                        <a href="{{ route('admin.applications.start') }}" class="text-capitalize">
+                        <a href="{{ route('admin.applications.start', 0) }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.start_application')}}
                         </a>
