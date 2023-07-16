@@ -1094,7 +1094,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.word_show');
             $data['applications'] = ApplicationForm::whereNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
-            return $data;
+            // return $data;
             return view('admin.student.applications', $data);
         }
 
