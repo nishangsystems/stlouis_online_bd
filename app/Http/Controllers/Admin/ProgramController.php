@@ -1174,7 +1174,7 @@ class ProgramController extends Controller
             if(($programs = json_decode($this->api_service->programs())->data) != null){
                 $program = collect($programs)->where('id', $application->program_first_choice)->first()??null;
                 if($program != null){
-                    dd($program);
+                    dd($programs);
                     $year = substr(Batch::find(Helpers::instance()->getCurrentAccademicYear())->name, 2, 2);
                     $prefix = $program->prefix;//3 char length
                     $max_count = '';
