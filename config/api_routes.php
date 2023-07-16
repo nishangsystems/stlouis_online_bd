@@ -10,5 +10,10 @@ return [
     'certificates'=>'certificates',
     'degrees'=>'degrees',
     'programs'=>'programs',
+    'levels'=>'levels',
+    'store_student'=>'student/store', ///{student_id?}
+    'update_student'=>'student/update', ///{student_id?}
+    'max_matric'=>'matrics/highest', ///{pref}
     'set_root'=>'_api/root/create',
+    'matric_exist'=>'matric/exists'
 ];

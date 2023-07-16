@@ -952,5 +952,7 @@ return [
     'campus_degrees'=>'campus degrees',
     'certificate_programs'=>'certificate programs',
     'preview_and_submit_form_bilang'=>'preview and submit form',
-    ''
+    'word_uncompleted'=>'uncompleted',
+    'word_show'=>'show',
+    'program_of_choice'=>'program of choice',
 ];

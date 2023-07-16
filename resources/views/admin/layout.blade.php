@@ -387,18 +387,18 @@
 
                         <b class="arrow"></b>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="{{route('admin.applications.distant')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.distant_applicant')}}
                         </a>
 
                         <b class="arrow"></b>
-                    </li>
+                    </li> --}}
                     <li>
-                        <a href="{{route('admin.applications.distant.uncompleted')}}" class="text-capitalize">
+                        <a href="{{route('admin.applications.uncompleted')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.uncompleted_distant')}}
+                            {{__('text.word_uncompleted')}}
                         </a>
 
                         <b class="arrow"></b>

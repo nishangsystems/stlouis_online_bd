@@ -24,6 +24,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         // auth()->logout();
+        $data['campuses'] = collect(json_decode($this->api_service->campuses())->data);
         if(\request()->has('role') || \request()->has('type')){
             $data['type'] = \request('role') ? \request('role') : \request('type');
             $data['title'] = "Role ".($data['type'] ?? " Users");
@@ -53,6 +54,7 @@ class UserController extends Controller
     public function create(Request $request)
     {
         $data['title'] = "Add ".(request('type') ?? "User");
+        $data['campuses'] = collect(json_decode($this->api_service->campuses())->data);
         return view('admin.user.create')->with($data);
     }
 
@@ -130,6 +132,7 @@ class UserController extends Controller
     public function edit(Request $request, $id)
     {
         $data['title'] = "Edit user details";
+        $data['campuses'] = collect(json_decode($this->api_service->campuses())->data);
         $data['user'] = \App\Models\User::find($id);
         return view('admin.user.edit')->with($data);
     }

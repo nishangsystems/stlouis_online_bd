@@ -146,10 +146,13 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('edit/{id?}', [ProgramController::class, 'edit_application_form'])->name('update');
         Route::post('edit/{id?}', [ProgramController::class, 'update_application_form']);
         Route::get('admit/{id?}', [ProgramController::class, 'admit_application_form'])->name('admit');
-        Route::get('distant/uncompleted/{id?}', [ProgramController::class, 'uncompleted_distant_application_form'])->name('distant.uncompleted');
+        Route::post('admit/{id?}', [ProgramController::class, 'admit_student']);
+        Route::get('uncompleted/{id?}', [ProgramController::class, 'uncompleted_application_form'])->name('uncompleted');
         Route::get('distant/{id?}', [ProgramController::class, 'distant_application_form'])->name('distant');
-        Route::get('admission_letter/{id?}', [ProgramController::class, 'application_letter'])->name('admission_letter');
+        Route::get('admission_letter/{id?}', [ProgramController::class, 'admission_letter'])->name('admission_letter');
         Route::get('program/change/{id?}', [ProgramController::class, 'application_form_change_program'])->name('change_program');
+        Route::post('program/change/{id?}', [ProgramController::class, 'change_program']);
+        Route::post('change_program/{id?}', [ProgramController::class, 'change_program_save'])->name('_change.program');
     });
     Route::prefix('reports')->name('reports.')->group(function(){
         Route::get('degree/{degree?}', [ProgramController::class, 'applicants_report_by_degree'])->name('applicants.by_degree');

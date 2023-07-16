@@ -94,27 +94,13 @@
                 <div class="col-sm-6 col-md-4 col-lg-3">
                     <label class="text-secondary  text-capitalize">{{ __('text.first_choice_bilang') }}</label>
                     <div class="">
-                        <select class="form-control text-primary"  name="program_first_choice" required oninput="loadCplevels(event)">
-                            <option>{{ __('text.select_program') }}</option>
-                            @forelse ($programs as $program)
-                                <option value="{{ $program->id }}" {{ $application->program_first_choice == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
-                            @empty
-                                <option>{{ __('text.no_data_available') }}</option>
-                            @endforelse
-                        </select>
+                        <label class="form-control text-primary border-0">{{ $program1->name ?? '' }}</label>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
                     <label class=" text-secondary text-capitalize">{{ __('text.second_choice_bilang') }}</label>
                     <div class="">
-                        <select class="form-control text-primary"  name="program_second_choice" required>
-                            <option>{{ __('text.select_program') }}</option>
-                            @forelse ($programs as $program)
-                                <option value="{{ $program->id }}" {{ $application->program_second_choice == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
-                            @empty
-                                <option>{{ __('text.no_data_available') }}</option>
-                            @endforelse
-                        </select>
+                        <label class="form-control text-primary border-0">{{ $program2->name ?? '' }}</label>
                     </div>
                 </div>
                 <div class="py-2 col-sm-6 col-md-4 col-lg-3">

@@ -35,7 +35,7 @@
                         @endif
                         <select class=" form-control" name="campus" type="text" {{\Auth::user()->campus_id != null ? 'readonly' : ''}}>
                             <option value="" selected>{{__('text.word_campus')}}</option>
-                            @foreach(\App\Models\Campus::all()  as $cmps)
+                            @foreach($campuses as $cmps)
                                 <option value="{{$cmps->id}}" {{\Auth::user()->campus_id == $cmps->id ? 'selected' : ''}}>{{$cmps->name}}</option>
                             @endforeach
                         </select>

@@ -91,7 +91,7 @@
                     <div class="col-lg-10">
                         <select class="form-control" name="campus_id">
                             <option>{{__('text.select_campus')}}</option>
-                            @foreach (\App\Models\Campus::all() as $campus)
+                            @foreach ($campuses as $campus)
                                 <option value="{{$campus->id}}" {{$campus->id == \App\Models\User::find($user->id)->campus_id ? 'selected' : ''}}>{{$campus->name}}</option>
                             @endforeach
                         </select>

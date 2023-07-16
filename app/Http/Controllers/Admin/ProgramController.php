@@ -982,12 +982,12 @@ class ProgramController extends Controller
         return view('admin.student.applications', $data);
     }
 
-    public function admit_student(Request $request, $id = null)
-    {
-        # code...
-        ApplicationForm::find($id)->update(['admitted', true]);
-        return back()->with('success', __('text.word_done'));
-    }
+    // public function admit_student(Request $request, $id = null)
+    // {
+    //     # code...
+    //     ApplicationForm::find($id)->update(['admitted', true]);
+    //     return back()->with('success', __('text.word_done'));
+    // }
 
     public function application_details(Request $request, $id)
     {
@@ -1045,10 +1045,6 @@ class ProgramController extends Controller
             return view('admin.student.applications', $data);
         }
 
-        // check if application is open now
-        if(!(Helpers::instance()->application_open())){
-            return redirect(route('student.home'))->with('error', 'Application closed for '.Batch::find(Config::all()->last()->year_id)->name);
-        }
         # code...
         // return $this->api_service->campuses();
         $data['campuses'] = json_decode($this->api_service->campuses())->data;
@@ -1080,19 +1076,52 @@ class ProgramController extends Controller
     public function update_application_form(Request $request, $id)
     {
         # code...
-        $validity = Validator::make($request->all(), ['name'=>'required', 'program_first_choice'=>'required', 'program_second_choice'=>'required']);
+        $validity = Validator::make($request->all(), ['name'=>'required']);
         if($validity->fails()){
             return back()->with('error', $validity->errors()->first());
         }
 
-        $data = ['name'=>$request->name, 'program_first_choice'=>$request->program_first_choice, 'program_second_choice'=>$request->program_second_choice];
+        $data = ['name'=>$request->name];
         ApplicationForm::find($id)->update($data);
         return back()->with('success', __('text.word_done'));
     }
 
-    public function uncompleted_distant_application_form(Request $request, $id)
+    public function uncompleted_application_form(Request $request, $id=null)
     {
         # code...
+        if($id == null){
+            $data['title'] = "Uncompleted Application Forms";
+            $data['_this'] = $this;
+            $data['action'] = __('text.word_show');
+            $data['applications'] = ApplicationForm::whereNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            return view('admin.student.applications', $data);
+        }
+
+        // return $this->api_service->campuses();
+        $data['campuses'] = json_decode($this->api_service->campuses())->data;
+        $data['application'] = ApplicationForm::find($id);
+
+        if($data['application']->degree_id != null){
+            $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
+        }
+        if($data['application']->campus_id != null){
+            $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
+        }
+        if($data['application']->degree_id != null){
+            $data['certs'] = json_decode($this->api_service->certificates())->data;
+        }
+        if($data['application']->entry_qualification != null){
+            $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
+            $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
+        }
+        if($data['application']->program_first_choice != null){
+            $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
+            $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
+            // return $data;
+        }
+        
+        $data['title'] = "APPLICATION FORM FOR ".$data['degree']->deg_name;
+        return view('admin.student.show_form', $data);
     }
 
     public function distant_application_form(Request $request, $id)
@@ -1100,9 +1129,19 @@ class ProgramController extends Controller
         # code...
     }
 
-    public function application_letter(Request $request, $id)
+    public function admission_letter(Request $request, $id = null)
     {
         # code...
+        if($id == null){
+            $data['title'] = "Uncompleted Application Forms";
+            $data['_this'] = $this;
+            $data['action'] = __('text.word_print');
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            return view('admin.student.applications', $data);
+        }
+        // print admission letter
+        $data['title'] = "ADMISSION FORM";
+        $pdf  = Pdf::loadView('admin.student.admission_letter', $data);
     }
 
     public function admit_application_form(Request $request, $id=null)
@@ -1115,12 +1154,187 @@ class ProgramController extends Controller
             $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', 0)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
-        ApplicationForm::find($id)->update(['admitted'=>true]);
-        return redirect(route('admin.applications.admit'))->with('success', __('text.word_done'));
+        if(!$request->has('matric') or ($request->matric == null)){
+            // 
+            // GENERATE MATRICULE
+            $application = ApplicationForm::find($id);
+            if(($programs = json_decode($this->api_service->programs())->data) != null){
+                $program = collect($programs)->where('id', $application->program_first_choice)->first()??null;
+                if($program != null){
+
+                    $year = substr(Batch::find(Helpers::instance()->getCurrentAccademicYear())->name, 2, 2);
+                    $prefix = $program->prefix;//3 char length
+                    $max_count = '';
+                    if($prefix == null){
+                        return back()->with('error', 'Matricule generation prefix not set.');
+                    }
+                    $max_matric = json_decode($this->api_service->max_matric($prefix, $year))->data; //matrics starting with '$prefix' sort
+                    // dd($max_matric);
+                    if($max_matric == null){
+                        $max_count = 0;
+                    }else{
+                        $max_count = intval(substr($max_matric, strlen($prefix)+4));
+                    }
+                    $next_count = substr('0000'.($max_count+1), -4);
+                    $student_matric = $prefix.'/'.$year.'/'.$next_count;
+
+                    if(ApplicationForm::where('matric', $student_matric)->where('id', '!=', $id)->count() == 0){
+                        $data['title'] = "Student Admission";
+                        $data['application'] = $application;
+                        $data['program'] = $program;
+                        $data['matricule'] = $student_matric;
+                        $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $application->campus_id)->first();
+                        return view('admin.student.confirm_admission', $data);
+                    }
+                    return back()->with('error', 'Failed to generate matricule');
+                }
+            }
+        }
     }
 
-    public function application_form_change_program(Request $request, $id)
+
+    public function admit_student(Request $request, $id)
     {
         # code...
+        $validity = Validator::make($request->all(), ['matric'=>'required']);
+        if($validity->fails()){return back()->with('error', 'Missing matricule');}
+        $application = ApplicationForm::find($id);
+        // dd($application->toJson());
+        // (new ApplicationForm())-
+        
+        
+        // POST STUDENT TO SCHOOL SYSTEM
+        $application->matric = $request->matric;
+        $resp = json_decode($this->api_service->store_student($application->toArray()))->data??null;
+        // dd($resp);
+        if($resp != null){
+            if($resp->status ==1){
+                $application->update(['matric'=>$request->matric, 'admitted'=>1]);
+
+                // Send sms/email notification
+                return redirect(route('admin.applications.admit'))->with('success', "Student admitted successfully.");
+            }else
+            return back()->with('error', $resp);
+        }
+
+
+
+    }
+
+
+    public function application_form_change_program(Request $request, $id = null)
+    {
+        # code...
+        if($id == null){
+            $data['title'] = "Change Student Program";
+            $data['_this'] = $this;
+            $data['action'] = __('text.change_program');
+            $data['applications'] = ApplicationForm::where('admitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            return view('admin.student.applications', $data);
+        }
+
+        // return $this->api_service->campuses();
+        $data['campuses'] = json_decode($this->api_service->campuses())->data;
+        $data['application'] = ApplicationForm::find($id);
+
+        if($data['application']->degree_id != null){
+            $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
+        }
+        if($data['application']->campus_id != null){
+            $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
+        }
+        if($data['application']->degree_id != null){
+            $data['certs'] = json_decode($this->api_service->certificates())->data;
+        }
+        if($data['application']->entry_qualification != null){
+            $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
+            $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
+        }
+        if($data['application']->program_first_choice != null){
+            $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
+            $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
+            // return $data;
+        }
+        if($data['application']->level != null){
+            $data['levels'] = json_decode($this->api_service->levels())->data;
+        }
+        
+        $data['title'] = "CHANGE PROGRAM FOR ".$data['degree']->deg_name;
+        return view('admin.student.change_program', $data);
+    }
+
+    public function change_program(Request $request, $id)
+    {
+        # code...
+        $validity = Validator::make($request->all(), ['current_program'=>'required', 'new_program'=>'required', 'level'=>'required']);
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+        $data = ['program_first_choice'=>$request->new_program, 'level'=>$request->level];
+        ApplicationForm::find($id)->update($data);
+
+        // UPDATE STUDENT IN SCHOOL SYSTEM.
+        // 
+        // GENERATE MATRICULE
+        $application = ApplicationForm::find($id);
+        if(($programs = json_decode($this->api_service->programs())->data) != null){
+            $program = collect($programs)->where('id', $application->program_first_choice)->first()??null;
+            if($program != null){
+
+                $year = substr(Batch::find(Helpers::instance()->getCurrentAccademicYear())->name, 2, 2);
+                $prefix = $program->prefix;//3 char length
+                $max_count = '';
+                if($prefix == null){
+                    return back()->with('error', 'Matricule generation prefix not set.');
+                }
+                $max_matric = json_decode($this->api_service->max_matric($prefix, $year))->data; //matrics starting with '$prefix' sort
+                if($max_matric == null){
+                    $max_count = 0;
+                }else{
+                    $max_count = intval(substr($max_matric, strlen($prefix)+4));
+                }
+                $next_count = substr('0000'.($max_count+1), -4);
+                $student_matric = $prefix.'/'.$year.'/'.$next_count;
+
+                if(ApplicationForm::where('matric', $student_matric)->count() == 0){
+                    $data['title'] = "Change Student Program";
+                    $data['application'] = $application;
+                    $data['program'] = $program;
+                    $data['matricule'] = $student_matric;
+                    $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $application->campus_id)->first();
+                    return view('admin.student.confirm_change_program', $data);
+                }
+                return back()->with('error', 'Failed to generate matricule');
+            }
+        }
+        return back()->with('success', 'Done');
+    }
+
+    public function change_program_save(Request $request, $id)
+    {
+        # code...
+        $validity = Validator::make($request->all(), ['matric'=>'required']);
+        if($validity->fails()){return back()->with('error', 'Missing matricule');}
+        $application = ApplicationForm::find($id);
+        // dd($application->toJson());
+        // (new ApplicationForm())-
+        
+        
+        // POST STUDENT TO SCHOOL SYSTEM
+        $resp = json_decode($this->api_service->update_student($application->matric, ['program'=>$application->program_first_choice, 'level'=>$application->level, 'matric'=>$request->matric]))->data??null;
+        // dd($resp);
+        if($resp != null){
+            if($resp->status ==1){
+                // $application->matric = $request->matric;
+                $application->update(['matric'=>$request->matric, 'admitted'=>1]);
+
+                // Send sms/email notification
+                return redirect(route('admin.applications.admit'))->with('success', "Program changed successfully.");
+            }else
+            return back()->with('error', $resp);
+        }
+
+
+
     }
 }

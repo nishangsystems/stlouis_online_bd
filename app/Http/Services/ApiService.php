@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Http;
 
 class ApiService{
 
+    
     // get campuses
     public function campuses(){
         // dd([ Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.campuses'))->body(), Helpers::instance()->getApiRoot().'/'.config('api_routes.campuses')]);
@@ -27,6 +28,20 @@ class ApiService{
     public function setCertificatePrograms($certificate_id, array $program_ids){
         // dd([ Http::post(Helpers::instance()->getApiRoot().'/'.config('api_routes.certificate_programs').'/'.$certificate_id, ['certificate_id'=>$certificate_id, 'program_ids'=>$program_ids])->body(), Helpers::instance()->getApiRoot().'/'.config('api_routes.certificate_programs').'/'.$certificate_id]);
         return Http::post(Helpers::instance()->getApiRoot().'/'.config('api_routes.certificate_programs').'/'.$certificate_id, ['certificate_id'=>$certificate_id, 'program_ids'=>$program_ids])->body();
+    }
+
+    // Store/update admitted student
+    public function store_student($student,  $id= null){
+        // dd([ Http::post(Helpers::instance()->getApiRoot().'/'.config('api_routes.store_student').'/'.$id??null, ['student'=>$student])->body(), Helpers::instance()->getApiRoot().'/'.config('api_routes.store_student').'/'.$id??null]);
+        // dd([Http::contentType('application/json')->get(Helpers::instance()->getApiRoot().'/'.config('api_routes.store_student') .'?student='.json_encode($student) )->body(), Helpers::instance()->getApiRoot().'/'.config('api_routes.store_student').'?student='.json_encode($student) ]);
+        return Http::contentType('application/json')->get(Helpers::instance()->getApiRoot().'/'.config('api_routes.store_student') .'?student='.json_encode($student) )->body();
+    }
+
+    // Store/update admitted student
+    public function update_student($matric, $update){
+        // dd([ Http::post(Helpers::instance()->getApiRoot().'/'.config('api_routes.store_student').'/'.$id??null, ['student'=>$student])->body(), Helpers::instance()->getApiRoot().'/'.config('api_routes.store_student').'/'.$id??null]);
+        // dd([Http::contentType('application/json')->get(Helpers::instance()->getApiRoot().'/'.config('api_routes.update_student') .'?matric='.json_encode($matric).'&student='.json_encode($update) )->body(), Helpers::instance()->getApiRoot().'/'.config('api_routes.update_student') .'?matric='.json_encode($matric).'&student='.json_encode($update)]);
+        return Http::contentType('application/json')->get(Helpers::instance()->getApiRoot().'/'.config('api_routes.update_student') .'?matric='.json_encode($matric).'&student='.json_encode($update) )->body();
     }
 
     // get campuses
@@ -72,4 +87,23 @@ class ApiService{
         return Http::post(Helpers::instance()->getApiRoot().'/'.config('api_routes.campus_degrees').'/'.$campus_id, ['degrees'=>$degrees])->body();
     }
 
+    public function levels()
+    {
+        # code...
+        return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.levels'))->body();
+    }
+
+    public function max_matric($prefix, $year)
+    {
+        # code...
+        return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.max_matric').'/'.$prefix.'/'.$year)->body();
+        // return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.max_matric').'/'.$prefix)->body();
+    }
+
+    public function matric_exist($matric)
+    {
+        # code...
+        return Http::post(Helpers::instance()->getApiRoot().'/'.config('api_routes.matric_exist'), ['matric'=>$matric])->body();
+        // return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.max_matric').'/'.$prefix)->body();
+    }
 }
