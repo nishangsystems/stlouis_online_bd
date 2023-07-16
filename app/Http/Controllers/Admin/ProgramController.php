@@ -1172,7 +1172,7 @@ class ProgramController extends Controller
             // GENERATE MATRICULE
             $application = ApplicationForm::find($id);
             if(($programs = json_decode($this->api_service->programs())->data) != null){
-                dd(collect($programs));
+                // dd(collect($programs));
                 $program = collect($programs)->where('id', $application->program_first_choice)->first()??null;
                 if($program != null){
                     // dd($program);
