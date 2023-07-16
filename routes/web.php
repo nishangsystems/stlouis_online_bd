@@ -154,7 +154,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::post('program/change/{id?}', [ProgramController::class, 'change_program']);
         Route::post('change_program/{id?}', [ProgramController::class, 'change_program_save'])->name('_change.program');
 
-        Route::get('start/{step}/{id?}', [ProgramController::class, 'start_application'])->name('start');
+        Route::get('start/{step?}/{id?}', [ProgramController::class, 'start_application'])->name('start');
         Route::post('start/{step}/{id?}', [ProgramController::class, 'persist_application']);
         Route::get('submit/{id?}', [ProgramController::class, 'submit_application'])->name('submit');
         Route::post('submit/{id?}', [ProgramController::class, 'submit_application_save']);
