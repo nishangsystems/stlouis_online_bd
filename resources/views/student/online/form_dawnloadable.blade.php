@@ -247,10 +247,10 @@
             <div class=" py-2 text-dark" style="font-size: 1.5rem;">
                 <div class="row"><b class="text-primary d-block py-2 col-sm-12 text-uppercase">{{ $campus->name }}</b></div>
                 @foreach ($application->campus_banks()->get() as $bank)
-                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="d-block w-50">FACULTY:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->faculty }}</b>.</div>
-                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="d-block w-50">BANK:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->bank_name }}</b>.</div>
-                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="d-block w-50">ACCOUNT NAME/ NOM DE COMPTE:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->account_name }}</b></div>
-                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="d-block w-50">ACCOUNT NO/ DE COMPTE:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->account_number }}</b></div>
+                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="flex-1 w-50">FACULTY:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->faculty }}</b>.</div>
+                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="flex-1 w-50">BANK:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->bank_name }}</b>.</div>
+                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="flex-1 w-50">ACCOUNT NAME/ NOM DE COMPTE:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->account_name }}</b></div>
+                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="flex-1 w-50">ACCOUNT NO/ DE COMPTE:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->account_number }}</b></div>
                     <hr>
                 @endforeach
 

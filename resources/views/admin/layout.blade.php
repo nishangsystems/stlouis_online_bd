@@ -355,14 +355,14 @@
                 <b class="arrow"></b>
 
                 <ul class="submenu">
-                    <li>
+                    {{-- <li>
                         <a href="{{ route('admin.applications.start', 0) }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.start_application')}}
                         </a>
 
                         <b class="arrow"></b>
-                    </li>
+                    </li> --}}
                     <li>
                         <a href="{{route('admin.applications.print_form')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
