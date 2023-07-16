@@ -1141,7 +1141,10 @@ class ProgramController extends Controller
         }
         // print admission letter
         $data['title'] = "ADMISSION FORM";
+        \
         $pdf  = Pdf::loadView('admin.student.admission_letter', $data);
+
+        return $pdf->download('Admission_Letter_'.)
     }
 
     public function admit_application_form(Request $request, $id=null)
