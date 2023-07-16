@@ -1136,7 +1136,7 @@ class ProgramController extends Controller
             $data['title'] = "Uncompleted Application Forms";
             $data['_this'] = $this;
             $data['action'] = __('text.word_print');
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', 1)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
         // print admission letter

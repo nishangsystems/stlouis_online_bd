@@ -29,8 +29,8 @@
                             <td class="border-left border-right">{{ $appl->phone }}</td>
                             <td class="border-left border-right">{{ collect(json_decode($_this->api_service->campuses())->data)->where('id', $appl->campus_id)->first()->name }}</td>
                             <td class="border-left border-right">{{ collect(json_decode($_this->api_service->degrees())->data)->where('id', $appl->degree_id)->first()->deg_name }}</td>
-                            <td class="border-left border-right">{{ collect(json_decode($_this->api_service->programs())->data)->where('id', $appl->program_first_choice)->first()->name }}</td>
-                            <td class="border-left border-right">{{ collect(json_decode($_this->api_service->programs())->data)->where('id', $appl->program_second_choice)->first()->name }}</td>
+                            <td class="border-left border-right">{{ collect(json_decode($_this->api_service->programs())->data)->where('id', $appl->program_first_choice)->first()->name??null }}</td>
+                            <td class="border-left border-right">{{ collect(json_decode($_this->api_service->programs())->data)->where('id', $appl->program_second_choice)->first()->name??null }}</td>
                             <td class="border-left border-right">
                                 @if(isset($action))
                                     <a href="{{ Request::url().'/'.$appl->id }}" class="btn btn-xs btn-primary">{{ $action }}</a>
