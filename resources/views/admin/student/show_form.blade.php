@@ -259,6 +259,10 @@
                 </div>
             </div>
 
+            <div class="my-4 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
+                <a class="btn btn-primary btn-sm text-uppercase" onclick="event.preventDefault(); confirm('You are about to bypass the proper application form submission procedure.') ? (window.location=`{{ Request::url() }}/bypass`) : null">{{ __('text.word_bypass') }}</a>
+            </div>
+
         </div>
     </div>
 @endsection
