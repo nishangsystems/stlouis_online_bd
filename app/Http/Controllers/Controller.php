@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Twilio\Rest\Client;
 
 /**
  * Summary of Controller
@@ -270,11 +271,26 @@ class Controller extends BaseController
     }
 
 
-    public function sendSMS($phone_number, $message)
+    public function sendSMS($phone_number='', $message='')
     {
         # code...
-        $query = ['username'=>'nishang', 'password'=>'Nish@237', 'type'=>0, 'dlr'=>1, 'destination'=>$phone_number, 'source'=>'ST. LOUIS UNIVERSITY INSTITUTE', 'message'=>$message];
-        $url = "http://api.rmlconnect.net:8080/bulksms/bulksms";
-        Http::get($url, $query);
+        // $query = ['username'=>'nishang', 'password'=>'Nish@237', 'type'=>0, 'dlr'=>1, 'destination'=>$phone_number, 'source'=>'ST. LOUIS UNIVERSITY INSTITUTE', 'message'=>$message];
+        // $url = "http://api.rmlconnect.net:8080/bulksms/bulksms";
+        // Http::get($url, $query);
+
+
+        $sid = getenv("TWILIO_SID");
+        $token = getenv("TWILIO_TOKEN");
+        $sender = getenv("TWILIO_PHONE");
+        $twilio = new Client($sid, $token);
+
+        $message = $twilio->messages
+            ->create("+237672908239", // to
+                    [
+                        "body" => "This is the ship that made the Kessel Run in fourteen parsecs?",
+                        "from" => $sender
+                    ]
+            );
+        return 'success';
     }
 }

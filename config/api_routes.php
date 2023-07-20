@@ -1,6 +1,8 @@
 <?php
 
 return [
+
+    
     'campuses'=>'campuses',
     'campus_degrees'=>'campus/degrees', ///{campus_id}
     'campus_programs'=>'campus/programs', ///{campus_id}

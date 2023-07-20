@@ -17,12 +17,16 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
+        "laravel/nexmo-notification-channel": "^3.1",
         "laravel/tinker": "^2.5",
         "nexmo/client": "^2.4",
+        "nexmo/laravel": "^3.0",
         "nwidart/laravel-modules": "8.2",
         "phpoffice/phpspreadsheet": "dev-NumberFormatMask-Helpers",
         "spatie/laravel-permission": "^5.2",
-        "staudenmeir/laravel-adjacency-list": "^1.0"
+        "staudenmeir/laravel-adjacency-list": "^1.0",
+        "twilio/sdk": "^7.5",
+        "vonage/client": "^3.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

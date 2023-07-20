@@ -1348,11 +1348,7 @@ class ProgramController extends Controller
             }else
             return back()->with('error', $resp);
         }
-
-
-
     }
-
 
     public function bypass_application_form(Request $request, $id)
     {
@@ -1365,6 +1361,48 @@ class ProgramController extends Controller
         $application = ApplicationForm::find($id);
         $application->update(['transaction_id'=>$transaction->id]);
         return redirect(route('admin.applications.uncompleted'))->with('success', __('text.word_done'));
+    }
+
+    public function applications_per_program(Request $request, $program_id = null)
+    {
+        # code...
+        if($program_id == null){
+            // select program
+            $data['title'] = "Select Program";
+            $data['programs'] = json_decode($this->api_service->programs())->data??[];
+            return view('admin.student.program_applications', $data);
+        }else{
+            $progs = collect(json_decode($this->api_service->programs())->data);
+            $data['title'] = $progs->where('id', $program_id)->first()->name." Applications";
+            $data['progs'] = $progs;
+            $data['appls'] = ApplicationForm::where('program_first_choice', $program_id)->get();
+            return view('admin.student.program_applications', $data);
+        }
+    }
+
+    public function applications_per_degree(Request $request, $degree_id = null)
+    {
+        # code...
+        if($degree_id == null){
+            $data['title'] = "Select Degree type";
+            $data['degrees'] = json_decode($this->api_service->degrees())->data??[];
+            return view('admin.student.degree_applications', $data);
+        }else{
+            $progs = collect(json_decode($this->api_service->programs())->data);
+            $degs = collect(json_decode($this->api_service->degrees())->data);
+            $data['title'] = $degs->where('id', $degree_id)->first()->name.' Applications';
+            $data['progs'] = $progs;
+            $data['appls'] = ApplicationForm::where('degree_id', $degree_id)->get();
+            return view('admin.student.degree_applications', $data);
+        }
+    }
+
+    public function finance_general_report(Request $request)
+    {
+        # code...
+        $data['title'] = "General Financial Reports";
+        $data['appls'] = ApplicationForm::all();
+        return view('admin.student.finance_general', $data);
     }
 
 }

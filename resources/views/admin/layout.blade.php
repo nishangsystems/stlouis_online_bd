@@ -275,74 +275,6 @@
             </li>
             @endif
             
-            @if (\Auth::user()->hasPermissionTo('access_reports'))
-            <li>
-                <a href="#" class="dropdown-toggle text-capitalize">
-                    <i  style="color: {{$bg1}}"class="menu-icon  fa fa-cog"></i>
-                    <span class="menu-text"> {{__('text.word_reports')}}</span>
-
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-
-                <ul class="submenu">
-                    <li>
-                        <a href="#" class="dropdown-toggle text-capitalize">
-                            <i  style="color: {{$bg1}}"class="menu-icon  fa fa-cog"></i>
-                            <span class="menu-text"> {{__('text.application_totals')}}</span>
-
-                            <b class="arrow fa fa-angle-down"></b>
-                        </a>
-
-                        <b class="arrow"></b>
-
-                        <ul class="submenu">
-                            <li>
-                                <a href="{{route('admin.students.index')}}" class="text-capitalize">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    {{__('text.by_degree_type')}}
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-                            <li>
-                                <a href="{{route('admin.students.index')}}" class="text-capitalize">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    {{__('text.by_program')}}
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul class="submenu">
-                    <li>
-                        <a href="#" class="dropdown-toggle text-capitalize">
-                            <i  style="color: {{$bg1}}"class="menu-icon  fa fa-cog"></i>
-                            <span class="menu-text"> {{__('text.financial_reports')}}</span>
-
-                            <b class="arrow fa fa-angle-down"></b>
-                        </a>
-
-                        <b class="arrow"></b>
-
-                        <ul class="submenu">
-                            <li>
-                                <a href="{{route('admin.students.index')}}" class="text-capitalize">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    {{__('text.general_reports')}}
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            @endif
-
             @if (\Auth::user()->hasPermissionTo('manage_admissions'))
             <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
@@ -432,6 +364,74 @@
             @endif
 
             
+            @if (\Auth::user()->hasPermissionTo('access_reports'))
+            <li>
+                <a href="#" class="dropdown-toggle text-capitalize">
+                    <i  style="color: {{$bg1}}"class="menu-icon  fa fa-cog"></i>
+                    <span class="menu-text"> {{__('text.word_reports')}}</span>
+
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+
+                <b class="arrow"></b>
+
+                <ul class="submenu">
+                    <li>
+                        <a href="#" class="dropdown-toggle text-capitalize">
+                            <i  style="color: {{$bg1}}"class="menu-icon  fa fa-cog"></i>
+                            <span class="menu-text"> {{__('text.application_totals')}}</span>
+
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+
+                        <b class="arrow"></b>
+
+                        <ul class="submenu">
+                            <li>
+                                <a href="{{route('admin.applications.by_degree')}}" class="text-capitalize">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    {{__('text.by_degree_type')}}
+                                </a>
+
+                                <b class="arrow"></b>
+                            </li>
+                            <li>
+                                <a href="{{route('admin.applications.by_program')}}" class="text-capitalize">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    {{__('text.by_program')}}
+                                </a>
+
+                                <b class="arrow"></b>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="submenu">
+                    <li>
+                        <a href="#" class="dropdown-toggle text-capitalize">
+                            <i  style="color: {{$bg1}}"class="menu-icon  fa fa-cog"></i>
+                            <span class="menu-text"> {{__('text.financial_reports')}}</span>
+
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+
+                        <b class="arrow"></b>
+
+                        <ul class="submenu">
+                            <li>
+                                <a href="{{route('admin.applications.finance.general')}}" class="text-capitalize">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    {{__('text.general_reports')}}
+                                </a>
+
+                                <b class="arrow"></b>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            @endif
+
             @if (\Auth::user()->hasPermissionTo('manage_statistics'))
             <li>
                 <a href="#" class="dropdown-toggle text-capitalize">

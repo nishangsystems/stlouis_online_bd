@@ -17,6 +17,7 @@ use App\Http\Controllers\Teacher\HomeController as TeacherHomeController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Transactions;
 use App\Http\Resources\SubjectResource;
+use App\Http\Services\MailService;
 use App\Models\Resit;
 use App\Models\StudentSubject;
 use Illuminate\Http\Request;
@@ -38,6 +39,33 @@ Route::get('/clear', function () {
     echo "Config cleared<br>";
 
 });
+
+// test mail sender
+Route::get('send_sms', [Controller::class, 'sendSMS']/*function(){
+    // $mailer = new MailService();
+    // $subject = "Form Submission Notification";
+    // $text = "Your application form has been submitted successfully";
+    // $data = ['name'=>"GERMANUS K", 'email'=>"germanuskeming@gmail.com"];
+    // if(@mail($data['email'], $subject, $text)){
+    //     return "success";
+    // }else{return "failed";}
+    // $mailer->sendPlainMail($subject, $text, $data);
+
+    // $basic  = new \Vonage\Client\Credentials\Basic("8d8bbcf8", "04MLvso1he1b8ANc");
+    // $client = new \Vonage\Client($basic);
+
+    // $response = $client->sms()->send(
+    //     new \Vonage\SMS\Message\SMS("237699131895", '+237672908239', 'A text message sent using the Nexmo SMS API')
+    // );
+    
+    // $message = $response->current();
+    
+    // if ($message->getStatus() == 0) {
+    //     echo "The message was sent successfully\n";
+    // } else {
+    //     echo "The message failed with status: " . $message->getStatus() . "\n";
+    // }
+}*/);
 
 Route::get('set_local/{lang}', [Controller::class, 'set_local'])->name('lang.switch');
 
@@ -154,6 +182,9 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('program/change/{id?}', [ProgramController::class, 'application_form_change_program'])->name('change_program');
         Route::post('program/change/{id?}', [ProgramController::class, 'change_program']);
         Route::post('change_program/{id?}', [ProgramController::class, 'change_program_save'])->name('_change.program');
+        Route::get('by_program/{id?}', [ProgramController::class, 'applications_per_program'])->name('by_program');
+        Route::get('by_degree/{id?}', [ProgramController::class, 'applications_per_degree'])->name('by_degree');
+        Route::get('finance/general', [ProgramController::class, 'finance_general_report'])->name('finance.general');
 
     });
     Route::prefix('reports')->name('reports.')->group(function(){
