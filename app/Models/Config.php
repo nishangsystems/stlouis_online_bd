@@ -9,8 +9,8 @@ class Config extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['year_id', 'start_date', 'end_date'];
-    protected $dates =  ['start_date', 'end_date'];
+    protected $fillable = ['year_id', 'start_date', 'end_date', 'fee1_latest_date', 'fee2_latest_date', 'director', 'dean', 'help_email'];
+    protected $dates =  ['start_date', 'end_date', 'fee1_latest_date', 'fee2_latest_date'];
     protected $connection = 'mysql2';
 
     public function batch(){

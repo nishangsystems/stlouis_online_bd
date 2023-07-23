@@ -885,10 +885,11 @@ class ProgramController extends Controller
     public function set_open_admission(Request $request)
     {
         # code...
-        $validity = Validator::make($request->all(), ['start_date'=>'required|date', 'end_date'=>'required|date']);
+        $validity = Validator::make($request->all(), ['start_date'=>'required|date', 'end_date'=>'required|date', 'fee1_latest_date'=>'required|date', 'fee2_latest_date'=>'required|date', 'director'=>'required', 'dean'=>'required', 'help_email'=>'email|required']);
         if($validity->fails()){return back()->with('error', $validity->errors()->first());}
 
-        $config = ['start_date'=>$request->start_date, 'end_date'=>$request->end_date];
+        // return $request->all();
+        $config = ['start_date'=>$request->start_date, 'end_date'=>$request->end_date, 'fee1_latest_date'=>$request->fee1_latest_date, 'fee2_latest_date'=>$request->fee2_latest_date, 'director'=>$request->director, 'dean'=>$request->dean, 'help_email'=>$request->help_email];
         Config::updateOrInsert(['year_id'=>Helpers::instance()->getCurrentAccademicYear()], $config);
         return back()->with('success', __('text.word_done'));
     }
@@ -1143,13 +1144,15 @@ class ProgramController extends Controller
         }
         // print admission letter
         $appl = ApplicationForm::find($id);
+        $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
         $data['title'] = "ADMISSION LETTER";
         $data['name'] = $appl->name;
         $data['matric'] = $appl->matric;
-        $data['director_name'] = "Mr. Behonh Tolly J. Olivier";
-        $data['dean_name'] = "Dr. Derick N. Awambeng";
-        $data['fee_dateline'] = "3rd October 2022.";
-        $data['help_email'] = "admission@slui.org";
+        $data['director_name'] = $config->director??'';
+        $data['dean_name'] = $config->dean??'';
+        $data['fee1_dateline'] = $config->fee1_latest_date??'';
+        $data['fee2_dateline'] = $config->fee2_latest_date??'';
+        $data['help_email'] = $config->help_email??"admission@slui.org";
         
         $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first();
         $data['program'] = collect(json_decode($this->api_service->programs())->data)->where('id', $appl->program_first_choice)->first();
