@@ -442,20 +442,20 @@ class HomeController extends Controller
                     $appl->transaction_id = $transaction_instance->id;
                     $appl->save();
     
-                    // SEND SMS
-                    $phone_number = auth('student')->user()->phone;
-                    if(str_starts_with($phone_number, '+')){
-                        $phone_number = substr($phone_number, '4');
-                    }
-                    if(strlen($phone_number) > 9){
-                        $phone_number = substr($phone_number, '3');
-                    }
-                    $tempArray = ['237699131895'];
+                    // // SEND SMS
+                    // $phone_number = auth('student')->user()->phone;
+                    // if(str_starts_with($phone_number, '+')){
+                    //     $phone_number = substr($phone_number, '4');
+                    // }
+                    // if(strlen($phone_number) > 9){
+                    //     $phone_number = substr($phone_number, '3');
+                    // }
+                    // $tempArray = ['237699131895'];
                     
-                    $formatContactArray = SMSHelpers::formatPhoneNumbers($tempArray);
-                    //send sms to formatted array of numbers
-                    $message="Application form for ST. LOUIS UNIVERSITY INSTITUTE submitted successfully.";
-                    $this->sendSMS('237699131895', $message);
+                    // $formatContactArray = SMSHelpers::formatPhoneNumbers($tempArray);
+                    // //send sms to formatted array of numbers
+                    // $message="Application form for ST. LOUIS UNIVERSITY INSTITUTE submitted successfully.";
+                    // $this->sendSMS('237699131895', $message);
     
                     return redirect(route('student.application.form.download'))->with('success', "Payment successful.");
                     break;
