@@ -38,6 +38,7 @@ use App\Models\Subjects;
 use App\Models\Topic;
 use App\Models\Transaction;
 use App\Models\Transcript;
+use App\Models\TranzakCredential;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -347,20 +348,22 @@ class HomeController extends Controller
             
             // MAKE API CALL TO PERFORM PAYMENT OF APPLICATION FEE
             // check if token exist and hasn't expired or get new token otherwise
-            if(cache('tranzak_api_token') == null or Carbon::parse(cache('tranzak_api_token_expire'))->isAfter(now())){
+            $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
+            $tranzak_credentials = TranzakCredential::where('campus_id', $application->campus_id)->first();
+            if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
                 // get and cache different token
-                $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>config('tranzak.app_id'), 'appKey'=>config('tranzak.api_key')]);
+                $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>$tranzak_credentials->app_id, 'appKey'=>$tranzak_credentials->api_key]);
                 if($response->status() == 200){
                     // return json_decode($response->body())->data;
                     // return Carbon::createFromTimestamp(time() + json_decode($response->body())->data->expiresIn);
                     // cache token and token expirationtot session
-                    cache(['tranzak_api_token'=> json_decode($response->body())->data->token]);
-                    cache(['tranzak_api_token_expire'=>Carbon::createFromTimestamp(time() + json_decode($response->body())->data->expiresIn)]);
+                    cache([$tranzak_credentials->cache_token_key => json_decode($response->body())->data->token]);
+                    cache([$tranzak_credentials->cache_token_expiry_key=>Carbon::createFromTimestamp(time() + json_decode($response->body())->data->expiresIn)]);
                 }
             }
             // Assumed there is a valid api token
             // Moving the performing the payment request proper
-            $headers = ['Authorization'=>'Bearer '.cache('tranzak_api_token')];
+            $headers = ['Authorization'=>'Bearer '.cache($tranzak_credentials->cache_token_key)];
             $request_data = ['mobileWalletNumber'=>'237'.$request->momo_number, 'mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE"];
             $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
             if($_response->status() == 200){
@@ -368,8 +371,10 @@ class HomeController extends Controller
                 // save transaction and track it status
 
                 session()->put('processing_tranzak_transaction_details', json_encode(json_decode($_response->body())->data));
+                session()->put('tranzak_credentials', json_encode($tranzak_credentials));
+                // return $tranzak_credentials;
                 // return $this->pending_payment(array_push((), ['application_id']));
-                return redirect()->to(route('student.application.payment.processing', $application_id))->with(['data'=>json_decode($_response->body())->data]);
+                return redirect()->to(route('student.application.payment.processing', $application_id));
             }
 
             // END OF PAYMENT PROCESS
@@ -379,12 +384,6 @@ class HomeController extends Controller
             $data = $request->all();
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
-        }
-
-        // $application->update($data);
-        if($step == 7){
-            // Form fully filled
-            return redirect(route('student.home'))->with('success', 'Application form completely filled.');
         }
         // $application->update($data);
         if($step == 3){
@@ -412,6 +411,7 @@ class HomeController extends Controller
         }
         $data['title'] = "Processing Transaction";
         $data['form_id'] = $application_id;
+        $data['tranzak_credentials'] = json_decode(session()->get('tranzak_credentials'));
         $data['transaction'] = json_decode(session()->get('processing_tranzak_transaction_details'));
         // return $data;
         return view('student.online.processing_payment', $data);
