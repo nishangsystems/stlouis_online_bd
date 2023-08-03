@@ -1225,15 +1225,26 @@ class ProgramController extends Controller
         $application->matric = $request->matric;
         $resp = json_decode($this->api_service->store_student($application->toArray()))->data??null;
         // dd($resp);
-        if($resp != null){
+        if($resp != null and !is_string($resp)){
             if($resp->status ==1){
                 $application->update(['matric'=>$request->matric, 'admitted'=>1]);
 
                 // Send sms/email notification
+                $phone_number = $application->phone;
+                if(str_starts_with($phone_number, '+')){
+                    $phone_number = substr($phone_number, '1');
+                }
+                if(strlen($phone_number) <= 9){
+                    $phone_number = '237'.$phone_number;
+                }
+                // dd($phone_number);
+                $message="You have been admitted into ST. LOUIS UNIVERSITY INSTITUTE today ".now()->format(DATE_RFC2822)." with registration number $application->matric";
+                $sent = $this->sendSMS($phone_number, $message);
+
                 return redirect(route('admin.applications.admit'))->with('success', "Student admitted successfully.");
             }else
             return back()->with('error', $resp);
-        }
+        }else{return back()->with('error', $resp);}
 
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\Helpers;
 use App\Http\Services\ApiService;
 use App\Http\Controllers\SMS\Helpers as SMSHelpers;
+use App\Http\Services\FocusTargetSms;
 use App\Models\Campus;
 use App\Models\CampusProgram;
 use App\Models\ClassSubject;
@@ -271,26 +272,30 @@ class Controller extends BaseController
     }
 
 
-    public function sendSMS($phone_number='', $message='')
+    public function sendSMS($phone_number, $message)
     {
-        # code...
-        // $query = ['username'=>'nishang', 'password'=>'Nish@237', 'type'=>0, 'dlr'=>1, 'destination'=>$phone_number, 'source'=>'ST. LOUIS UNIVERSITY INSTITUTE', 'message'=>$message];
-        // $url = "http://api.rmlconnect.net:8080/bulksms/bulksms";
-        // Http::get($url, $query);
 
 
-        $sid = getenv("TWILIO_SID");
-        $token = getenv("TWILIO_TOKEN");
-        $sender = getenv("TWILIO_PHONE");
-        $twilio = new Client($sid, $token);
+        /* //twilio implementation
+            $sid = getenv("TWILIO_SID");
+            $token = getenv("TWILIO_TOKEN");
+            $sender = getenv("TWILIO_PHONE");
+            $twilio = new Client($sid, $token);
 
-        $message = $twilio->messages
-            ->create("+237672908239", // to
-                    [
-                        "body" => "This is the ship that made the Kessel Run in fourteen parsecs?",
-                        "from" => $sender
-                    ]
-            );
-        return 'success';
+            $message = $twilio->messages
+                ->create("+237672908239", // to
+                        [
+                            "body" => "This is the ship that made the Kessel Run in fourteen parsecs?",
+                            "from" => $sender
+                        ]
+                );
+            return 'success';
+        */
+
+        if($message == null){return "Message must not be empty";}
+        if($phone_number == null){return "Reciever IDs must not be empty";}
+        
+        return (new FocusTargetSms($phone_number, $message))->send();
+
     }
 }

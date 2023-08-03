@@ -15,7 +15,7 @@
             </div>
         </div>
     </div>
-    
+    <div id="_temp_use"></div>
 </div>
 @endsection
 @section('script')
@@ -46,10 +46,23 @@
                 console.log(response_data);
                 if((response_data.status == "SUCCESSFUL") || (response_data.status == "CANCELLED") || (response_data.status == "FAILED") || (response_data.status == "REVERSED")){
                     url = "{{route('student.application.payment.complete', $form_id)}}";
-                    query_string = `?qstring=${JSON.stringify(response_data)}`;
-                    action = url+query_string;
+                    let form_markup = `<form method="post" id="_temp_form" action="${url}" enctype="application/json">
+                        @csrf`;
+                    console.log(Object.entries(response_data));
+                    Object.entries(response_data).forEach(element => {
+                        if(element[1] !=null && typeof element[1] === "object"){
+                            Object.entries(element[1]).forEach(sub_el =>{
+                                form_markup += `<input type="hidden" name="${element[0]}[${sub_el[0]}]" value="${sub_el[1]}">`;
+                            });
+                        }else{
+                            form_markup += `<input type="hidden" name="${element[0]}" value="${element[1]}">`;
+                        }
+                    });
+                    form_markup += `</form>`;
                     
-                    window.location = action;
+                    let form = $('#_temp_use').html(form_markup);
+                    $('#_temp_form').submit();
+                    // window.location = url;
                 }
             }
         });

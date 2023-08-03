@@ -428,13 +428,13 @@ class HomeController extends Controller
                 return redirect(route('student.home'))->with('error', 'Application closed for '.Helpers::instance()->getYear()->name);
             }
             //code...
-            $transaction_status = json_decode($request->qstring);
+            $transaction_status = (object) $request->all();
             // return $transaction_status;
             switch ($transaction_status->status) {
                 case 'SUCCESSFUL':
                     # code...
                     // save transaction and update application_form
-                    $transaction = ['request_id'=>$transaction_status->requestId, 'amount'=>$transaction_status->amount, 'currency_code'=>$transaction_status->currencyCode, 'purpose'=>"application fee", 'mobile_wallet_number'=>$transaction_status->mobileWalletNumber, 'transaction_ref'=>$transaction_status->mchTransactionRef, 'app_id'=>$transaction_status->appId, 'transaction_id'=>$transaction_status->transactionId, 'transaction_time'=>$transaction_status->transactionTime, 'payment_method'=>$transaction_status->payer->paymentMethod, 'payer_user_id'=>$transaction_status->payer->userId, 'payer_name'=>$transaction_status->payer->name, 'payer_account_id'=>$transaction_status->payer->accountId, 'merchant_fee'=>$transaction_status->merchant->fee, 'merchant_account_id'=>$transaction_status->merchant->accountId, 'net_amount_recieved'=>$transaction_status->merchant->netAmountReceived];
+                    $transaction = ['request_id'=>$transaction_status->requestId, 'amount'=>$transaction_status->amount, 'currency_code'=>$transaction_status->currencyCode, 'purpose'=>"application fee", 'mobile_wallet_number'=>$transaction_status->mobileWalletNumber, 'transaction_ref'=>$transaction_status->mchTransactionRef, 'app_id'=>$transaction_status->appId, 'transaction_id'=>$transaction_status->transactionId, 'transaction_time'=>$transaction_status->transactionTime, 'payment_method'=>((object)($transaction_status->payer))->paymentMethod, 'payer_user_id'=>((object)($transaction_status->payer))->userId, 'payer_name'=>((object)($transaction_status->payer))->name, 'payer_account_id'=>((object)($transaction_status->payer))->accountId, 'merchant_fee'=>((object)($transaction_status->merchant))->fee, 'merchant_account_id'=>((object)($transaction_status->merchant))->accountId, 'net_amount_recieved'=>((object)($transaction_status->merchant))->netAmountReceived];
                     $transaction_instance = new Transaction($transaction);
                     $transaction_instance->save();
     
@@ -443,21 +443,18 @@ class HomeController extends Controller
                     $appl->save();
     
                     // // SEND SMS
-                    // $phone_number = auth('student')->user()->phone;
-                    // if(str_starts_with($phone_number, '+')){
-                    //     $phone_number = substr($phone_number, '4');
-                    // }
-                    // if(strlen($phone_number) > 9){
-                    //     $phone_number = substr($phone_number, '3');
-                    // }
-                    // $tempArray = ['237699131895'];
-                    
-                    // $formatContactArray = SMSHelpers::formatPhoneNumbers($tempArray);
-                    // //send sms to formatted array of numbers
-                    // $message="Application form for ST. LOUIS UNIVERSITY INSTITUTE submitted successfully.";
-                    // $this->sendSMS('237699131895', $message);
+                    $phone_number = auth('student')->user()->phone;
+                    if(str_starts_with($phone_number, '+')){
+                        $phone_number = substr($phone_number, '1');
+                    }
+                    if(strlen($phone_number) <= 9){
+                        $phone_number = '237'.$phone_number;
+                    }
+                    // dd($phone_number);
+                    $message="Application form for ST. LOUIS UNIVERSITY INSTITUTE submitted successfully.";
+                    $sent = $this->sendSMS($phone_number, $message);
     
-                    return redirect(route('student.application.form.download'))->with('success', "Payment successful.");
+                    return redirect(route('student.application.form.download'))->with('success', "Payment successful. ".($sent != true ? $sent : null));
                     break;
                 
                 case 'CANCELLED':
