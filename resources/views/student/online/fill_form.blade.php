@@ -494,73 +494,73 @@
                         <div class="py-2 col-sm-6 col-md-4 col-lg-5">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_name') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $application->name }}</label>
+                                <label class="form-control text-primary border-0 ">{{ $application->name ?? '' }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_gender_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $application->gender }}</select>
+                                <label class="form-control text-primary border-0 ">{{ $application->gender ?? '' }}</select>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                             <label class="text-secondary  text-capitalize">{{ __('text.date_of_birth_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $application->dob }}</label>
+                                <label class="form-control text-primary border-0 ">{{ $application->dob ?? '' }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.place_of_birth_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $application->pob }}</label>
+                                <label class="form-control text-primary border-0 ">{{ $application->pob ?? '' }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_region_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $application->nationality }}</label>
+                                <label class="form-control text-primary border-0 ">{{ $application->nationality ?? '' }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.region_of_origin') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $application->_region->region }}</label>
+                                <label class="form-control text-primary border-0 ">{{ $application->_region->region ?? '' }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_division_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0 "  name="division" required>{{ $application->_division->name }}</label>
+                                <label class="form-control text-primary border-0 "  name="division" required>{{ $application->_division->name ?? '' }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_residence_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $application->residence }}<label>
+                                <label class="form-control text-primary border-0 ">{{ $application->residence ?? '' }}<label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-5">
                             <label class="text-secondary  text-capitalize">{{ __('text.telephone_number_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $application->phone }}</label>
+                                <label class="form-control text-primary border-0 ">{{ $application->phone ?? '' }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_email_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $application->email }}</label>
+                                <label class="form-control text-primary border-0 ">{{ $application->email ?? '' }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                             <label class="text-secondary  text-capitalize">{{ __('text.where_did_you_hear_about_us') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $application->referer }}</label>
+                                <label class="form-control text-primary border-0 ">{{ $application->referer ?? '' }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_campus') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $campus->name??'' }}</label>
+                                <label class="form-control text-primary border-0 ">{{ $campus->name ?? '' }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4">
@@ -588,74 +588,74 @@
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_level') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->level??null }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->level ?? null }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.1st_language_spoken_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->first_spoken_language }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->first_spoken_language ?? '' }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.1st_language_written_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->first_written_language }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->first_written_language ?? '' }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.2nd_language_spoken_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->second_spoken_language }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->second_spoken_language ?? '' }}</label>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.2nd_language_written_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->second_written_language }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->second_written_language ?? '' }}</label>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.any_known_health_problem_bilang') }}</label>
                             <div>
-                                <label class="form-control text-primary border-0">{{ $application->has_health_problem }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->has_health_problem ?? '' }}</label>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary text-capitalize">{{ __('text.if_yes_mention_bilang') }}</label>
                             <div>
-                                <label class="form-control text-primary border-0">{{ $application->health_problem }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->health_problem ?? '' }}</label>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.any_known_health_allergy_bilang') }}</label>
                             <div>
-                                <label class="form-control text-primary border-0">{{ $application->has_health_allergy }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->has_health_allergy ?? '' }}</label>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary text-capitalize">{{ __('text.if_yes_mention_bilang') }}</label>
                             <div>
-                                <label class="form-control text-primary border-0">{{ $application->health_allergy }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->health_allergy ?? '' }}</label>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.any_disabilities_bilang') }}</label>
                             <div>
-                                <label class="form-control text-primary border-0">{{ $application->has_disability }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->has_disability ?? '' }}</label>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary text-capitalize">{{ __('text.if_yes_mention_bilang') }}</label>
                             <div>
-                                <label class="form-control text-primary border-0">{{ $application->disability }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->disability ?? '' }}</label>
                             </div>
                         </div>
                         
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.awaiting_results_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->awaiting_results }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->awaiting_results ?? '' }}</label>
                             </div>
                         </div>
 
@@ -676,10 +676,10 @@
                                     <tbody id="previous_trainings">
                                         @foreach (json_decode($application->previous_training)??[] as $key=>$training)
                                             <tr class="text-capitalize">
-                                                <td class="border"><label class="form-control text-primary border-0">{{ $training->school }}</label></td>
-                                                <td class="border"><label class="form-control text-primary border-0">{{ $training->year }}</label></td>
-                                                <td class="border"><label class="form-control text-primary border-0">{{ $training->course }}</label></td>
-                                                <td class="border"><label class="form-control text-primary border-0">{{ $training->certificate }}</label></td>
+                                                <td class="border"><label class="form-control text-primary border-0">{{ $training->school ?? '' }}</label></td>
+                                                <td class="border"><label class="form-control text-primary border-0">{{ $training->year ?? '' }}</label></td>
+                                                <td class="border"><label class="form-control text-primary border-0">{{ $training->course ?? '' }}</label></td>
+                                                <td class="border"><label class="form-control text-primary border-0">{{ $training->certificate ?? '' }}</label></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -701,11 +701,11 @@
                                     <tbody id="employments">
                                         @foreach (json_decode($application->employments)??[] as $key=>$emp)
                                             <tr class="text-capitalize">
-                                                <td class="border"><label class="form-control text-primary border-0">{{ $emp->employer }}</label></td>
-                                                <td class="border"><label class="form-control text-primary border-0">{{ $emp->post }}</label></td>
-                                                <td class="border"><label class="form-control text-primary border-0">{{ $emp->start }}</label></td>
-                                                <td class="border"><label class="form-control text-primary border-0">{{ $emp->end }}</label></td>
-                                                <td class="border"><label class="form-control text-primary border-0">{{ $emp->type }}</label></td>
+                                                <td class="border"><label class="form-control text-primary border-0">{{ $emp->employer ?? '' }}</label></td>
+                                                <td class="border"><label class="form-control text-primary border-0">{{ $emp->post ?? '' }}</label></td>
+                                                <td class="border"><label class="form-control text-primary border-0">{{ $emp->start ?? '' }}</label></td>
+                                                <td class="border"><label class="form-control text-primary border-0">{{ $emp->end ?? '' }}</label></td>
+                                                <td class="border"><label class="form-control text-primary border-0">{{ $emp->type ?? '' }}</label></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -718,31 +718,31 @@
                         <div class="col-sm-12 col-md-8 col-lg-8">
                             <label class="text-secondary  text-capitalize">{{ __('text.who_is_responsible_for_your_fee_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->fee_payer }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->fee_payer ?? '' }}</label>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-4">
                             <label class="text-secondary text-capitalize">{{ __('text.word_name_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->fee_payer_name }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->fee_payer_name ?? '' }}</label>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3 col-lg-3">
                             <label class="text-secondary text-capitalize">{{ __('text.word_residence') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->fee_payer_residence }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->fee_payer_residence ?? '' }}</label>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary text-capitalize">{{ __('text.word_tel') }} (<span class="text-dabger">{{ __('text.with_country_code') }}</span>)</label>
                             <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->fee_payer_tel }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->fee_payer_tel ?? '' }}</label>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary text-capitalize">{{ __('text.word_occupation_bilang') }}</label>
                             <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->fee_payer_occupation }}</label>
+                                <label class="form-control text-primary border-0">{{ $application->fee_payer_occupation ?? '' }}</label>
                             </div>
                         </div>
 
@@ -880,7 +880,7 @@
             let html = `<tr class="text-capitalize">
                             <td class="border"><input class="form-control text-primary"  name="previous_training[school][${key}]" required value="" placeholder="SCHOOL"></td>
                             <td class="border"><select class="form-control text-primary"  name="previous_training[year][${key}]" required>
-                                                    <option value=""></option>
+                                                    <option></option>
                                                     @for($i = 1980; $i <= 2500; $i++)
                                                         <option value="{{ $i }}">{{ $i }}</option>
                                                     @endfor
@@ -906,13 +906,13 @@
                             <td class="border"><input class="form-control text-primary"  name="employments[employer][${key}]" required value="" placeholder="EMPLOYER"></td>
                             <td class="border"><input class="form-control text-primary"  name="employments[post][${key}]" required value="" placeholder="POST"></td>
                             <td class="border"><select class="form-control text-primary"  name="employments[start][${key}]">
-                                                    <option value=""></option>
+                                                    <option></option>
                                                     @for($i = 1980; $i <= 2500; $i++)
                                                         <option value="{{ $i }}">{{ $i }}</option>
                                                     @endfor
                                                 </select></td>
                             <td class="border"><select class="form-control text-primary"  name="employments[end][${key}]">
-                                                    <option value=""></option>
+                                                    <option></option>
                                                     @for($i = 1980; $i <= 2500; $i++)
                                                         <option value="{{ $i }}">{{ $i }}</option>
                                                     @endfor
@@ -955,7 +955,7 @@
                 method: 'get', url: url,
                 success: function(data){
                     console.log(data);
-                    let html = `<option>{{ __('text.select_degree_type') }}</option>`;
+                    let html = `<option></option>`;
                     data.forEach(element => {
                         html+=`<option value="${element.id}" ${ '{{ $application->degree_id }}' == element.id ? 'selected' : '' } >${element.deg_name}</option>`;
                     });
@@ -974,7 +974,7 @@
             $.ajax({
                 method: 'get', url: url, 
                 success: function(data){
-                    let html = `<option>{{ __('text.select_division') }}</option>`
+                    let html = `<option></option>`
                     data.forEach(element => {
                         html+=`<option value="${element.id}" ${'{{ $application->division}}' == element.id ? 'selected' : '' }>${element.name}</option>`.replace('region_id', element.id)
                     });
