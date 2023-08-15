@@ -172,7 +172,7 @@
                 </div>
             </div>
 
-            @if($degree->deg_name == 'MASTER DEGREE PROGRAMS')
+            @if($degree->deg_name??'' == 'MASTER DEGREE PROGRAMS')
                 <!-- STAGE 3 -->
                 <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 3: </h4>
                 <h4 class="py-3 border-bottom border-top bg-white text-dark my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;"> {{ __('text.previous_higher_education_training_bilang') }}</h4>
