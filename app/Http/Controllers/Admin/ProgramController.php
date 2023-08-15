@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Student\HomeController;
+use App\Mail\AdmissionMail;
 use App\Models\ApplicationForm;
 use App\Models\Batch;
+use App\Models\CampusBank;
 use App\Models\ClassSubject;
 use App\Models\Config;
 use App\Models\EntryQualification;
@@ -23,6 +25,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use SebastianBergmann\Environment\Console;
 
@@ -984,13 +987,6 @@ class ProgramController extends Controller
         return view('admin.student.applications', $data);
     }
 
-    // public function admit_student(Request $request, $id = null)
-    // {
-    //     # code...
-    //     ApplicationForm::find($id)->update(['admitted', true]);
-    //     return back()->with('success', __('text.word_done'));
-    // }
-
     public function application_details(Request $request, $id)
     {
         # code...
@@ -1213,38 +1209,40 @@ class ProgramController extends Controller
 
     public function admit_student(Request $request, $id)
     {
-        # code...
+
         $validity = Validator::make($request->all(), ['matric'=>'required']);
-        if($validity->fails()){return back()->with('error', 'Missing matricule');}
+        if($validity->fails()){
+            return back()->with('error', 'Missing matricule');
+        }
         $application = ApplicationForm::find($id);
-        // dd($application->toJson());
-        // (new ApplicationForm())-
-        
-        
+
         // POST STUDENT TO SCHOOL SYSTEM
         $application->matric = $request->matric;
-        $resp = json_decode($this->api_service->store_student($application->toArray()))->data??null;
-        // dd($resp);
-        if($resp != null and !is_string($resp)){
-            if($resp->status ==1){
-                $application->update(['matric'=>$request->matric, 'admitted'=>1]);
 
-                // Send sms/email notification
-                $phone_number = $application->phone;
-                if(str_starts_with($phone_number, '+')){
-                    $phone_number = substr($phone_number, '1');
-                }
-                if(strlen($phone_number) <= 9){
-                    $phone_number = '237'.$phone_number;
-                }
-                // dd($phone_number);
-                $message="You have been admitted into ST. LOUIS UNIVERSITY INSTITUTE today ".now()->format(DATE_RFC2822)." with registration number $application->matric";
-                $sent = $this->sendSMS($phone_number, $message);
+//        $resp = json_decode($this->api_service->store_student($application->toArray()))->data??null;
+        $this->sendAdmissionEmails("Edmond", "test@gmail.com", "SC8923", "Software", 32, "2023-07-19 12:24:06", "2023-07-19 12:24:06", "Mr Edmond", "Mr Edmond", "surpport@gmail.com");
 
-                return redirect(route('admin.applications.admit'))->with('success', "Student admitted successfully.");
-            }else
-            return back()->with('error', $resp);
-        }else{return back()->with('error', $resp);}
+//        if($resp != null and !is_string($resp)){
+//            if($resp->status == 1){
+//                $application->update(['matric'=>$request->matric, 'admitted'=>1]);
+//
+//                // Send sms/email notification
+//                $phone_number = $application->phone;
+//                if(str_starts_with($phone_number, '+')){
+//                    $phone_number = substr($phone_number, '1');
+//                }
+//                if(strlen($phone_number) <= 9){
+//                    $phone_number = '237'.$phone_number;
+//                }
+//                // dd($phone_number);
+//                $message="You have been admitted into ST. LOUIS UNIVERSITY INSTITUTE today ".now()->format(DATE_RFC2822)." with registration number $application->matric";
+//                $sent = $this->sendSMS($phone_number, $message);
+//                return redirect(route('admin.applications.admit'))->with('success', "Student admitted successfully.");
+//            }else
+//            return back()->with('error', $resp);
+//        }else{
+//            return back()->with('error', $resp);
+//        }
 
 
 
@@ -1417,6 +1415,11 @@ class ProgramController extends Controller
         $data['title'] = "General Financial Reports";
         $data['appls'] = ApplicationForm::all();
         return view('admin.student.finance_general', $data);
+    }
+
+    private function sendAdmissionEmails($name, $email, $matric, $program, $campus, $fee1_dateline, $fee2_dateline, $director_name, $dean_name, $help_email){
+        $campus2 = CampusBank::find($campus);
+        Mail::to($email)->send(new AdmissionMail($name, $campus2, $program, $matric,  $fee1_dateline, $fee2_dateline, $help_email,$director_name,$dean_name));
     }
 
 }
