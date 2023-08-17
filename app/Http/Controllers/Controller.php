@@ -274,24 +274,6 @@ class Controller extends BaseController
 
     public function sendSMS($phone_number, $message)
     {
-
-
-        /* //twilio implementation
-            $sid = getenv("TWILIO_SID");
-            $token = getenv("TWILIO_TOKEN");
-            $sender = getenv("TWILIO_PHONE");
-            $twilio = new Client($sid, $token);
-
-            $message = $twilio->messages
-                ->create("+237672908239", // to
-                        [
-                            "body" => "This is the ship that made the Kessel Run in fourteen parsecs?",
-                            "from" => $sender
-                        ]
-                );
-            return 'success';
-        */
-
         if($message == null){return "Message must not be empty";}
         if($phone_number == null){return "Reciever IDs must not be empty";}
         

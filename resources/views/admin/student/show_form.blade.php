@@ -7,7 +7,7 @@
             <div class="py-2 col-sm-6 col-md-4 col-lg-5">
                 <label class="text-secondary  text-capitalize">{{ __('text.word_name') }}</label>
                 <div class="">
-                    <label class="form-control text-primary border-0 ">{{ $application->name ?? '' }}</label>
+                    <label class="form-control text-primary border-0 ">{{ $application->name == null ? \App\Models\Students::find($application->student_id)->name : $application->name }}</label>
                 </div>
             </div>
             <div class="py-2 col-sm-6 col-md-4 col-lg-3">

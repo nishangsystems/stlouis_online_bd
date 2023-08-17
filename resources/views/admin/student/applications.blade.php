@@ -29,9 +29,9 @@
                     @foreach ($applications as $appl)
                         <tr class="border-bottom">
                             <td class="border-left border-right">{{ $k++ }}</td>
-                            <td class="border-left border-right">{{ $appl->name??null }}</td>
-                            <td class="border-left border-right">{{ $appl->email??null }}</td>
-                            <td class="border-left border-right">{{ $appl->phone??null }}</td>
+                            <td class="border-left border-right">{{ $appl->name == null ? \App\Models\Students::find($appl->student_id)->name : $appl->name }}</td>
+                            <td class="border-left border-right">{{ $appl->email == null ? \App\Models\Students::find($appl->student_id)->email : $appl->email }}</td>
+                            <td class="border-left border-right">{{ $appl->phone == null ? \App\Models\Students::find($appl->student_id)->phone : $appl->phone }}</td>
                             <td class="border-left border-right">{{ $campuses->where('id', $appl->campus_id)->first()->name??null }}</td>
                             <td class="border-left border-right">{{ $degrees->where('id', $appl->degree_id)->first()->deg_name??null }}</td>
                             <td class="border-left border-right">{{ $programs->where('id', $appl->program_first_choice)->first()->name??null }}</td>
