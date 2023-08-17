@@ -20,11 +20,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aa3f63f2-05a0-494f-9f41-a131b487b5b0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/dompdf.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/emails/myTestMail.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ProgramController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ProgramController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/database.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Mail/AdmissionMail.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Mail/AdmissionMail.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/File.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/File.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/student/admission_letter.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/student/admission_letter.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/SubjectNotes/1680199526.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/storage/SubjectNotes/test.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,18 +210,18 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app" />
-      <recent name="$PROJECT_DIR$/resources/views/admin" />
-      <recent name="$PROJECT_DIR$/resources/views/admin/fee" />
-      <recent name="$PROJECT_DIR$/resources/views/admin/units" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/database/seeders" />
       <recent name="$PROJECT_DIR$/database/migrations" />
       <recent name="$PROJECT_DIR$/resources/views/admin" />
       <recent name="$PROJECT_DIR$/app/Models" />
       <recent name="$PROJECT_DIR$/app/Http/Middleware" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app" />
+      <recent name="$PROJECT_DIR$/resources/views/admin" />
+      <recent name="$PROJECT_DIR$/resources/views/admin/fee" />
+      <recent name="$PROJECT_DIR$/resources/views/admin/units" />
     </key>
   </component>
   <component name="RunManager">
@@ -299,6 +304,7 @@
       <workItem from="1635487658726" duration="9663000" />
       <workItem from="1635788321170" duration="226000" />
       <workItem from="1635848314510" duration="414000" />
+      <workItem from="1692257697021" duration="8458000" />
     </task>
     <servers />
   </component>

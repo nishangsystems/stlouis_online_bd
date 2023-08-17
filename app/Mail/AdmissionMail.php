@@ -25,10 +25,12 @@ class AdmissionMail extends Mailable
     public $help_email;
     public $director_name;
     public $dean_name;
-    public function __construct($name, $campus,$program, $matric, $fee1_dateline, $fee2_dateline, $help_email, $director_name, $dean_name)
+    public $file;
+    public function __construct($name, $campus,$program, $matric, $fee1_dateline, $fee2_dateline, $help_email, $director_name, $dean_name, $file)
     {
         $this->name = $name;
         $this->campus = $campus;
+        $this->file = $file;
         $this->program = $program;
         $this->matric = $matric;
         $this->fee1_dateline = $fee1_dateline;
@@ -45,6 +47,6 @@ class AdmissionMail extends Mailable
      */
     public function build()
     {
-        return $this->view('admin.student.admission_letter');
+        return $this->view('admin.student.admission_letter')->attachData($this->file->output(), "test.pdf");
     }
 }
