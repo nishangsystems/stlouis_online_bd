@@ -1129,23 +1129,45 @@ class ProgramController extends Controller
     public function admission_letter(Request $request, $id = null)
     {
 
-        $appl = ApplicationForm::find(1);
-        $campus = CampusBank::find($appl->campus_id);
-        $data['title'] = "ADMISSION LETTER";
-        $data['name'] = "Applicant's Name";
-        $data['matric'] =  "SC178923";
-        $data['director_name'] = "Director's Name";
-        $data['dean_name'] = "Dean's Name";
-        $data['fee1_dateline'] = Carbon::now();
-        $data['fee2_dateline'] = Carbon::now();
-        $data['help_email'] =  "admission@slui.org";
-        $data['campus'] = $campus;
-        $data['program'] = $campus;
+        # code...
+        if($id == null){
+            $data['title'] = "Send Student Admission Letter";
+            $data['_this'] = $this;
+            $data['action'] = __('text.word_send');
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', 1)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            return view('admin.student.applications', $data);
+        }
+        
+        if($this->send_admission_letter($id)){
+            return back()->with('success', __('text.word_done'));
+        }
+        return back()->with('error', __('text.operation_failed'));
+    }
 
-        $pdf = Pdf::loadView('admin.student.admission_letter', $data);
-        $this->sendAdmissionEmails("Edmond", "test@gmail.com", "SC8923", "Software", 32, "2023-07-19 12:24:06", "2023-07-19 12:24:06", "Mr Edmond", "Mr Edmond", "surpport@gmail.com", $pdf);
+    public function send_admission_letter($id)
+    {
+        $appl = ApplicationForm::find($id);
+        if($appl != null){
+            $campus = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first()??null;
+            $program = collect(json_decode($this->api_service->programs())->data)->where('id', $appl->program_first_choice)->first()??null;
+            $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
 
-        return $pdf->download("Admission_Letter_SC17A874.pdf");
+            $data['title'] = "ADMISSION LETTER";
+            $data['name'] = $appl->name;
+            $data['matric'] =  $appl->matric;
+            $data['director_name'] = $config->director??null;
+            $data['dean_name'] = $config->dean??null;
+            $data['fee1_dateline'] = $config->fee1_latest_date;
+            $data['fee2_dateline'] = $config->fee2_latest_date;
+            $data['help_email'] =  $config->help_email;
+            $data['campus'] = $campus->name??null;
+            $data['program'] = $program->name??null;
+    
+            $pdf = Pdf::loadView('admin.student.admission_letter', $data);
+            $this->sendAdmissionEmails($appl->name, $appl->email, $appl->matric, $program->name??null, $campus->name??null, $config->fee1_latest_date, $config->fee2_latest_date, $config->director, $config->dean, $config->help_email, $pdf, $appl->campus_id);
+            return true;
+        }
+        return false;
     }
 
     public function admit_application_form(Request $request, $id=null)
@@ -1209,29 +1231,33 @@ class ProgramController extends Controller
         // POST STUDENT TO SCHOOL SYSTEM
         $application->matric = $request->matric;
 
-//        $resp = json_decode($this->api_service->store_student($application->toArray()))->data??null;
+        $resp = json_decode($this->api_service->store_student($application->toArray()))->data??null;
 
-//        if($resp != null and !is_string($resp)){
-//            if($resp->status == 1){
-//                $application->update(['matric'=>$request->matric, 'admitted'=>1]);
-//
-//                // Send sms/email notification
-//                $phone_number = $application->phone;
-//                if(str_starts_with($phone_number, '+')){
-//                    $phone_number = substr($phone_number, '1');
-//                }
-//                if(strlen($phone_number) <= 9){
-//                    $phone_number = '237'.$phone_number;
-//                }
-//                // dd($phone_number);
-//                $message="You have been admitted into ST. LOUIS UNIVERSITY INSTITUTE today ".now()->format(DATE_RFC2822)." with registration number $application->matric";
-//                $sent = $this->sendSMS($phone_number, $message);
-//                return redirect(route('admin.applications.admit'))->with('success', "Student admitted successfully.");
-//            }else
-//            return back()->with('error', $resp);
-//        }else{
-//            return back()->with('error', $resp);
-//        }
+        if($resp != null and !is_string($resp)){
+           if($resp->status == 1){
+                $application->update(['matric'=>$request->matric, 'admitted'=>1]);
+
+                // Send sms/email notification
+                $phone_number = $application->phone;
+                if(str_starts_with($phone_number, '+')){
+                    $phone_number = substr($phone_number, '1');
+                }
+                if(strlen($phone_number) <= 9){
+                    $phone_number = '237'.$phone_number;
+                }
+                // dd($phone_number);
+                $message="You have been admitted into ST. LOUIS UNIVERSITY INSTITUTE today ".now()->format(DATE_RFC2822)." with registration number $application->matric";
+                $sent = $this->sendSMS($phone_number, $message);
+
+                // Send student admission letter to email
+                if($this->send_admission_letter($application->id))
+
+                return redirect(route('admin.applications.admit'))->with('success', "Student admitted successfully.");
+           }else
+           return back()->with('error', $resp);
+       }else{
+           return back()->with('error', $resp);
+       }
 
 
 
@@ -1407,8 +1433,7 @@ class ProgramController extends Controller
     }
 
     private function sendAdmissionEmails($name, $email, $matric, $program, $campus, $fee1_dateline, $fee2_dateline, $director_name, $dean_name, $help_email, $file){
-        $campus2 = CampusBank::find($campus);
-        Mail::to($email)->send(new AdmissionMail($name, $campus2, $program, $matric,  $fee1_dateline, $fee2_dateline, $help_email,$director_name,$dean_name, $file));
+        Mail::to($email)->send(new AdmissionMail($name, $campus, $program, $matric,  $fee1_dateline, $fee2_dateline, $help_email, $director_name, $dean_name, $file, config('platform_links')[$campus]));
     }
 
 }

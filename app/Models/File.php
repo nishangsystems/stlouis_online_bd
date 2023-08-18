@@ -9,7 +9,7 @@ class File extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mysql';
+    protected $connection = 'mysql2';
     protected $fillable = ['name', 'path'];
 
     protected $table = 'files';

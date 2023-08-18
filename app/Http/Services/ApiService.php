@@ -8,7 +8,7 @@ class ApiService{
     
     // get campuses
     public function campuses(){
-        // dd([ Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.campuses'))->body(), Helpers::instance()->getApiRoot().'/'.config('api_routes.campuses')]);
+        // dd(Helpers::instance()->getApiRoot().'/'.config('api_routes.campuses'));
         return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.campuses'))->body();
     }
 
