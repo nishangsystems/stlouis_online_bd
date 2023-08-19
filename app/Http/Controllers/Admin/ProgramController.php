@@ -1234,7 +1234,7 @@ class ProgramController extends Controller
         $application->matric = $request->matric;
 
         $resp = json_decode($this->api_service->store_student($application->toArray()))->data??null;
-
+        // dd($resp);
         if($resp != null and !is_string($resp)){
            if($resp->status == 1){
                 $application->update(['matric'=>$request->matric, 'admitted'=>1]);
@@ -1249,10 +1249,10 @@ class ProgramController extends Controller
                 }
                 // dd($phone_number);
                 $message="You have been admitted into ST. LOUIS UNIVERSITY INSTITUTE today ".now()->format(DATE_RFC2822)." with registration number $application->matric";
-                // $sent = $this->sendSMS($phone_number, $message);
+                $sent = $this->sendSMS($phone_number, $message);
 
                 // Send student admission letter to email
-                // $this->send_admission_letter($application->id);
+                $this->send_admission_letter($application->id);
 
                 return redirect(route('admin.applications.admit'))->with('success', "Student admitted successfully.");
            }else
