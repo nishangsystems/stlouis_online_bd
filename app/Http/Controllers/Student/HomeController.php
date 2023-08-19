@@ -519,6 +519,7 @@ class HomeController extends Controller
 
     public function download_form(Request $request, $application_id)
     {
+        // dd($application_id);
         # code...
         try{
             $application = ApplicationForm::find($application_id);
@@ -537,13 +538,13 @@ class HomeController extends Controller
             $title = "APPLICATION FORM FOR ".$data['degree']->deg_name;
             $data['title'] = $title;
 
-            if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
+            // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
             // return view('student.online.form_dawnloadable', $data);
             $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
             $filename = $title.' - '.$application->name.'.pdf';
             return $pdf->download($filename);
         }catch(Throwable $th){
-            if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
+            return back()->with('error', "\nFile : {$th->getFile()}\nMessage : {$th->getMessage()} \nLine : {$th->getLine()}");
         }
     }
 

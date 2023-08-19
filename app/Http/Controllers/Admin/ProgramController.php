@@ -1150,6 +1150,7 @@ class ProgramController extends Controller
         if($appl != null){
             $campus = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first()??null;
             $program = collect(json_decode($this->api_service->programs())->data)->where('id', $appl->program_first_choice)->first()??null;
+            $degree = collect(json_decode($this->api_service->degrees())->data)->where('id', $appl->degree_id)->first()??null;
             $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
 
             $data['title'] = "ADMISSION LETTER";
@@ -1162,9 +1163,10 @@ class ProgramController extends Controller
             $data['help_email'] =  $config->help_email;
             $data['campus'] = $campus->name??null;
             $data['program'] = $program->name??null;
+            $data['degree'] = $degree->deg_name??null;
     
             $pdf = Pdf::loadView('admin.student.admission_letter', $data);
-            $this->sendAdmissionEmails($appl->name, $appl->email, $appl->matric, $program->name??null, $campus->name??null, $config->fee1_latest_date, $config->fee2_latest_date, $config->director, $config->dean, $config->help_email, $pdf, $appl->campus_id);
+            $this->sendAdmissionEmails($appl->name, $appl->email, $appl->matric, $program->name??null, $campus->name??null, $config->fee1_latest_date, $config->fee2_latest_date, $config->director, $config->dean, $config->help_email, $pdf, $degree->deg_name??null);
             return true;
         }
         return false;
@@ -1203,7 +1205,7 @@ class ProgramController extends Controller
                     }
                     $next_count = substr('0000'.($max_count+1), -4);
                     $student_matric = $prefix.'/'.$year.'/'.$next_count;
-
+                    // dd($student_matric);
                     if(ApplicationForm::where('matric', $student_matric)->where('id', '!=', $id)->count() == 0){
                         $data['title'] = "Student Admission";
                         $data['application'] = $application;
@@ -1247,10 +1249,10 @@ class ProgramController extends Controller
                 }
                 // dd($phone_number);
                 $message="You have been admitted into ST. LOUIS UNIVERSITY INSTITUTE today ".now()->format(DATE_RFC2822)." with registration number $application->matric";
-                $sent = $this->sendSMS($phone_number, $message);
+                // $sent = $this->sendSMS($phone_number, $message);
 
                 // Send student admission letter to email
-                if($this->send_admission_letter($application->id))
+                // $this->send_admission_letter($application->id);
 
                 return redirect(route('admin.applications.admit'))->with('success', "Student admitted successfully.");
            }else
@@ -1432,8 +1434,8 @@ class ProgramController extends Controller
         return view('admin.student.finance_general', $data);
     }
 
-    private function sendAdmissionEmails($name, $email, $matric, $program, $campus, $fee1_dateline, $fee2_dateline, $director_name, $dean_name, $help_email, $file){
-        Mail::to($email)->send(new AdmissionMail($name, $campus, $program, $matric,  $fee1_dateline, $fee2_dateline, $help_email, $director_name, $dean_name, $file, config('platform_links')[$campus]));
+    private function sendAdmissionEmails($name, $email, $matric, $program, $campus, $fee1_dateline, $fee2_dateline, $director_name, $dean_name, $help_email, $file, $degree){
+        Mail::to($email)->send(new AdmissionMail($name, $campus, $program, $matric,  $fee1_dateline, $fee2_dateline, $help_email, $director_name, $dean_name, $degree,  $file, config('platform_links')[$campus]));
     }
 
 }

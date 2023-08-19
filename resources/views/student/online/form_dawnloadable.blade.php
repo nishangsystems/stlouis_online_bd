@@ -6,43 +6,43 @@
             <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">1</span>{{ __('text.personal_details_bilang') }}</h4>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary col-md-4  text-capitalize">{{ __('text.word_gender_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->gender }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->gender??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_surname_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ explode(" ", $application->name)[0] }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ explode(" ", $application->name)[0]??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.first_name_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->name }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->name??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.date_of_birth_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->dob }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->dob??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.place_of_birth_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->pob }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->pob??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_region_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->_region->region }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->_region->region??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_division_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->_division->name }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->_division->name??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_residence_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->residence }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->residence??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.telephone_number_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->phone }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->phone??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_email_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->email }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->email??null }}</span>
             </div>
         </div>
                     
@@ -50,11 +50,11 @@
             <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">2</span>{{ __('text.course_envisaged_bilang') }}</h4>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary  text-capitalize col-md-4">{{ __('text.first_choice_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $program1->name }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $program1->name??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary  text-capitalize col-md-4">{{ __('text.second_choice_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $program2->name }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $program2->name??null }}</span>
             </div>
         </div>
                     
@@ -69,15 +69,15 @@
                     <tbody>
                         <tr class="text-capitalize">
                             <td class="border border-dark">{{ __('text.word_spoken_bilang') }}</td>
-                            <td class="border border-dark">{{ $application->first_spoken_language }}</td>
+                            <td class="border border-dark">{{ $application->first_spoken_language??null }}</td>
                             <td class="border border-dark">{{ __('text.word_spoken_bilang') }}</td>
-                            <td class="border border-dark">{{ $application->second_spoken_language }}</td>
+                            <td class="border border-dark">{{ $application->second_spoken_language??null }}</td>
                         </tr>
                         <tr class="text-capitalize">
                             <td class="border border-dark">{{ __('text.word_written_bilang') }}</td>
-                            <td class="border border-dark">{{ $application->first_written_language }}</td>
+                            <td class="border border-dark">{{ $application->first_written_language??null }}</td>
                             <td class="border border-dark">{{ __('text.word_written_bilang') }}</td>
-                            <td class="border border-dark">{{ $application->second_written_language }}</td>
+                            <td class="border border-dark">{{ $application->second_written_language??null }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -89,31 +89,31 @@
             {{-- pair start --}}
             <div class="row py-2">
                 <span class="text-secondary text-capitalize mr-5">{{ __('text.any_known_health_problem_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->has_health_problem }}</span>
+                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->has_health_problem??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="text-secondary text-capitalize mr-5">{{ __('text.if_yes_mention_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->health_problem }}</span>
+                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->health_problem ??null }}</span>
             </div>
             {{-- pair end --}}
             {{-- pair start --}}
             <div class="row py-2">
                 <span class="text-secondary  text-capitalize mr-5">{{ __('text.any_known_health_allergy_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->has_health_allergy }}</span>
+                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->has_health_allergy??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="text-secondary text-capitalize mr-5">{{ __('text.if_yes_mention_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->health_allergy }}</span>
+                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->health_allergy??null }}</span>
             </div>
             {{-- pair end --}}
             {{-- pair start --}}
             <div class="row py-2">
                 <span class="text-secondary  text-capitalize mr-5">{{ __('text.any_disabilities_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->has_disability }}</span>
+                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->has_disability??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="text-secondary text-capitalize mr-5">{{ __('text.if_yes_mention_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->disability }}</span>
+                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->disability??null }}</span>
             </div>
             {{-- pair end --}}
             
@@ -124,7 +124,7 @@
             {{-- pair start --}}
             <div class="row py-2">
                 <span class="text-secondary  text-capitalize mr-5">{{ __('text.awaiting_results_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->awaiting_results }}</div>
+                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->awaiting_results??null }}</div>
             </div>
             {{-- pair end --}}
             
@@ -144,12 +144,12 @@
                             <tr>
                         </thead>
                         <tbody id="previous_trainings">
-                            @foreach (json_decode($application->previous_training) as $key=>$training)
+                            @foreach (json_decode($application->previous_training)??[] as $key=>$training)
                                 <tr class="text-capitalize" style="font-weight: 600; font-style: italic;">
-                                    <td class="border border-black" style="border: 1px solid black">{{ $training->school }}</td>
-                                    <td class="border border-black" style="border: 1px solid black">{{ $training->year }}</td>
-                                    <td class="border border-black" style="border: 1px solid black">{{ $training->course }}</td>
-                                    <td class="border border-black" style="border: 1px solid black">{{ $training->certificate }}</td>
+                                    <td class="border border-black" style="border: 1px solid black">{{ $training->school??null }}</td>
+                                    <td class="border border-black" style="border: 1px solid black">{{ $training->year??null }}</td>
+                                    <td class="border border-black" style="border: 1px solid black">{{ $training->course??null }}</td>
+                                    <td class="border border-black" style="border: 1px solid black">{{ $training->certificate??null }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -171,13 +171,13 @@
                             <tr>
                         </thead>
                         <tbody id="employments">
-                            @foreach (json_decode($application->employments) as $key=>$emp)
+                            @foreach (json_decode($application->employments)??[] as $key=>$emp)
                                 <tr class="text-capitalize">
-                                    <td class="border" style="border: 1px solid black">{{ $emp->employer }}</td>
-                                    <td class="border" style="border: 1px solid black">{{ $emp->post }}</td>
-                                    <td class="border" style="border: 1px solid black">{{ $emp->start }}</td>
-                                    <td class="border" style="border: 1px solid black">{{ $emp->end }}</td>
-                                    <td class="border" style="border: 1px solid black">{{ $emp->type }}</td>
+                                    <td class="border" style="border: 1px solid black">{{ $emp->employer??null }}</td>
+                                    <td class="border" style="border: 1px solid black">{{ $emp->post??null }}</td>
+                                    <td class="border" style="border: 1px solid black">{{ $emp->start??null }}</td>
+                                    <td class="border" style="border: 1px solid black">{{ $emp->end??null }}</td>
+                                    <td class="border" style="border: 1px solid black">{{ $emp->type??null }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -192,23 +192,23 @@
             {{-- pair start --}}
             <div class="row py-2">
                 <span class="text-secondary  text-capitalize mr-5">{{ __('text.who_is_responsible_for_your_fee_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer }}</span>
+                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="text-secondary text-capitalize mr-5">{{ __('text.word_name_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer_name }}</span>
+                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer_name??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="text-secondary text-capitalize mr-5">{{ __('text.word_residence') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer_residence }}</span>
+                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer_residence??null }}</span>
             </div>
             <div class="row py-2">
                 <span class="text-secondary text-capitalize mr-5">{{ __('text.word_tel') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer_tel }}</span>
+                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer_tel??null }}</span>
             </div>
             <div class="row py-2 border-bottom">
                 <span class="text-secondary text-capitalize mr-5">{{ __('text.word_occupation_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer_occupation }}</span>
+                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer_occupation??null }}</span>
             </div>
             {{-- pair end --}}
             
@@ -219,8 +219,8 @@
             <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">9</span>{{ __('text.declaration_by_candidate_bilang') }}</h4>
             {{-- pair start --}}
             <div class="py-2" style="font-size: large;">
-                <p class="py-2">{!! __('text.student_application_confirmation', ['name'=>$application->first_name .' '. $application->surname, 'school'=>'ST LOUIS UNIVERSITY INSTITUTE, DOUALA.']) !!}</p>
-                <p class="py-2">{!! __('text.student_application_confirmation_french', ['name'=>$application->first_name .' '. $application->surname, 'school'=>'L’INSTITUT UNIERSITAIRE ST LOUIS, DOUALA.']) !!}</p>
+                <p class="py-2">{!! __('text.student_application_confirmation', ['name'=>($application->first_name??null) .' '. ($application->surname??null),'school'=>'ST LOUIS UNIVERSITY INSTITUTE, DOUALA.']) !!}</p>
+                <p class="py-2">{!! __('text.student_application_confirmation_french', ['name'=>($application->first_name??null) .' '. ($application->surname??null), 'school'=>'L’INSTITUT UNIERSITAIRE ST LOUIS, DOUALA.']) !!}</p>
             </div>
             {{-- pair end --}}
             
@@ -230,8 +230,8 @@
             <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">10</span>{{ __('text.declaration_by_parent_or_guardian_bilang') }}</h4>
             {{--  pair start --}}
             <div class="py-2" style="font-size: large;">
-                <p class="py-2">{!! __('text.parent_application_confirmation', ['name'=>$application->fee_payer_name]) !!}</p>
-                <p class="py-2">{!! __('text.parent_application_confirmation_french', ['name'=>$application->fee_payer_name]) !!}</p>
+                <p class="py-2">{!! __('text.parent_application_confirmation', ['name'=>$application->fee_payer_name??null]) !!}</p>
+                <p class="py-2">{!! __('text.parent_application_confirmation_french', ['name'=>$application->fee_payer_name??null]) !!}</p>
             </div>
             {{-- pair end --}}
 
@@ -245,12 +245,12 @@
         <div class="py-2 mx-5">
             {{-- <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;">{{ __('text.admission_information') }}</h4> --}}
             <div class=" py-2 text-dark" style="font-size: 1.5rem;">
-                <div class="row"><b class="text-primary d-block py-2 col-sm-12 text-uppercase">{{ $campus->name }}</b></div>
+                <div class="row"><b class="text-primary d-block py-2 col-sm-12 text-uppercase">{{ $campus->name??null }}</b></div>
                 @foreach ($application->campus_banks()->get() as $bank)
-                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="flex-1 w-50">FACULTY:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->faculty }}</b>.</div>
-                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="flex-1 w-50">BANK:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->bank_name }}</b>.</div>
-                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="flex-1 w-50">ACCOUNT NAME/ NOM DE COMPTE:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->account_name }}</b></div>
-                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="flex-1 w-50">ACCOUNT NO/ DE COMPTE:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->account_number }}</b></div>
+                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="flex-1 w-50">FACULTY:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->faculty??null }}</b>.</div>
+                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="flex-1 w-50">BANK:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->bank_name??null }}</b>.</div>
+                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="flex-1 w-50">ACCOUNT NAME/ NOM DE COMPTE:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->account_name??null }}</b></div>
+                    <div class="d-flex flex-wrap justify-content-between border-bottom"><span class="flex-1 w-50">ACCOUNT NO/ DE COMPTE:</span> <b class="col-sm-12 col-md-8 text-uppercase">{{ $bank->account_number??null }}</b></div>
                     <hr>
                 @endforeach
 

@@ -2,7 +2,7 @@
 @section('section')
     <div style="line-height: 2.3rem; font-size:larger;">
         <span class="d-block py-2 text-capitalize">{!! __('text.admission_letter_phrase1', ['name'=>$name]) !!}</span>
-        <span class="d-block py-2">{!! __('text.admission_letter_phrase2', ['campus'=>$campus, 'program'=>$program, 'matric'=>$matric]) !!}</span>
+        <span class="d-block py-2">{!! __('text.admission_letter_phrase2', ['campus'=>$campus, 'program'=>$program, 'matric'=>$matric, 'degree'=>$degree]) !!}</span>
         <ul style="list-style-type:disc;margin-block:2rem;">
             <li><span class="d-block py-2">{!! __('text.admission_letter_phrase3') !!}</span></li>
             <li><span class="d-block py-2">{!! __('text.admission_letter_phrase4', ['date1'=>$fee1_dateline, 'date2'=>$fee2_dateline]) !!}</span></li>
