@@ -1156,21 +1156,11 @@ class ProgramController extends Controller
             $degree = collect(json_decode($this->api_service->degrees())->data)->where('id', $appl->degree_id)->first()??null;
             $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
 
-            $degrees = [
-                ["id"=> 1, "deg_name"=> "CERTIFICATE", "amount"=> 5000],
-                ["id"=> 2, "deg_name"=> "HND ", "amount"=> 5000],
-                ["id"=> 3, "deg_name"=> "BACHELOR ", "amount"=> 10000],
-                ["id"=> 4, "deg_name"=> "BTS", "amount"=> 5000],
-                ["id"=> 5, "deg_name"=> "ENGINEERING", "amount"=> 5000],
-                ["id"=> 6, "deg_name"=> "MASTER DEGREE PROGRAMS", "amount"=> 10000]
+            $data['platform_links'] = [
+                'BONABERI'=>'https://bnb.stlouissystems.org',
+                'BONAMOUSSADI'=>'https://bms.stlouissystems.org',
+                'YAOUNDE'=>'https://yde.stlouissystems.org',
             ];
-            $campuses = [
-                ["name"=> "BONABERI", "address"=> "Before Nestle", "telephone"=> "679135426", "school_id"=> 1],
-                ["name"=> "BONAMOUSSADI", "address"=> "Rond Point Maetur", "telephone"=> "679135426", "school_id"=> 1],
-                ["name"=> "YAOUNDE", "address"=> "DEPOT DE BOIS SIMBOCK", "telephone"=> "679201766", "school_id"=> 1],
-                ["name"=> "BAMENDA", "address"=> "Mile 3 Nkwen", "telephone"=> "679135426", "school_id"=> 1],
-                ["name"=> "NDU", "address"=> "Buea", "telephone"=> "679135426", "school_id"=> 1]
-                ];
 
             $data['title'] = "ADMISSION LETTER";
             $data['name'] = $appl->name;

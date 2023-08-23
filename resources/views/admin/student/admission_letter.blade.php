@@ -20,7 +20,7 @@
                 <tbody>
                     <tr class="py-1 border-top border-bottom">
                         <td class="border-left border-right">{{ $campus }}</td>
-                        <td class="border-left border-right">{{ config('platform_links')[$campus] }}</td>
+                        <td class="border-left border-right">{{ $platform_links[$campus] }}</td>
                         <td class="border-left border-right">{{ $matric }}</td>
                         <td class="border-left border-right">12345678</td>
                     </tr>
