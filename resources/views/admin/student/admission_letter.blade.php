@@ -30,13 +30,11 @@
         </div>
         <table class="table-stripped">
             <thead class="py-1 text-capitalize">
-                <th class="">{{ __('text.the_director') }}</th>
-                <th class=" text-right">{{ __('text.the_dean_of_studies') }}</th>
+                <th class="">{{ __('text.the_registrar') }}</th>
             </thead>
             <tbody>
                 <tr class="py-1">
-                    <td class="">{{ $director_name }}</td>
-                    <td class=" text-right">{{ $dean_name }}</td>
+                    <td class="text-center">{{ $registrar }}</td>
                 </tr>
             </tbody>
         </table>
