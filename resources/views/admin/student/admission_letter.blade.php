@@ -30,7 +30,7 @@
         </div>
         <table class="table-stripped">
             <thead class="py-1 text-capitalize">
-                <th class="">{{ __('text.the_registrar') }}</th>
+                <th class=" text-center">{{ __('text.the_registrar') }}</th>
             </thead>
             <tbody>
                 <tr class="py-1">

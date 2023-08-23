@@ -1165,7 +1165,7 @@ class ProgramController extends Controller
             $data['title'] = "ADMISSION LETTER";
             $data['name'] = $appl->name;
             $data['matric'] =  $appl->matric;
-            $data['director_name'] = $config->director??null;
+            $data['registrar'] = "Mandi Derick Ediange";
             $data['dean_name'] = $config->dean??null;
             $data['fee1_dateline'] = $config->fee1_latest_date;
             $data['fee2_dateline'] = $config->fee2_latest_date;
