@@ -972,5 +972,6 @@ return [
     'word_director'=>'director',
     'word_dean'=>'dean',
     'help_email'=>'help email',
+    'admission_letter'=>'admission letter',
     ''
 ];

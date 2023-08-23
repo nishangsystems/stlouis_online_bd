@@ -1260,7 +1260,7 @@ class ProgramController extends Controller
                     $phone_number = '237'.$phone_number;
                 }
                 // dd($phone_number);
-                $message="You have been admitted into ST. LOUIS UNIVERSITY INSTITUTE today ".now()->format(DATE_RFC2822)." with registration number $application->matric";
+                $message="Congratulations {$application->name}. You have been admitted into ST LOUIS UNIVERSITY INSTITUTE for {$application->year->name} . Access your admission portal to download your admission letter";
                 $sent = $this->sendSMS($phone_number, $message);
 
                 // Send student admission letter to email

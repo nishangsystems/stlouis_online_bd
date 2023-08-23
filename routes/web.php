@@ -285,6 +285,8 @@ Route::prefix('student')->name('student.')->middleware('isStudent')->group(funct
     Route::post('application/submit/{id?}', [StudentHomeController::class, 'submit_application_save']);
     Route::get('application/form/download/{id?}', [StudentHomeController::class, 'download_application_form'])->name('application.form.download');
     Route::post('application/form/download/{id?}', [StudentHomeController::class, 'download_form']);
+    Route::get('application/admission_letter/download/{id?}', [StudentHomeController::class, 'download_admission_letter'])->name('application.admission_letter.download');
+    Route::post('application/admission_letter/download/{id?}', [StudentHomeController::class, 'download_admission_letter_save']);
     Route::get('application/payment/processing/{form_id}', [StudentHomeController::class, 'pending_payment'])->name('application.payment.processing');
     Route::get('application/payment/complete/{form_id}', [StudentHomeController::class, 'pending_complete'])->name('application.payment.complete');
     Route::post('application/payment/complete/{form_id}', [StudentHomeController::class, 'pending_complete']);

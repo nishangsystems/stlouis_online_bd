@@ -563,4 +563,46 @@ class HomeController extends Controller
         }
         return view('student.online.payment_data', $data);
     }
+
+    public function download_admission_letter()
+    {
+        # code...
+        $data['title'] = "Download Admission Letter";
+        $data['_this'] = $this;
+        $data['applications'] = auth('student')->user()->applicationForms->where('admitted', 1);
+        // return $data;
+        return view('student.online.admission_letter', $data);
+    }
+
+    public function download_admission_letter_save(Request $request, $appl_id)
+    {
+        $appl = ApplicationForm::find($appl_id);
+        if($appl != null){
+            $campus = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first()??null;
+            $program = collect(json_decode($this->api_service->programs())->data)->where('id', $appl->program_first_choice)->first()??null;
+            $degree = collect(json_decode($this->api_service->degrees())->data)->where('id', $appl->degree_id)->first()??null;
+            $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
+
+            $data['platform_links'] = [
+                'BONABERI'=>'https://bnb.stlouissystems.org',
+                'BONAMOUSSADI'=>'https://bms.stlouissystems.org',
+                'YAOUNDE'=>'https://yde.stlouissystems.org',
+            ];
+
+            $data['title'] = "ADMISSION LETTER";
+            $data['name'] = $appl->name;
+            $data['matric'] =  $appl->matric;
+            $data['director_name'] = $config->director??null;
+            $data['dean_name'] = $config->dean??null;
+            $data['fee1_dateline'] = $config->fee1_latest_date;
+            $data['fee2_dateline'] = $config->fee2_latest_date;
+            $data['help_email'] =  $config->help_email;
+            $data['campus'] = $campus->name??null;
+            $data['program'] = $program->name??null;
+            $data['degree'] = $degree->deg_name??null;
+    
+            $pdf = Pdf::loadView('admin.student.admission_letter', $data);
+            return $pdf->download($appl->matric.'_ADMISSION_LETTER.pdf');            
+        }
+    }
 }
