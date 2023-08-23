@@ -1134,17 +1134,20 @@ class ProgramController extends Controller
             $data['title'] = "Send Student Admission Letter";
             $data['_this'] = $this;
             $data['action'] = __('text.word_send');
+            $data['download'] = __('text.word_download');
             $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', 1)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
-        
+        if($request->has('_atn')){
+            return $this->send_admission_letter($id, $request->_atn);
+        }
         if($this->send_admission_letter($id)){
             return back()->with('success', __('text.word_done'));
         }
         return back()->with('error', __('text.operation_failed'));
     }
 
-    public function send_admission_letter($id)
+    public function send_admission_letter($id, $action = null)
     {
         $appl = ApplicationForm::find($id);
         if($appl != null){
@@ -1152,6 +1155,22 @@ class ProgramController extends Controller
             $program = collect(json_decode($this->api_service->programs())->data)->where('id', $appl->program_first_choice)->first()??null;
             $degree = collect(json_decode($this->api_service->degrees())->data)->where('id', $appl->degree_id)->first()??null;
             $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
+
+            $degrees = [
+                ["id"=> 1, "deg_name"=> "CERTIFICATE", "amount"=> 5000],
+                ["id"=> 2, "deg_name"=> "HND ", "amount"=> 5000],
+                ["id"=> 3, "deg_name"=> "BACHELOR ", "amount"=> 10000],
+                ["id"=> 4, "deg_name"=> "BTS", "amount"=> 5000],
+                ["id"=> 5, "deg_name"=> "ENGINEERING", "amount"=> 5000],
+                ["id"=> 6, "deg_name"=> "MASTER DEGREE PROGRAMS", "amount"=> 10000]
+            ];
+            $campuses = [
+                ["name"=> "BONABERI", "address"=> "Before Nestle", "telephone"=> "679135426", "school_id"=> 1],
+                ["name"=> "BONAMOUSSADI", "address"=> "Rond Point Maetur", "telephone"=> "679135426", "school_id"=> 1],
+                ["name"=> "YAOUNDE", "address"=> "DEPOT DE BOIS SIMBOCK", "telephone"=> "679201766", "school_id"=> 1],
+                ["name"=> "BAMENDA", "address"=> "Mile 3 Nkwen", "telephone"=> "679135426", "school_id"=> 1],
+                ["name"=> "NDU", "address"=> "Buea", "telephone"=> "679135426", "school_id"=> 1]
+                ];
 
             $data['title'] = "ADMISSION LETTER";
             $data['name'] = $appl->name;
@@ -1166,6 +1185,9 @@ class ProgramController extends Controller
             $data['degree'] = $degree->deg_name??null;
     
             $pdf = Pdf::loadView('admin.student.admission_letter', $data);
+            if($action == '_dld'){
+                return $pdf->download($appl->matric.'_ADMISSION_LETTER.pdf');
+            }
             $this->sendAdmissionEmails($appl->name, $appl->email, $appl->matric, $program->name??null, $campus->name??null, $config->fee1_latest_date, $config->fee2_latest_date, $config->director, $config->dean, $config->help_email, $pdf, $degree->deg_name??null);
             return true;
         }

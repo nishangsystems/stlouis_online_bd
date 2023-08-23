@@ -5,7 +5,6 @@
 @endphp
 @section('section')
 <div class="mx-3">
-
     <div class="mt-5 py-3 text-center">
         <h2 class="text-primary text-uppercase py-3">{{__('text.transaction_initialized')}}</h3>
         <div class="h3 mt-4 py-5 text-dark bg-light border-top border-bottom border-2 border-primary rounded">{{__('text.pending_transaction_prase')}}</div>
