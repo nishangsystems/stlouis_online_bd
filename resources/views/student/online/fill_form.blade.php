@@ -17,7 +17,7 @@
                                 </select>
                             </div>
                             <div class="col-sm-12 col-md-6">
-                                <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.word_degree') }}</span></label>
+                                <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.applying_for_phrase') }}</span></label>
                                 <select name="degree_id" class="form-control text-primary"  id="degree_types">  
                                     @if($application->degree_id != null)
                                                                                     

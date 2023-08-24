@@ -162,6 +162,8 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     // APPLICATION PLATFORM ROUTES ONLY
     Route::get('admission/campus/degrees/{cid?}', [ProgramController::class, 'config_degrees'])->name('admission.campus.degrees');
     Route::post('admission/campus/degrees/{cid?}', [ProgramController::class, 'set_config_degrees']);
+    Route::get('admission/degree/certificates/{degree_id?}', [ProgramController::class, 'degree_certificates'])->name('admission.degree.certificates');
+    Route::post('admission/degree/certificates/{degree_id?}', [ProgramController::class, 'set_degree_certificates']);
     Route::get('admission/open/{id?}', [ProgramController::class, 'open_admission'])->name('admission.open');
     Route::post('admission/open/{id?}', [ProgramController::class, 'set_open_admission']);
     Route::get('admission/programs/{cid?}', [ProgramController::class, 'config_programs'])->name('admission.programs.config');

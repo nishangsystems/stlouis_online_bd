@@ -104,4 +104,12 @@ class ApiService{
         return Http::post(Helpers::instance()->getApiRoot().'/'.config('api_routes.matric_exist'), ['matric'=>$matric])->body();
         // return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.max_matric').'/'.$prefix)->body();
     }
+
+    public function degree_certificates($degree_id){
+        return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.degree_certificates')."/{$degree_id}")->body();
+    }
+
+    public function set_degree_certificates($degree_id, array $certificate_ids){
+        return Http::post(Helpers::instance()->getApiRoot().'/'.config('api_routes.degree_certificates')."/{$degree_id}", ['certificates'=>$certificate_ids])->body();
+    }
 }

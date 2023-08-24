@@ -17,5 +17,6 @@ return [
     'update_student'=>'student/update', ///{student_id?}
     'max_matric'=>'matrics/highest', ///{pref}
     'set_root'=>'_api/root/create',
-    'matric_exist'=>'matric/exists'
+    'matric_exist'=>'matric/exists',
+    'degree_certificates'=>'degree/certificates', ///{degree_id}
 ];

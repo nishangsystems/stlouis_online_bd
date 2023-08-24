@@ -1171,8 +1171,8 @@ class ProgramController extends Controller
             $data['fee2_dateline'] = $config->fee2_latest_date;
             $data['help_email'] =  $config->help_email;
             $data['campus'] = $campus->name??null;
-            $data['program'] = $program->name??null;
             $data['degree'] = $degree->deg_name??null;
+            $data['program'] = str_replace($data['degree'], ' ', $program->name??"");
     
             $pdf = Pdf::loadView('admin.student.admission_letter', $data);
             if($action == '_dld'){
@@ -1448,6 +1448,33 @@ class ProgramController extends Controller
 
     private function sendAdmissionEmails($name, $email, $matric, $program, $campus, $fee1_dateline, $fee2_dateline, $director_name, $dean_name, $help_email, $file, $degree){
         Mail::to($email)->send(new AdmissionMail($name, $campus, $program, $matric,  $fee1_dateline, $fee2_dateline, $help_email, $director_name, $dean_name, $degree,  $file, config('platform_links')[$campus]));
+    }
+
+    public function degree_certificates($degree_id = null)
+    {
+        # code...
+        $data['title'] = __('text.configure_degree_certificates');
+        $data['degrees'] = json_decode($this->api_service->degrees())->data;
+        $data['certificates'] = json_decode($this->api_service->certificates())->data;
+        if($degree_id != null){
+            $data['degree_certificates'] = collect(json_decode($this->api_service->degree_certificates($degree_id))->data)->pluck('id')->toArray();
+        }
+        // dd($data);
+        return view('admin.setting.degree_certs', $data);
+    }
+
+    public function set_degree_certificates(Request $request, $degree_id)
+    {
+        # code...
+        $validator = Validator::make($request->all(), ['certificates'=>'required|array']);
+        if($validator->fails()){
+            return back()->with('error', $validator->errors()->first());
+        }
+        $certificate_ids = $request->certificates;
+        $response = json_decode($this->api_service->set_degree_certificates($degree_id, $certificate_ids));
+        if($response->status == 'success'){return back()->with('success', __('text.word_done'));}else{
+            return back()->with('error', $response->message);
+        }
     }
 
 }

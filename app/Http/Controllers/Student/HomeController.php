@@ -218,9 +218,13 @@ class HomeController extends Controller
                 $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
             }
             if($data['application']->degree_id != null){
-                $data['certs'] = json_decode($this->api_service->certificates())->data;
+                // dd(json_decode($this->api_service->degree_certificates($data['application']->degree_id)));
+                $certs = json_decode($this->api_service->degree_certificates($data['application']->degree_id))->data;
+                if(is_array($certs) && count($certs)>0){ $data['certs'] = $certs;
+                }else{ $data['certs'] = json_decode($this->api_service->certificates())->data; }
             }
             if($data['application']->entry_qualification != null){
+                // dd($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification));
                 $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
                 $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
             }
@@ -233,7 +237,7 @@ class HomeController extends Controller
             $data['title'] = (isset($data['degree']) and ($data['degree'] != null)) ? $data['degree']->deg_name." APPLICATION FOR DOUALA-BONABERI" : "APPLICATION FOR DOUALA-BONABERI";
             return view('student.online.fill_form', $data);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
             return back()->with('error', $th->getMessage());
         }
     }
@@ -597,8 +601,8 @@ class HomeController extends Controller
             $data['fee2_dateline'] = $config->fee2_latest_date;
             $data['help_email'] =  $config->help_email;
             $data['campus'] = $campus->name??null;
-            $data['program'] = $program->name??null;
             $data['degree'] = $degree->deg_name??null;
+            $data['program'] = str_replace($data['degree'], ' ', $program->name??"");
     
             $pdf = Pdf::loadView('admin.student.admission_letter', $data);
             return $pdf->download($appl->matric.'_ADMISSION_LETTER.pdf');            

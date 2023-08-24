@@ -956,9 +956,9 @@ return [
     'word_show'=>'show',
     'program_of_choice'=>'program of choice',
     'admission_letter_phrase1'=>'Dear Mr/Mrs/Miss <b><i>:name</i></b>',
-    'admission_letter_phrase2'=>'We are writing to you with reference to your application for admission into St Louis University Institute <b><i>:campus</i></b> for the <b><i>:degree</i></b> program in <b><i>:program</i></b> . After reviewing your records, we are pleased to inform you that you have been granted admission with the Matriculation Number <b><i>:matric</i></b>. This admission is provisional, pending your completion of administrative procedures. <br> Please take note of the following information which is related to your admission and registration;',
+    'admission_letter_phrase2'=>'We are writing to you with reference to your application for admission into St Louis University Institute <b><i>:campus</i></b> for <b><i>:degree</i></b> in <b><i>:program</i></b> . After reviewing your records, we are pleased to inform you that you have been granted admission with the Matriculation Number <b><i>:matric</i></b>. This admission is provisional, pending your completion of administrative procedures. <br> Please take note of the following information which is related to your admission and registration;',
     'admission_letter_phrase3'=>'If you cannot at the time of registration produce the original copies of your certificates and other credentials this offer of admission may be revoked.',
-    'admission_letter_phrase4'=>'The first instalment (<b><i>at least 50%</i></b>) of the tuition fee must be paid on or before  the<b><i> :date1,</i></b> otherwise, you stand the chance to be revoked of your studentship while the second and the last instalment must be paid on or before the <b><i>:date2 </i></b>.',
+    'admission_letter_phrase4'=>'The first instalment (<b><i>at least 50%</i></b>) of the tuition fee must be paid on or before  the<b><i> :date1,</i></b> while the second and the last instalment must be paid on or before the <b><i>:date2 </i></b>.',
     'admission_letter_phrase5'=>'It is mandatory for you to attend the orientation program for new students as will be scheduled.',
     'admission_letter_phrase6'=>'We congratulate you for your admission and welcome you into St Louis University Institute .In case there is the need for more information or clarification, please contact email us at <b><i>:email</i></b>',
     'admission_letter_phrase7'=>'Login information; <i>Username <b>:matric</b>, password <b>12345678</b></i>.',
@@ -974,5 +974,8 @@ return [
     'help_email'=>'help email',
     'admission_letter'=>'admission letter',
     'the_registrar'=>'the registrar',
+    'applying_for_phrase'=>'applying for (what you want to do)',
+    'degree_certificates'=>'degree certificates',
+    'configure_degree_certificates'=>'configure degree certificates',
     ''
 ];
