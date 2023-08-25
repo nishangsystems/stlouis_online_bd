@@ -106,6 +106,7 @@ class ApiService{
     }
 
     public function degree_certificates($degree_id){
+        dd(Helpers::instance()->getApiRoot().'/'.config('api_routes.degree_certificates')."/{$degree_id}");
         return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.degree_certificates')."/{$degree_id}")->body();
     }
 
