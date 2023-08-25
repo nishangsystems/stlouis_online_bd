@@ -106,8 +106,8 @@ class ApiService{
     }
 
     public function degree_certificates($degree_id){
-        dd(Helpers::instance()->getApiRoot().'/'.config('api_routes.degree_certificates')."/{$degree_id}");
-        return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.degree_certificates')."/{$degree_id}")->body();
+        dd(Helpers::instance()->getApiRoot().'/'.config('api_routes.degree_certificates')."/".$degree_id);
+        return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.degree_certificates').'/'.$degree_id)->body();
     }
 
     public function set_degree_certificates($degree_id, array $certificate_ids){
