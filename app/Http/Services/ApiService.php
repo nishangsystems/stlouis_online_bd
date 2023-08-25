@@ -111,6 +111,6 @@ class ApiService{
     }
 
     public function set_degree_certificates($degree_id, array $certificate_ids){
-        return Http::post(Helpers::instance()->getApiRoot().'/'.config('api_routes.degree_certificates')."/{$degree_id}", ['certificates'=>$certificate_ids])->body();
+        return Http::post(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id, ['certificates'=>$certificate_ids])->body();
     }
 }
