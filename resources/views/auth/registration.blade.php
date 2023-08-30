@@ -104,6 +104,25 @@
 			<div class="py-5 mx-5 w-100" style="padding: 2rem;">
 				<h4> <span style="color:#DBA622; text-transform: uppercase">{{__('text.stlo_portal')}}</span></h4>
 			</div>
+			<div style="max-height: 65vh; overflow:auto">
+				@if(Session::has('success'))
+					<div class="alert alert-success fade in">
+						<strong>Success!</strong> {{Session::get('success')}}
+					</div>
+				@endif
+
+				@if(Session::has('error'))
+					<div class="alert alert-danger fade in">
+						<strong>Error!</strong> {{Session::get('error')}}
+					</div>
+				@endif
+
+				@if(Session::has('message'))
+					<div class="alert alert-primary fade in">
+						<strong>Message!</strong> {!! Session::get('message') !!}
+					</div>
+				@endif
+			</div>
 			<div class="main-content">
 				<div class="w-100">
 					<div class="login-container" id="login-frame">
