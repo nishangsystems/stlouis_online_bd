@@ -12,7 +12,7 @@ class MailService{
     public function sendPlainMail($subject, $message, $data=[])//data['name', 'email']
     {
         # code...
-        Mail::to($data['email'])->send(new NotifyMail($subject, $message, $data));
+        // Mail::to($data['email'])->send(new NotifyMail($subject, $message, $data));
     }
 
     public function sendMailWithFile()

@@ -150,11 +150,11 @@
 													</span>
 												</label>
 
-												{{-- <label class="block clearfix">
+												<label class="block clearfix">
 													<span class="block input-icon input-icon-right" style="text-transform: capitalize;">
-														<input type="checkbox" name="remember_matric">  {{__('text.enter_payment_details')}}
+														<input type="checkbox" name="is_parent">  {{__('text.create_parent')}}
 													</span>
-												</label> --}}
+												</label>
 
 												<div class="clearfix">
 													<button type="submit" class="form-control btn-black btn-sm"  style="border-radius: 2rem; background-color: black; border: 1px solid black; color: white; text-transform: capitalize; margin-block: 2rem;">

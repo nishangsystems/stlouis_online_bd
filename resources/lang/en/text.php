@@ -977,5 +977,6 @@ return [
     'applying_for_phrase'=>'applying for (what you want to do)',
     'degree_certificates'=>'degree certificates',
     'configure_degree_certificates'=>'configure degree certificates',
+    'create_parent'=>'create parent',
     ''
 ];
