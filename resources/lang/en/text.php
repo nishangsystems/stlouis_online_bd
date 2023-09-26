@@ -978,5 +978,11 @@ return [
     'degree_certificates'=>'degree certificates',
     'configure_degree_certificates'=>'configure degree certificates',
     'create_parent'=>'create parent',
+
+
+
+
+    
+    'by_campus'=>'by campus',
     ''
 ];

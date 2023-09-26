@@ -1407,16 +1407,22 @@ class ProgramController extends Controller
     public function applications_per_program(Request $request, $program_id = null)
     {
         # code...
+        $campus_id = auth()->user()->campus_id;
         if($program_id == null){
             // select program
             $data['title'] = "Select Program";
+            $data['campus_id'] = $campus_id;
             $data['programs'] = json_decode($this->api_service->programs())->data??[];
             return view('admin.student.program_applications', $data);
         }else{
             $progs = collect(json_decode($this->api_service->programs())->data);
             $data['title'] = $progs->where('id', $program_id)->first()->name." Applications";
             $data['progs'] = $progs;
-            $data['appls'] = ApplicationForm::where('program_first_choice', $program_id)->get();
+            if($campus_id != null){
+                $data['appls'] = ApplicationForm::where('program_first_choice', $program_id)->whereNotNull('transaction_id')->where('campus_id', $campus_id)->get();
+            }else{
+                $data['appls'] = ApplicationForm::where('program_first_choice', $program_id)->whereNotNull('transaction_id')->get();
+            }
             return view('admin.student.program_applications', $data);
         }
     }
@@ -1424,18 +1430,45 @@ class ProgramController extends Controller
     public function applications_per_degree(Request $request, $degree_id = null)
     {
         # code...
+        $campus_id = auth()->user()->campus_id;
         if($degree_id == null){
             $data['title'] = "Select Degree type";
+            $data['campus_id'] = $campus_id;
             $data['degrees'] = json_decode($this->api_service->degrees())->data??[];
             return view('admin.student.degree_applications', $data);
         }else{
             $progs = collect(json_decode($this->api_service->programs())->data);
             $degs = collect(json_decode($this->api_service->degrees())->data);
-            $data['title'] = $degs->where('id', $degree_id)->first()->name.' Applications';
+            // dd($degs->where('id', $degree_id)->first());
+            $data['title'] = $degs->where('id', $degree_id)->first()->deg_name.' Applications';
             $data['progs'] = $progs;
-            $data['appls'] = ApplicationForm::where('degree_id', $degree_id)->get();
+            if($campus_id != null){
+                $data['appls'] = ApplicationForm::where('degree_id', $degree_id)->whereNotNull('transaction_id')->where('campus_id', $campus_id)->get();
+            }else{
+                $data['appls'] = ApplicationForm::where('degree_id', $degree_id)->whereNotNull('transaction_id')->get();
+            }
             return view('admin.student.degree_applications', $data);
         }
+    }
+
+    public function applications_per_campus($campus_id = null)
+    {
+        # code...
+        $campuses = collect(json_decode($this->api_service->campuses())->data);
+        // dd($campuses);
+        if($campus_id == null){
+            $data['campuses'] = ApplicationForm::select(['campus_id', DB::raw('COUNT(id) as applicants')])->whereNotNull('transaction_id')->groupBy('campus_id')->get()->map(function($row)use($campuses){
+                $row->campus_name = $campuses->where('id', $row->campus_id)->first()->name??'';
+                return $row;
+            });
+            $data['title'] = "Applications per Campus";
+        }else{
+            $data['title'] = 'Applications for '.$campuses->where('id', $campus_id)->first()->name??null;
+            $data['appls'] = ApplicationForm::where('campus_id', $campus_id)->whereNotNull('transaction_id')->orderBy('name')->get();
+            $data['progs'] = collect(json_decode($this->api_service->programs())->data);
+        }
+        // dd($data);
+        return view('admin.student.campus_applications', $data);
     }
 
     public function finance_general_report(Request $request)
@@ -1476,5 +1509,7 @@ class ProgramController extends Controller
             return back()->with('error', $response->message);
         }
     }
+
+    
 
 }

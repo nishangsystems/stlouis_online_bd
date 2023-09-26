@@ -1,26 +1,22 @@
 @extends('admin.layout')
 @section('section')
     <div class="py-3">
-        @if(isset($degrees))
+        @if(isset($campuses))
             <table class="table">
                 <thead class="text-uppercase border-bottom">
                     <th class="border-left border-right">{{ __('text.sn') }}</th>
-                    <th class="border-left border-right">{{ __('text.word_degree') }}</th>
+                    <th class="border-left border-right">{{ __('text.word_campus') }}</th>
                     <th class="border-left border-right">{{ __('text.word_count') }}</th>
                     <th class="border-left border-right"></th>
                 </thead>
                 <tbody>
                     @php($k = 1)
-                    @foreach ($degrees as $deg)
+                    @foreach ($campuses as $campus)
                         <tr class="border-bottom">
                             <td class="border-left border-right">{{ $k++ }}</td>
-                            <td class="border-left border-right">{{ $deg->deg_name }}</td>
-                            @if($campus_id != null)
-                            <td class="border-left border-right">{{ \App\Models\ApplicationForm::where('degree_id', $deg->id)->whereNotNull('transaction_id')->where('campus_id', $campus_id)->count() }}</td>
-                            @else
-                            <td class="border-left border-right">{{ \App\Models\ApplicationForm::where('degree_id', $deg->id)->whereNotNull('transaction_id')->count() }}</td>
-                            @endif
-                            <td class="border-left border-right"><a class="btn btn-sm btn-primary text-capitalize" href="{{ route('admin.applications.by_degree', ['id'=>$deg->id]) }}">{{ __('text.word_all') }}</a></td>
+                            <td class="border-left border-right">{{ $campus->campus_name }}</td>
+                            <td class="border-left border-right">{{ $campus->applicants }}</td>
+                            <td class="border-left border-right"><a class="btn btn-sm btn-primary text-capitalize" href="{{ route('admin.applications.by_campus', $campus->campus_id) }}">{{ __('text.word_all') }}</a></td>
                         </tr>
                     @endforeach
                 </tbody>
