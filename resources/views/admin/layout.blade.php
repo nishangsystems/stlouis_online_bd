@@ -411,16 +411,14 @@
 
                                 <b class="arrow"></b>
                             </li>
-                            @if(auth()->user()->campus_id == null)
-                                <li>
-                                    <a href="{{route('admin.applications.by_campus')}}" class="text-capitalize">
-                                        <i class="menu-icon fa fa-caret-right"></i>
-                                        {{__('text.by_campus')}}
-                                    </a>
+                            <li>
+                                <a href="{{route('admin.applications.by_campus')}}" class="text-capitalize">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    {{__('text.by_campus')}}
+                                </a>
 
-                                    <b class="arrow"></b>
-                                </li>
-                            @endif
+                                <b class="arrow"></b>
+                            </li>
                         </ul>
                     </li>
                 </ul>

@@ -1457,10 +1457,18 @@ class ProgramController extends Controller
         $campuses = collect(json_decode($this->api_service->campuses())->data);
         // dd($campuses);
         if($campus_id == null){
-            $data['campuses'] = ApplicationForm::select(['campus_id', DB::raw('COUNT(id) as applicants')])->whereNotNull('transaction_id')->groupBy('campus_id')->get()->map(function($row)use($campuses){
-                $row->campus_name = $campuses->where('id', $row->campus_id)->first()->name??'';
-                return $row;
-            });
+            $campus = auth()->user()->campus_id;
+            if($campus == null){
+                $data['campuses'] = ApplicationForm::select(['campus_id', DB::raw('COUNT(id) as applicants')])->whereNotNull('transaction_id')->groupBy('campus_id')->get()->map(function($row)use($campuses){
+                    $row->campus_name = $campuses->where('id', $row->campus_id)->first()->name??'';
+                    return $row;
+                });
+            }else{
+                $data['campuses'] = ApplicationForm::select(['campus_id', DB::raw('COUNT(id) as applicants')])->whereNotNull('transaction_id')->where('campus_id', $campus)->groupBy('campus_id')->get()->map(function($row)use($campuses){
+                    $row->campus_name = $campuses->where('id', $row->campus_id)->first()->name??'';
+                    return $row;
+                });
+            }
             $data['title'] = "Applications per Campus";
         }else{
             $data['title'] = 'Applications for '.$campuses->where('id', $campus_id)->first()->name??null;
