@@ -124,7 +124,7 @@
                         <span class="nav-user-photo fa fa-globe"></span>
                         <span>
                             <small class="text-capitalize text-white">
-                                {{\Auth::user()->campus_id ? \App\Models\Campus::find(\Auth::user()->campus_id)->name : 'campus'}}
+                                {{\Auth::user()->campus_id ? $campuses->where('id', \Auth::user()->campus_id)->first()->name : 'campus'}}
                             </small>
 						</span>
                     </span>
