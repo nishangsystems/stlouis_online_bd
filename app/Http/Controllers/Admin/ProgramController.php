@@ -1149,6 +1149,10 @@ class ProgramController extends Controller
 
     public function send_admission_letter($id, $action = null)
     {
+        // TEMPORARILY HALTING SENDING OF ADMISSION LETTERS
+        return true;
+
+        
         $appl = ApplicationForm::find($id);
         if($appl != null){
             $campus = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first()??null;
@@ -1215,7 +1219,9 @@ class ProgramController extends Controller
                     }else{
                         $max_count = intval(substr($max_matric, strlen($prefix)+4));
                     }
-                    $next_count = substr('0000'.($max_count+1), -4);
+
+                    NEXT_MATRIC:
+                    $next_count = substr('0000'.(++$max_count), -4);
                     $student_matric = $prefix.'/'.$year.'/'.$next_count;
                     // dd($student_matric);
                     if(ApplicationForm::where('matric', $student_matric)->where('id', '!=', $id)->count() == 0){
@@ -1225,6 +1231,9 @@ class ProgramController extends Controller
                         $data['matricule'] = $student_matric;
                         $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $application->campus_id)->first();
                         return view('admin.student.confirm_admission', $data);
+                    }else{
+                        # code...
+                        goto NEXT_MATRIC;
                     }
                     return back()->with('error', 'Failed to generate matricule');
                 }
@@ -1236,12 +1245,14 @@ class ProgramController extends Controller
     public function admit_student(Request $request, $id)
     {
 
+        
         $validity = Validator::make($request->all(), ['matric'=>'required']);
         if($validity->fails()){
             return back()->with('error', 'Missing matricule');
         }
         $application = ApplicationForm::find($id);
 
+        // dd($application);
         // POST STUDENT TO SCHOOL SYSTEM
         $application->matric = $request->matric;
 

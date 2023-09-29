@@ -32,7 +32,8 @@ class ApiService{
 
     // Store/update admitted student
     public function store_student($student,  $id= null){
-        return Http::contentType('application/json')->get(Helpers::instance()->getApiRoot().'/'.config('api_routes.store_student') .'?student='.json_encode($student) )->body();
+        return Http::contentType('application/json')->post(Helpers::instance()->getApiRoot().'/'.config('api_routes.store_student'), ['student'=>json_encode($student)])->body();
+        // return Http::contentType('application/json')->get(Helpers::instance()->getApiRoot().'/'.config('api_routes.store_student') .'?student='.json_encode($student) )->body();
     }
 
     // Store/update admitted student
