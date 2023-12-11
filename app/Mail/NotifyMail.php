@@ -20,9 +20,9 @@ class NotifyMail extends Mailable
     public function __construct($subject, $message, $data)
     {
         //
-        $this->subject = $subject;
-        $this->message = $message;
-        $this->data = $data;
+        // $this->subject = $subject;
+        // $this->message = $message;
+        // $this->data = $data;
     }
 
     /**
@@ -32,6 +32,6 @@ class NotifyMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.notify', ['message'=>$this->message, 'data'=>$this->data]);
+        // return $this->view('mail.notify', ['message'=>$this->message, 'data'=>$this->data]);
     }
 }
