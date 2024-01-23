@@ -343,14 +343,14 @@
 
                         <b class="arrow"></b>
                     </li>
-                    {{-- <li>
+                    <li>
                         <a href="{{route('admin.applications.admission_letter')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.admission_letters')}}
                         </a>
 
                         <b class="arrow"></b>
-                    </li> --}}
+                    </li>
                     <li>
                         <a href="{{route('admin.applications.change_program')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
