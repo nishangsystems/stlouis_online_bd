@@ -41,7 +41,7 @@
                                     <a href="{{ Request::url().'/'.$appl->id }}" class="btn btn-xs btn-primary mt-1">{{ $action }}</a>
                                 @endif --}}
                                 @if(isset($download))
-                                   <a href="{{ route('admin.applications.print_form', $appl->id) }}" class="btn btn-xs btn-primary mt-1">{{ $download }}</a>
+                                   <a href="{{ Request::url() }}/{{  $appl->id }}?_atn=_dld" class="btn btn-xs btn-primary mt-1">{{ $download }}</a>
                                 @endif
                             </td>
                         </tr>
