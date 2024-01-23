@@ -999,6 +999,7 @@ class ProgramController extends Controller
     public function print_application_form(Request $request, $id = null)
     {
         # code...
+        // dd(123);
         if($id == null){
             $data['title'] = "Print Student Application Form";
             $data['_this'] = $this;
@@ -1129,6 +1130,7 @@ class ProgramController extends Controller
     public function admission_letter(Request $request, $id = null)
     {
 
+        // return back();
         # code...
         if($id == null){
             $data['title'] = "Send Student Admission Letter";
@@ -1153,39 +1155,39 @@ class ProgramController extends Controller
         return true;
 
         
-        $appl = ApplicationForm::find($id);
-        if($appl != null){
-            $campus = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first()??null;
-            $program = collect(json_decode($this->api_service->programs())->data)->where('id', $appl->program_first_choice)->first()??null;
-            $degree = collect(json_decode($this->api_service->degrees())->data)->where('id', $appl->degree_id)->first()??null;
-            $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
+        // $appl = ApplicationForm::find($id);
+        // if($appl != null){
+        //     $campus = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first()??null;
+        //     $program = collect(json_decode($this->api_service->programs())->data)->where('id', $appl->program_first_choice)->first()??null;
+        //     $degree = collect(json_decode($this->api_service->degrees())->data)->where('id', $appl->degree_id)->first()??null;
+        //     $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
 
-            $data['platform_links'] = [
-                'BONABERI'=>'https://bnb.stlouissystems.org',
-                'BONAMOUSSADI'=>'https://bms.stlouissystems.org',
-                'YAOUNDE'=>'https://yde.stlouissystems.org',
-            ];
+        //     $data['platform_links'] = [
+        //         'BONABERI'=>'https://bnb.stlouissystems.org',
+        //         'BONAMOUSSADI'=>'https://bms.stlouissystems.org',
+        //         'YAOUNDE'=>'https://yde.stlouissystems.org',
+        //     ];
 
-            $data['title'] = "ADMISSION LETTER";
-            $data['name'] = $appl->name;
-            $data['matric'] =  $appl->matric;
-            $data['registrar'] = "Mandi Derick Ediange";
-            $data['dean_name'] = $config->dean??null;
-            $data['fee1_dateline'] = $config->fee1_latest_date;
-            $data['fee2_dateline'] = $config->fee2_latest_date;
-            $data['help_email'] =  $config->help_email;
-            $data['campus'] = $campus->name??null;
-            $data['degree'] = $degree->deg_name??null;
-            $data['program'] = str_replace($data['degree'], ' ', $program->name??"");
+        //     $data['title'] = "ADMISSION LETTER";
+        //     $data['name'] = $appl->name;
+        //     $data['matric'] =  $appl->matric;
+        //     $data['registrar'] = "Mandi Derick Ediange";
+        //     $data['dean_name'] = $config->dean??null;
+        //     $data['fee1_dateline'] = $config->fee1_latest_date;
+        //     $data['fee2_dateline'] = $config->fee2_latest_date;
+        //     $data['help_email'] =  $config->help_email;
+        //     $data['campus'] = $campus->name??null;
+        //     $data['degree'] = $degree->deg_name??null;
+        //     $data['program'] = str_replace($data['degree'], ' ', $program->name??"");
     
-            $pdf = Pdf::loadView('admin.student.admission_letter', $data);
-            if($action == '_dld'){
-                return $pdf->download($appl->matric.'_ADMISSION_LETTER.pdf');
-            }
-            $this->sendAdmissionEmails($appl->name, $appl->email, $appl->matric, $program->name??null, $campus->name??null, $config->fee1_latest_date, $config->fee2_latest_date, $config->director, $config->dean, $config->help_email, $pdf, $degree->deg_name??null);
-            return true;
-        }
-        return false;
+        //     $pdf = Pdf::loadView('admin.student.admission_letter', $data);
+        //     if($action == '_dld'){
+        //         return $pdf->download($appl->matric.'_ADMISSION_LETTER.pdf');
+        //     }
+        //     $this->sendAdmissionEmails($appl->name, $appl->email, $appl->matric, $program->name??null, $campus->name??null, $config->fee1_latest_date, $config->fee2_latest_date, $config->director, $config->dean, $config->help_email, $pdf, $degree->deg_name??null);
+        //     return true;
+        // }
+        // return false;
     }
 
     public function admit_application_form(Request $request, $id=null)
