@@ -235,73 +235,7 @@ class Helpers
 
 
     
-    public function ca_total_isset($class_id)
-    {
-        # code...
-        $class = ProgramLevel::find($class_id);
-        $_isset = $class->program->ca_total != null || $class->program->ca_total != 0;
-        return $_isset;
-    }
-
-    public function exam_total_isset($class_id)
-    {
-        # code...
-        $class = ProgramLevel::find($class_id);
-        $_isset = $class->program->exam_total != null || $class->program->exam_total != 0;
-        return $_isset;
-    }
-
-    public function ca_total($class_id)
-    {
-        # code...
-        $class = ProgramLevel::find($class_id);
-        return $class->program->ca_total;
-    }
-
-    public function exam_total($class_id)
-    {
-        # code...
-        $class = ProgramLevel::find($class_id);
-        return $class->program->exam_total;
-    }
-
-    public function open_resits()
-    {
-        # code...
-        $resits = Resit::whereDate('start_date', '<=', date('m/d/Y', time()))->whereDate('end_date', '>=', date('m/d/Y', time()))->get();
-        return $resits;
-    }
-
-    public function resit_available($class_id, $campus_id = null)
-    {
-        # code...
-        $class = ProgramLevel::find($class_id);
-        $campus = $campus_id == null ? auth('student')->user()->campus_id : $campus_id;
-        // dd($class);
-        $resits = $class->program->background->resits()->where(['year_id' => Helpers::instance()->getCurrentAccademicYear(), 'campus_id'=>$campus, 'background_id'=>$class->program->background->id])->get();
-        foreach ($resits as $key => $resit) {
-            # code...
-            if(now()->between(Carbon::createFromDate($resit->start_date), Carbon::createFromDate($resit->end_date)))
-            return true;
-        }
-        return false;
-    }
-
-    public function available_resit($class_id, $campus_id = null)
-    {
-        # code...
-        $class = ProgramLevel::find($class_id);
-        $campus = $campus_id == null ? auth('student')->user()->campus_id : $campus_id;
-        // dd($class);
-        $resits = $class->program->background->resits()->where(['year_id' => Helpers::instance()->getCurrentAccademicYear(), 'campus_id'=>$campus, 'background_id'=>$class->program->background->id])->get();
-        foreach ($resits as $key => $resit) {
-            # code...
-            if(now()->between(Carbon::createFromDate($resit->start_date), Carbon::createFromDate($resit->end_date)))
-            return $resit;
-        }
-        return null;
-    }
-
+    
     public function has_paid_platform_charges($year_id = null)
     {
         # code...
@@ -324,36 +258,7 @@ class Helpers
         }
     }
 
-    public function has_paid_result_charges($student_id, $semester_id, $year_id)
-    {
-        # code...
-        $year = $year_id;
-        // $class = Students::find($student_id)->_class();
-
-
-        // check if student has payed result charges for the given accademic year
-        if(Charge::where(['year_id'=>$year, 'student_id'=>$student_id, 'type'=>'RESULTS', 'semester_id'=>$semester_id])->count() > 0){
-            // student has paid platform charges
-            return true;
-        }
-        return false;
-    }
-
-    public function has_paid_transcript_charges($student_id, $semester_id, $year_id)
-    {
-        # code...
-        $year = $year_id;
-        // $class = Students::find($student_id)->_class();
-
-
-        // check if student has payed result charges for the given accademic year
-        if(Charge::where(['year_id'=>$year, 'student_id'=>$student_id, 'type'=>'RESULTS', 'semester_id'=>$semester_id])->count() > 0){
-            // student has paid platform charges
-            return true;
-        }
-        return false;
-    }
-
+    
     public function year_listing()
     {
         # code...

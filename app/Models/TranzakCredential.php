@@ -12,4 +12,6 @@ class TranzakCredential extends Model
     protected $connection = 'mysql2';
 
     protected $table = 'tranzak_credentials';
+
+    protected $fillable = ['api_key', 'app_id', 'cache_token_key', 'cache_token_expiry_key', 'campus_id'];
 }

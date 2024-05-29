@@ -198,7 +198,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 });
 
 
-Route::prefix('student')->name('student.')->middleware('isStudent')->group(function () {
+Route::prefix('student')->name('student.')->middleware(['isStudent', 'plcharge'])->group(function () {
     Route::get('', 'Student\HomeController@index')->name('home');
     Route::get('edit_profile', 'Student\HomeController@edit_profile')->name('edit_profile');
     Route::post('update_profile', 'Student\HomeController@update_profile')->name('update_profile');
@@ -294,10 +294,14 @@ Route::prefix('student')->name('student.')->middleware('isStudent')->group(funct
     Route::get('application/payment/complete/{form_id}', [StudentHomeController::class, 'pending_complete'])->name('application.payment.complete');
     Route::post('application/payment/complete/{form_id}', [StudentHomeController::class, 'pending_complete']);
 });
-// Route::post('student/charges/pay', 'Student\HomeController@pay_charges_save')->name('student.charge.pay');
-Route::get('platform/pay', 'Student\HomeController@pay_platform_charges')->name('platform_charge.pay')->middleware('isStudent');
+
+Route::post('student/charges/pay', 'Student\HomeController@pay_charges_save')->name('student.charge.pay');
+Route::get('student/platform/pay', 'Student\HomeController@pay_platform_charges')->name('student.platform_charge.pay');
 Route::get('student/charges/complete_transaction/{ts_id}', 'Student\HomeController@complete_charges_transaction')->name('student.charges.complete');
 Route::get('student/charges/failed_transaction/{ts_id}', 'Student\HomeController@failed_charges_transaction')->name('student.charges.failed');
+Route::get('student/tranzak/processing', 'Student\HomeController@tranzak_payment_processing')->name('student.tranzak.processing');
+Route::post('student/tranzak/complete', 'Student\HomeController@tranzak_complete')->name('student.tranzak.complete');
+
 
 Route::get('section-children/{parent}', 'HomeController@children')->name('section-children');
 Route::get('section-subjects/{parent}', 'HomeController@subjects')->name('section-subjects');
