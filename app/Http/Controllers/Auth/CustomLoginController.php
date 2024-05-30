@@ -55,30 +55,27 @@ class CustomLoginController extends Controller
             
             $up = Students::where('matric', $request->username)->update($update);
              if (User::where('username', $request->username)->exists()) {  
-            $update1['name'] = $request->name;
-            $update1['email'] = $request->email;
-            $update1['username'] = $request->username;
-            $update1['type'] = 'student';
-            $update1['password'] = Hash::make($request->password);
-            
-            $up1 = User::where('username', $request->username)->update($update1);
-             }else{
-                 $insert['name'] = $request->name;
+                $update1['name'] = $request->name;
+                $update1['email'] = $request->email;
+                $update1['username'] = $request->username;
+                $update1['type'] = 'student';
+                $update1['password'] = Hash::make($request->password);
+                
+                $up1 = User::where('username', $request->username)->update($update1);
+
+                auth()->login($up1->id);
+            }else{
+                $insert['name'] = $request->name;
                 $insert['email'] = $request->email;
                 $insert['username'] = $request->username;
                 $insert['type'] = 'student';
                 $insert['gender'] = '';
                 $insert['password'] = Hash::make($request->password);
             
-            $up2 = User::create($insert);
-             }
-        //      if( Auth::guard('student')->attempt(['matric'=>$request->username,'password'=>$request->password], $request->remember)){
-        //     // return "Spot 1";
-        //     return redirect()->intended(route('student.home'));
-        // }else{
-        //     return redirect()->route('login')->with('s','Account created successfully.');   
-        // }
-            return redirect()->route('login')->with('s','Account created successfully.');   
+                $up2 = User::create($insert);
+                auth()->login($up2->id);
+            }
+            return redirect()->route('student.home')->with('s','Account created successfully.');   
             //return redirect()->route('student.home')->with('s','Account created successfully.');   
             
           }

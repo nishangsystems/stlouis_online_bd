@@ -838,7 +838,7 @@ class HomeController extends Controller
                     
                     ($pending = \App\Models\PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
                     DB::commit();
-                    return redirect(route('student.home'))->with('success', "Payment successful.");
+                    return redirect(route('student.application.start', ['step'=>0]))->with('success', "Payment successful.");
                     break;
                 
                 case 'CANCELLED':
