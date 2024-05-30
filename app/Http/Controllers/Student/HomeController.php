@@ -338,6 +338,7 @@ class HomeController extends Controller
             $headers = ['Authorization'=>'Bearer '.cache($tranzak_credentials->cache_token_key)];
             $request_data = ['mobileWalletNumber'=>'237'.$request->momo_number, 'mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE"];
             $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
+            dd($_response->collect());
             if($_response->status() == 200){
 
                 session()->put('processing_tranzak_transaction_details', json_encode(json_decode($_response->body())->data));
