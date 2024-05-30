@@ -324,8 +324,8 @@ class HomeController extends Controller
             $tranzak_credentials = TranzakCredential::where('campus_id', $application->campus_id)->first();
             if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
                 // get and cache different token
-                dd($request->all());
-
+                // dd($request->all());
+                REQUEST_TOKEN:
                 $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>$tranzak_credentials->app_id, 'appKey'=>$tranzak_credentials->api_key]);
                 if($response->status() == 200){
                     // return json_decode($response->body())->data;
@@ -338,7 +338,10 @@ class HomeController extends Controller
             $headers = ['Authorization'=>'Bearer '.cache($tranzak_credentials->cache_token_key)];
             $request_data = ['mobileWalletNumber'=>'237'.$request->momo_number, 'mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE"];
             $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
-            dd($_response->collect());
+            // dd($_response->collect());
+            if(count($_response->collect()['data']) == 0){
+                goto REQUEST_TOKEN;
+            }
             if($_response->status() == 200){
 
                 session()->put('processing_tranzak_transaction_details', json_encode(json_decode($_response->body())->data));
