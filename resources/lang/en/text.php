@@ -984,5 +984,9 @@ return [
 
     
     'by_campus'=>'by campus',
+    'bypass_platform_charge'=>'bypass platform charges',
+    'bypass_application_fee'=>'bypass aplication fee',
+    'bypass_platform'=>'bypass platform',
+    'bypass_application'=>'bypass aplication',
     ''
 ];

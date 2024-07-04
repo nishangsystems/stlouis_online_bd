@@ -195,6 +195,11 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('program/{program?}', [ProgramController::class, 'applicants_report_by_program'])->name('applicants.by_program');
         Route::get('finance/general', [ProgramController::class, 'finance_report_general'])->name('applicants.by_program');
     });
+
+    Route::get('platform/bypass/{student_id?}', [AdminHomeController::class, 'bypass_platform_charges'])->name('platform.bypass');
+    Route::post('platform/bypass/{student_id?}', [AdminHomeController::class, 'bypass_save_platform_charges']);
+    Route::get('application/bypass/{form_id?}', [AdminHomeController::class, 'bypass_application_fee'])->name('application.bypass');
+    Route::post('application/bypass/{form_id?}', [AdminHomeController::class, 'bypass_save_application_fee']);
 });
 
 

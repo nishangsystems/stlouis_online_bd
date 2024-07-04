@@ -37,9 +37,9 @@
                             <td class="border-left border-right">{{ $programs->where('id', $appl->program_first_choice)->first()->name??null }}</td>
                             <td class="border-left border-right">{{ $programs->where('id', $appl->program_second_choice)->first()->name??null }}</td>
                             <td class="border-left border-right">
-                                {{-- @if(isset($action))
+                                @if(isset($action))
                                     <a href="{{ Request::url().'/'.$appl->id }}" class="btn btn-xs btn-primary mt-1">{{ $action }}</a>
-                                @endif --}}
+                                @endif
                                 @if(isset($download))
                                    <a href="{{ Request::url() }}/{{  $appl->id }}?_atn=_dld" class="btn btn-xs btn-primary mt-1">{{ $download }}</a>
                                 @endif

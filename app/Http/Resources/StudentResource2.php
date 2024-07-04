@@ -20,8 +20,6 @@ class StudentResource2 extends JsonResource
         return [
             'name' => $this->name,
             'matric' => $this->matric,
-            'link' => route('admin.fee.student.payments.index', [$this->id]),
-            'rlink' => route('admin.print_fee.student', [$this->id]),
         ];
     }
 }

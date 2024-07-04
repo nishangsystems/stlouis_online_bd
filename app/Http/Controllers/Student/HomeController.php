@@ -320,17 +320,19 @@ class HomeController extends Controller
         }
         elseif($step ==7){
             // dd($request->all());
+            $tk_counter = 0;
             $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
             $tranzak_credentials = TranzakCredential::where('campus_id', $application->campus_id)->first();
             if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
                 // get and cache different token
                 // dd($request->all());
                 REQUEST_TOKEN:
+                $tk_counter++;
                 $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>$tranzak_credentials->app_id, 'appKey'=>$tranzak_credentials->api_key]);
                 if($response->status() == 200){
                     // return json_decode($response->body())->data;
                     // return Carbon::createFromTimestamp(time() + json_decode($response->body())->data->expiresIn);
-                    // cache token and token expirationtot session
+                    // cache token and token expiration to session
                     cache([$tranzak_credentials->cache_token_key => json_decode($response->body())->data->token]);
                     cache([$tranzak_credentials->cache_token_expiry_key=>Carbon::createFromTimestamp(time() + json_decode($response->body())->data->expiresIn)]);
                 }
@@ -339,13 +341,17 @@ class HomeController extends Controller
             $request_data = ['mobileWalletNumber'=>'237'.$request->momo_number, 'mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE"];
             $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
             // dd($_response->collect());
-            if(count($_response->collect()['data']) == 0){
+            if(count($_response->collect()['data']) == 0 and $tk_counter == 0){
                 goto REQUEST_TOKEN;
             }
             if($_response->status() == 200){
 
                 session()->put('processing_tranzak_transaction_details', json_encode(json_decode($_response->body())->data));
                 session()->put('tranzak_credentials', json_encode($tranzak_credentials));
+                // create pending transaction
+                $applxn = ApplicationForm::find($application_id);
+                $data = ['student_id'=>auth('student')->id(), 'form_id'=>$application_id, 'requestId'=>$_response->collect()['data']['requestId'], 'payment_id'=>$applxn->degree_id??null, 'year_id'=>$applxn->year_id, 'campus_id'=>$applxn->campus_id, 'purpose'=>'APPLICATION', 'transaction'=>json_encode($_response->collect()['data'])];
+                \App\Models\PendingTranzakTransaction::create($data);
                 return redirect()->to(route('student.application.payment.processing', $application_id));
             }
 
@@ -756,6 +762,7 @@ class HomeController extends Controller
         
         // MAKE API CALL TO PERFORM PAYMENT OF APPLICATION FEE
         // check if token exist and hasn't expired or get new token otherwise
+        $counter = 0;
         $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
         $tranzak_credentials = \App\Models\TranzakCredential::where('campus_id', 0)->first();
         if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
@@ -765,6 +772,7 @@ class HomeController extends Controller
                 cache([$tranzak_credentials->cache_token_key => json_decode($response->body())->data->token]);
                 cache([$tranzak_credentials->cache_token_expiry_key=>Carbon::createFromTimestamp(time() + json_decode($response->body())->data->expiresIn)]);
             }
+            $counter++;
         }
 
         $tel = strlen($request->tel) >= 12 ? $request->tel : '237'.$request->tel;
@@ -775,22 +783,19 @@ class HomeController extends Controller
         if($_response->collect()['success'] == true){
 
             // create pending transaction
-            $resp_data = $_response->collect()['data'];
-            $pending_tranzaktion = [
-                "request_id"=>$resp_data['requestId'],"amount"=>$resp_data['amount'],"currency_code"=>$resp_data['currencyCode'],"description"=>$resp_data['description'],"transaction_ref"=>$resp_data['mchTransactionRef'],"app_id"=>$resp_data['appId'], 'transaction_time'=>$resp_data['createdAt'],'user_type'=>'student', 'purpose'=>$request->payment_purpose,
-                "payment_id"=>$request->payment_id,"student_id"=>auth('student')->id(),"batch_id"=>$request->year_id,'unit_id'=>0,"original_amount"=>$request->amount,"reference_number"=>'platform.tranzak_momo_payment_'.time().'_'.random_int(100000, 999999).'_'.auth('student')->id(), 'paid_by'=>'TRANZAK_MOMO'
-            ];
-            $pt_instance = new \App\Models\PendingTranzakTransaction($pending_tranzaktion);
-            $pt_instance->save();
+
+            $data = ['purpose'=>$request->payment_purpose, 'requestId'=>$_response->collect()['data']['requestId'], "payment_id"=>$request->payment_id,"year_id"=>$request->year_id,  'student_id'=>auth('student')->id(), 'campus_id'=>0, 'transaction'=>json_encode($_response->collect()['data'])];
+            \App\Models\PendingTranzakTransaction::create($data);
+            \Illuminate\Support\Facades\Log::channel('payment_follower')->info("Pending a payment : ".json_encode($data));
 
             session()->put('processing_tranzak_transaction_details', json_encode($_response->collect()['data']));
             session()->put('tranzak_credentials', json_encode($tranzak_credentials));
             return redirect()->to(route('student.tranzak.processing', $request->payment_purpose));
         }else {
-            goto GEN_TOKEN;
+            if($counter <= 3)
+                goto GEN_TOKEN;
+            else return back()->with('error', 'Payment service could not be authenticated. Token generation failed');
         }
-        return back()->with('error', 'Unknown error occured');
-
     }
 
     //-----------------
@@ -813,6 +818,8 @@ class HomeController extends Controller
             // return $request;
             // dd(session()->get('processing_tranzak_transaction_details'));
             // dd($request->all());
+
+            $pending = \App\Models\PendingTranzakTransaction::where('requestId', $request->requestId)->first();
             switch ($request->status) {
                 case 'SUCCESSFUL':
                     # code...
@@ -836,7 +843,7 @@ class HomeController extends Controller
                     $message = "Hello ".(auth('student')->user()->name??'').", You have successfully paid a sum of ".($transaction_instance->amount??'')." as ".($trans->payment_purpose??'')." for ".($transaction_instance->year->name??'')." ST.LOUIS UNIVERSITY INSTITUTE.";
                     // $this->sendSmsNotificaition($message, [auth('student')->user()->phone]);
                     
-                    ($pending = \App\Models\PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
+                    $pending != null ? $pending->delete() : null;
                     DB::commit();
                     return redirect(route('student.application.start', ['step'=>0]))->with('success', "Payment successful.");
                     break;
@@ -844,19 +851,19 @@ class HomeController extends Controller
                 case 'CANCELLED':
                     # code...
                     // notify user
-                    ($pending = \App\Models\PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
+                    $pending != null ? $pending->delete() : null;
                     return redirect(route('student.home'))->with('message', 'Payment Not Made. The request was cancelled.');
                     break;
                 
                 case 'FAILED':
                     # code...
-                    ($pending = \App\Models\PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
+                    $pending != null ? $pending->delete() : null;
                     return redirect(route('student.home'))->with('error', 'Payment failed.');
                     break;
                 
                 case 'REVERSED':
                     # code...
-                    ($pending = \App\Models\PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
+                    $pending != null ? $pending->delete() : null;
                     return redirect(route('student.home'))->with('message', 'Payment failed. The request was reversed.');
                     break;
                 

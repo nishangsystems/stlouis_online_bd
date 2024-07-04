@@ -217,6 +217,7 @@
             </div>
         </div><!-- /.sidebar-shortcuts -->
         <ul class="nav nav-list">
+        
             <li>
                 <a
                     href="{{route('admin.home')}}">
@@ -225,8 +226,7 @@
                 </a>
                 <b class="arrow"></b>
             </li>
-            
-            
+              
             @if (\Auth::user()->hasPermissionTo('basic_settings'))
             <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
@@ -370,7 +370,6 @@
                 </ul>
             </li>
             @endif
-
             
             @if (\Auth::user()->hasPermissionTo('access_reports'))
             <li>
@@ -516,7 +515,6 @@
                 </ul>
             </li>
             @endif
-
             
             @if (\Auth::user()->hasPermissionTo('manage_user'))
             <li>
@@ -550,11 +548,18 @@
             </li>
             @endif
         
-            
-            <li>
-                <a href="{{route('admin.reset_password')}}" class="text-capitalize">
+            {{-- <li>
+                <a href="{{route('admin.application.bypass')}}" class="text-capitalize">
                     <i  style="color: {{$bg1}};" class="fa fa-refresh menu-icon   "></i>
-                    {{__('text.reset_password')}}
+                    {{__('text.bypass_application')}}
+                </a>
+                <b class="arrow"></b>
+            </li>
+             --}}
+            <li>
+                <a href="{{route('admin.platform.bypass')}}" class="text-capitalize">
+                    <i  style="color: {{$bg1}};" class="fa fa-refresh menu-icon   "></i>
+                    {{__('text.bypass_platform')}}
                 </a>
                 <b class="arrow"></b>
             </li>
@@ -567,6 +572,15 @@
                 </a>
                 <b class="arrow"></b>
             </li>
+
+            <li>
+                <a href="{{route('admin.reset_password')}}" class="text-capitalize">
+                    <i  style="color: {{$bg1}};" class="fa fa-refresh menu-icon   "></i>
+                    {{__('text.reset_password')}}
+                </a>
+                <b class="arrow"></b>
+            </li>
+
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 {{ csrf_field() }}
             </form>

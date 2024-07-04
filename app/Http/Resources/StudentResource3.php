@@ -21,9 +21,6 @@ class StudentResource3 extends JsonResource
             'id'=> $this->id,
             'name' => $this->name,
             'matric' => $this->matric,
-            'campus' => \App\Models\Campus::find($this->campus_id)->name,
-            'link' => route('admin.fee.student.payments.create', [$this->id]),
-            'rlink' => route('admin.print_fee.student', [$this->id]),
         ];
     }
 }

@@ -19,13 +19,7 @@ class StudentResource extends JsonResource
         $stud = Students::find($this->id);
         return [
             'name' => $this->name,
-            'link' => route('admin.fee.student.payments.index', [$this->id]),
-            'rlink' => route('admin.print_fee.student', [$this->id]),
-            'bal' => $stud->bal([$this->id]),
-            'total' => $stud->total($stud->id),
-            'class' => $stud->class(Helpers::instance()->getYear())->name,
-            'paid' => $stud->paid(),
-            'scholarship' => Helpers::instance()->getStudentScholarshipAmount($this->id)
+         
         ];
     }
 }

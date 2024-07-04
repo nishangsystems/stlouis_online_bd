@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StudentFee;
+use App\Models\ApplicationForm;
 use App\Models\Background;
 use App\Models\Batch;
 use App\Models\CampusSemesterConfig;
@@ -487,5 +488,46 @@ class HomeController  extends Controller
             $wage->delete();
             return back()->with('success', __('text.word_done'));
         }
+    }
+
+    public function bypass_platform_charges(Request $request, $student_id = null)
+    {
+        # code...
+        $data['title'] = "Bypass Student Platform Charges";
+        if($student_id != null){
+            $data['student'] = Students::find($student_id);
+            $data['title'] = "Bypass Student Platform Charges For ".$data['student']->name??'';
+        }
+        return view('admin.student.bypass_platform_charges', $data);
+    }
+
+    public function bypass_save_platform_charges(Request $request,  $student_id)
+    {
+        # code...
+        $plcharge  = PlatformCharge::where('year_id', $this->current_accademic_year)->first();
+        $check = ['year_id'=>$this->current_accademic_year??Helpers::instance()->getCurrentAccademicYear(), 'student_id'=>$student_id, 'parent'=>0, 'type'=>'PLATFORM'];
+        if(\App\Models\Charge::where($check)->count() > 0){
+            return back()->with('message', "Student has already paid for platform charges");
+        }
+        $data = ['year_id'=>$this->current_accademic_year??Helpers::instance()->getCurrentAccademicYear(), 'student_id'=>$student_id, 'amount'=>$plcharge->amount??0, 'item_id'=>$plcharge->id??null, 'parent'=>0, 'type'=>'PLATFORM', 'used'=>1, 'financialTransactionId'=>time().'_'.$student_id.str_replace(' ', '_', $request->reason??'')];
+        $charge = new \App\Models\Charge($data);
+        $charge->save();
+        return back()->with('success', 'Done');
+    }
+
+    public function bypass_application_fee(Request $request, $form_id = null)
+    {
+        # code...
+        $data['title'] = "Bypass Student Application Fee";
+        if($form_id != null){
+            $data['form'] = ApplicationForm::find($form_id);
+            $data['title'] = "Bypass Student Application Fee For ".$data['form']->name;
+        }
+        return view('admin.student.bypass_application_fee', $data);
+    }
+
+    public function bypass_fee_application_fee(Request $request, $form_id)
+    {
+        # code...
     }
 }
