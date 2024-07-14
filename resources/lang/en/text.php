@@ -988,5 +988,6 @@ return [
     'bypass_application_fee'=>'bypass aplication fee',
     'bypass_platform'=>'bypass platform',
     'bypass_application'=>'bypass aplication',
+    'program_provision_status'=>'program provision status',
     ''
 ];

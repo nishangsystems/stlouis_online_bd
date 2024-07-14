@@ -115,4 +115,29 @@ class ApiService{
     public function set_degree_certificates($degree_id, array $certificate_ids){
         return Http::post(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id, ['certificates'=>$certificate_ids])->body();
     }
+
+    // ------------------------------------------------
+    // PROGRAM PROVISION STATUS MANAGEMENT STARTS HERE
+    // ------------------------------------------------
+
+    public function program_provision_status_settings($campus_id = null, $status = null){
+        return Http::get(Helpers::instance()->getApiRoot()."/program_provisioning/campus_propram_status?campus_id={$campus_id}&status={$status}")->collect();
+    }
+
+    public function program_provisioning_status_set(){
+        return Http::get(Helpers::instance()->getApiRoot()."/program_provisioning/all_status")->collect();
+    }
+
+    public function program_provision_status($program_id, $campus_id = null){
+        return Http::get(Helpers::instance()->getApiRoot()."/program_provisioning/program_status?program_id={$program_id}&campus_id={$campus_id}")->collect();
+    }
+
+    public function program_provision_student_statics($program_id=null, $campus_id=null, $year_id=null, $status=null){
+        return Http::get(Helpers::instance()->getApiRoot()."/program_provisioning/admission_status_statics?program_id={$program_id}&campus_id={$campus_id}&year_id={$year_id}&status={$status}")->collect();
+    }
+
+    public function campus_program_provision_update_status($data){
+        return Http::post(Helpers::instance()->getApiRoot()."/program_provisioning/update_campus_program_status", $data)->collect();
+    }
+
 }
