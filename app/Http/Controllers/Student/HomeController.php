@@ -49,7 +49,18 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('student.dashboard');
+        $data['title'] = "Program Provisions";
+        $data['status_set'] = $this->api_service->program_provisioning_status_set()['data'];
+        $status_collection = $this->api_service->program_provision_status_settings();
+        if($status_collection->has('message')){
+            session()->flash('error', $status_collection['message']);
+            $data['data'] = [];
+        }
+        if($status_collection->has(['data'])){
+            $data['data'] = $status_collection['data'];
+        }
+        // dd($data);
+        return view('student.dashboard', $data);
     }
 
     public function fee()
@@ -180,6 +191,7 @@ class HomeController extends Controller
                 $application->save();
             }
             $data['application'] = $application;
+            $data['status_set'] = $this->api_service->program_provisioning_status_set()['data'];
     
             if($data['application']->degree_id != null){
                 $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
@@ -194,8 +206,18 @@ class HomeController extends Controller
                 }else{ $data['certs'] = json_decode($this->api_service->certificates())->data; }
             }
             if($data['application']->entry_qualification != null){
-                // dd($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification));
-                $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
+                $program_status_config = $this->api_service->program_provision_status_settings($campus_id = $data['application']->campus_id, $status = $data['application']->program_status);
+                $programs = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
+                // dd($program_status_config);
+                if(($config = collect($program_status_config->get('data'))) != null){
+                    $config_programs = collect($config->first());
+                    $data['programs'] = collect($programs)->filter(function($rec)use($config_programs){
+                        return $config_programs->where('program_id', $rec->id)->count() > 0;
+                    });
+                }else{
+                    $data['programs'] = [];
+                }
+                // dd($data['programs']);
                 $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
             }
             if($data['application']->program_first_choice != null){

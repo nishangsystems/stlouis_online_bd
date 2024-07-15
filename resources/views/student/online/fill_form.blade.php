@@ -7,18 +7,27 @@
                     @csrf
                     <div class="px-5 py-5 border-top shadow bg-light">
                         <div class="row w-100">
-                            <div class="col-sm-12 col-md-6">
+                            <div class="col-sm-12 col-md-6 col-lg-4">
+                                <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.program_enrolment_status') }}</span></label>
+                                <select name="program_status" class="form-control text-primary" required>
+                                    <option>{{ __('text.word_status') }}</option>
+                                    @foreach ($status_set as $pset)
+                                        <option value="{{ $pset['name'] }}" {{ $application->program_status == $pset['name'] ? 'selected' : '' }}>{{ $pset['name'] }}</option>  
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-4">
                                 <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.word_campus') }}</span></label>
-                                <select name="campus_id" class="form-control text-primary"  oninput="setDegreeTypes(event)">
+                                <select name="campus_id" class="form-control text-primary" required oninput="setDegreeTypes(event)">
                                     <option>{{ __('text.select_campus') }}</option>
                                     @foreach ($campuses as $campus)
                                         <option value="{{ $campus->id }}" {{ $application->campus_id == $campus->id ? 'selected' : '' }}>{{ $campus->name }}</option>  
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-sm-12 col-md-6">
+                            <div class="col-sm-12 col-md-6 col-lg-4">
                                 <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.applying_for_phrase') }}</span></label>
-                                <select name="degree_id" class="form-control text-primary"  id="degree_types">  
+                                <select name="degree_id" class="form-control text-primary"  id="degree_types" required>  
                                     @if($application->degree_id != null)
                                                                                     
                                     @endif                                  
