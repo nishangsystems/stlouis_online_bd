@@ -14,5 +14,6 @@ return [
     'sub_accounts'=>'/mapi/xp021/v1/account/accounts',
     'transaction_notifications'=>'/xp021/v1/api-activity/notifications',
     'direct_payment_request'=>'/xp021/v1/request/create-mobile-wallet-charge',
-    'transaction_details'=>'/xp021/v1/request/details?requestId='
+    'transaction_details'=>'/xp021/v1/request/details?requestId=',
+    'web_redirect_payment'=>'/xp021/v1/request/create'
 ];

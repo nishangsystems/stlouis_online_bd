@@ -49,7 +49,18 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('student.dashboard');
+        $data['title'] = "Program Provisions";
+        $data['status_set'] = $this->api_service->program_provisioning_status_set()['data'];
+        $status_collection = $this->api_service->program_provision_status_settings();
+        if($status_collection->has('message')){
+            session()->flash('error', $status_collection['message']);
+            $data['data'] = [];
+        }
+        if($status_collection->has(['data'])){
+            $data['data'] = $status_collection['data'];
+        }
+        // dd($data);
+        return view('student.dashboard', $data);
     }
 
     public function fee()
@@ -180,6 +191,7 @@ class HomeController extends Controller
                 $application->save();
             }
             $data['application'] = $application;
+            $data['status_set'] = $this->api_service->program_provisioning_status_set()['data'];
     
             if($data['application']->degree_id != null){
                 $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
@@ -194,8 +206,18 @@ class HomeController extends Controller
                 }else{ $data['certs'] = json_decode($this->api_service->certificates())->data; }
             }
             if($data['application']->entry_qualification != null){
-                // dd($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification));
-                $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
+                $program_status_config = $this->api_service->program_provision_status_settings($campus_id = $data['application']->campus_id, $status = $data['application']->program_status);
+                $programs = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
+                // dd($program_status_config);
+                if(($config = collect($program_status_config->get('data'))) != null){
+                    $config_programs = collect($config->first());
+                    $data['programs'] = collect($programs)->filter(function($rec)use($config_programs){
+                        return $config_programs->where('program_id', $rec->id)->count() > 0;
+                    });
+                }else{
+                    $data['programs'] = [];
+                }
+                // dd($data['programs']);
                 $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
             }
             if($data['application']->program_first_choice != null){
@@ -281,7 +303,7 @@ class HomeController extends Controller
                 // return $request->all();
                 // momo-number validated with country code for cameroon: 237
                 $validity = Validator::make($request->all(), [
-                    "momo_number"=> "required|size:9", "amount"=> "required|numeric|min:1",
+                    "momo_number"=> "nullable|size:9", "amount"=> "nullable|numeric|min:1",
                     // "momo_screenshot"=> "file"
                 ]);
                 break;
@@ -338,21 +360,39 @@ class HomeController extends Controller
                 }
             }
             $headers = ['Authorization'=>'Bearer '.cache($tranzak_credentials->cache_token_key)];
-            $request_data = ['mobileWalletNumber'=>'237'.$request->momo_number, 'mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE"];
-            $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
+            if($request->channel == 'bank'){
+                $return_url = "192.168.2.196/NISHANG/ssp2_univ_apl_port/api/tranzak/web_redirect/return_callback";
+                // $request_data = ['mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE", 'returnUrl'=>$return_url, 'cancelUrl'=>$return_url];
+                $request_data = ['mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE", 'returnUrl'=>route('tranzak.return_url'), 'cancelUrl'=>route('tranzak.return_url')];
+                $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.web_redirect_payment'), $request_data);
+                if($_response->status() == 200){
+                    \Illuminate\Support\Facades\Log::info("_____________REQUEST_TO_PAY___".json_encode($_response->collect()->toArray())."______________.");
+                    
+                    session()->put('processing_tranzak_transaction_details', json_encode(json_decode($_response->body())->data));
+                    session()->put('tranzak_credentials', json_encode($tranzak_credentials));
+                    $applxn = ApplicationForm::find($application_id);
+                    $data = ['student_id'=>auth('student')->id(), 'form_id'=>$application_id, 'requestId'=>$_response->collect()['data']['requestId'], 'payment_id'=>$applxn->degree_id??null, 'year_id'=>$applxn->year_id, 'campus_id'=>$applxn->campus_id, 'purpose'=>'APPLICATION', 'transaction'=>json_encode($_response->collect()['data'])];
+                    \App\Models\PendingTranzakTransaction::create($data);
+                    $payment_url = $_response->collect()['data']['links']['paymentAuthUrl'];
+                    return redirect()->to(route('student.application.payment.processing', $application_id)."?payment_url=".$payment_url);
+                }
+            }else{
+                $request_data = ['mobileWalletNumber'=>'237'.$request->momo_number, 'mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE"];
+                $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
+                if($_response->status() == 200){
+    
+                    session()->put('processing_tranzak_transaction_details', json_encode(json_decode($_response->body())->data));
+                    session()->put('tranzak_credentials', json_encode($tranzak_credentials));
+                    // create pending transaction
+                    $applxn = ApplicationForm::find($application_id);
+                    $data = ['student_id'=>auth('student')->id(), 'form_id'=>$application_id, 'requestId'=>$_response->collect()['data']['requestId'], 'payment_id'=>$applxn->degree_id??null, 'year_id'=>$applxn->year_id, 'campus_id'=>$applxn->campus_id, 'purpose'=>'APPLICATION', 'transaction'=>json_encode($_response->collect()['data'])];
+                    \App\Models\PendingTranzakTransaction::create($data);
+                    return redirect()->to(route('student.application.payment.processing', $application_id));
+                }
+            }
             // dd($_response->collect());
             if(count($_response->collect()['data']) == 0 and $tk_counter == 0){
                 goto REQUEST_TOKEN;
-            }
-            if($_response->status() == 200){
-
-                session()->put('processing_tranzak_transaction_details', json_encode(json_decode($_response->body())->data));
-                session()->put('tranzak_credentials', json_encode($tranzak_credentials));
-                // create pending transaction
-                $applxn = ApplicationForm::find($application_id);
-                $data = ['student_id'=>auth('student')->id(), 'form_id'=>$application_id, 'requestId'=>$_response->collect()['data']['requestId'], 'payment_id'=>$applxn->degree_id??null, 'year_id'=>$applxn->year_id, 'campus_id'=>$applxn->campus_id, 'purpose'=>'APPLICATION', 'transaction'=>json_encode($_response->collect()['data'])];
-                \App\Models\PendingTranzakTransaction::create($data);
-                return redirect()->to(route('student.application.payment.processing', $application_id));
             }
 
         }else{
@@ -386,6 +426,9 @@ class HomeController extends Controller
         }
         $data['title'] = "Processing Transaction";
         $data['form_id'] = $application_id;
+        if($request->payment_url != null){
+            $data['payment_url'] = $request->payment_url;
+        }
         $data['tranzak_credentials'] = json_decode(session()->get('tranzak_credentials'));
         $data['transaction'] = json_decode(session()->get('processing_tranzak_transaction_details'));
         // return $data;

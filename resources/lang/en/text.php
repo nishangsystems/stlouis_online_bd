@@ -988,5 +988,8 @@ return [
     'bypass_application_fee'=>'bypass aplication fee',
     'bypass_platform'=>'bypass platform',
     'bypass_application'=>'bypass aplication',
+    'program_provision_status'=>'program provision status',
+    'program_enrolment_status'=>'program enrolment status',
+    'bank_payment'=>'bank payment',
     ''
 ];
