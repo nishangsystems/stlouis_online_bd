@@ -20,9 +20,21 @@ $user = $user == null ? auth()->user() : $user;
     <div class="py-3">
         <div class="card">
             <div class="my-3 row card-body">
+<<<<<<< HEAD
                 <div class="col-md-6 col-lg-4">
                     
                 </div>
+=======
+                @foreach ($status_set as $sset)
+                    <div class="col-md-6 col-lg-4">
+                        <div class="m-2 rounded shadow py-2 px-3">
+                            <h4 class="title text-center">{{ $sset['name'] }}</h4>
+                            <hr class="my-2 border-top">
+                            <p>{{ $sset['description'] }}</p>
+                        </div>
+                    </div>
+                @endforeach
+>>>>>>> 7e441fe3f78738751693477becda04c4067aa889
             </div>
         </div>
         <div id="accordion" class="accordion-style1 panel-group">

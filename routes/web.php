@@ -16,10 +16,8 @@ use App\Models\Resit;
 use App\Models\StudentSubject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-use \App\Models\Subjects;
 
 Route::get('/clear', function () {
     echo Session::get('applocale');

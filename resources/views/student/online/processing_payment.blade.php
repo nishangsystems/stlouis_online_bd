@@ -42,12 +42,12 @@
             success: function(data){
                 // check if status is completed or failed
                 response_data = data.data
-                console.log(response_data);
+                // console.log(response_data);
                 if((response_data.status == "SUCCESSFUL") || (response_data.status == "CANCELLED") || (response_data.status == "FAILED") || (response_data.status == "REVERSED")){
                     url = "{{route('student.application.payment.complete', $form_id)}}";
                     let form_markup = `<form method="post" id="_temp_form" action="${url}" enctype="application/json">
                         @csrf`;
-                    console.log(Object.entries(response_data));
+                    // console.log(Object.entries(response_data));
                     Object.entries(response_data).forEach(element => {
                         if(element[1] !=null && typeof element[1] === "object"){
                             Object.entries(element[1]).forEach(sub_el =>{
@@ -66,5 +66,14 @@
             }
         });
     }, 5000);
+
+
+    if("{{ $payment_url }}" != null){
+        // alert("{{ $payment_url }}");
+        // let anchor = `<form id="redirector" method="get" action="{{ $payment_url }}" target="new"></form>`;
+        // $('#_temp_use').html(anchor);
+        // $('#redirector').submit();
+        window.open("{{ $payment_url }}", '_blank');
+    }
 </script>
 @endsection

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\TrnazakController;
 use App\Http\Controllers\ApiContoller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,5 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('tranzak/web_redirect/return_callback', [TrnazakController::class, 'web_redirect_payment_callback'])->name('tranzak.return_url');
 
 

@@ -766,12 +766,20 @@
                 @break
 
             @case(6)
-                <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [7, $application->id]) }}">
-                    @csrf
-                    <div class="py-2 row bg-light border-top shadow">
-                        
-                        <div class="col-sm-12 col-md-12 col-lg-12 d-flex">
-                            <div class="col-sm-10 col-md-8 col-lg-6 rounded bg-white py-5 my-3 shadow mx-auto">
+                <div class="py-2 row bg-light border-top shadow">
+                    
+                    <div class="col-sm-12 col-md-12 col-lg-12 d-flex">
+                        <div class="col-sm-10 col-md-8 col-lg-6 rounded bg-white py-5 my-3 shadow mx-auto">
+                            <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [7, $application->id]) }}">
+                                @csrf
+                                <input type="hidden" name="channel" value="bank">
+                                <input type="hidden" name="amount" value="{{ $degree->amount }}">
+                                <div class="py-5 d-flex justify-content-end">
+                                    <input type="submit" class="px-4 py-1 btn btn-lg rounded btn-primary text-capitalize" value="{{ __('text.bank_payment') }}">
+                                </div>
+                            </form>
+                            <form enctype="multipart/form-data" target="_blank" id="application_form" method="post" action="{{ route('student.application.start', [7, $application->id]) }}">
+                                @csrf
                                 <div class="py-4 text-info text-center ">You are about to make a payment of {{ $degree->amount }} CFA for application fee
                                 </div>
                                 <div class="py-3">
@@ -787,15 +795,15 @@
                                     </div>
                                 </div>
                                 <div class="py-5 d-flex justify-content-center">
-                                    <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-xs btn-danger">{{ __('text.word_back') }}</a>
-                                    <input type="submit" class="px-4 py-1 btn btn-xs btn-primary" value="{{ __('text.save_and_continue') }}">
+                                    <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-sm rounded-md btn-danger">{{ __('text.word_back') }}</a>
+                                    <input type="submit" class="px-4 py-1 btn btn-sm rounded-md btn-primary" value="{{ __('text.save_and_continue') }}">
                                 </div>
-                            </div>
+                            </form>
                         </div>
-                        
-                        
                     </div>
-                </form>
+                    
+                    
+                </div>
                 @break
         @endswitch
         {{-- <!-- <div class="py-2">

@@ -16,9 +16,9 @@
                             <td class="border-left border-right">{{ $k++ }}</td>
                             <td class="border-left border-right">{{ $prog->name }}</td>
                             @if ($campus_id != null)
-                                <td class="border-left border-right">{{ \App\Models\ApplicationForm::where('program_first_choice', $prog->id)->whereNotNull('transaction_id')->where('campus_id', $campus_id)->count() }}</td>
+                                <td class="border-left border-right">{{ \App\Models\ApplicationForm::where('program_first_choice', $prog->id)->where('year_id', \App\helpers\Helpers::instance()->getCurrentAccademicYear())->whereNotNull('transaction_id')->where('campus_id', $campus_id)->count() }}</td>
                             @else
-                                <td class="border-left border-right">{{ \App\Models\ApplicationForm::where('program_first_choice', $prog->id)->whereNotNull('transaction_id')->count() }}</td>
+                                <td class="border-left border-right">{{ \App\Models\ApplicationForm::where('program_first_choice', $prog->id)->where('year_id', \App\helpers\Helpers::instance()->getCurrentAccademicYear())->whereNotNull('transaction_id')->count() }}</td>
                             @endif
                             <td class="border-left border-right"><a class="btn btn-sm btn-primary text-capitalize" href="{{ route('admin.applications.by_program', ['id'=>$prog->id]) }}">{{ __('text.word_all') }}</a></td>
                         </tr>
