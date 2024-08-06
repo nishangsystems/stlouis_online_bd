@@ -1473,12 +1473,12 @@ class ProgramController extends Controller
         if($campus_id == null){
             $campus = auth()->user()->campus_id;
             if($campus == null){
-                $data['campuses'] = ApplicationForm::select(['campus_id', DB::raw('COUNT(id) as applicants')])->whereNotNull('transaction_id')->where('year_id', \App\helpers\Helpers::instance()->getCurrentAccademicYear())->groupBy('campus_id')->get()->map(function($row)use($campuses){
+                $data['campuses'] = ApplicationForm::where('year_id', \App\helpers\Helpers::instance()->getCurrentAccademicYear())->select(['campus_id', DB::raw('COUNT(id) as applicants')])->whereNotNull('transaction_id')->groupBy('campus_id')->get()->map(function($row)use($campuses){
                     $row->campus_name = $campuses->where('id', $row->campus_id)->first()->name??'';
                     return $row;
                 });
             }else{
-                $data['campuses'] = ApplicationForm::select(['campus_id', DB::raw('COUNT(id) as applicants')])->whereNotNull('transaction_id')->where('year_id', \App\helpers\Helpers::instance()->getCurrentAccademicYear())->where('campus_id', $campus)->groupBy('campus_id')->get()->map(function($row)use($campuses){
+                $data['campuses'] = ApplicationForm::where('year_id', \App\helpers\Helpers::instance()->getCurrentAccademicYear())->select(['campus_id', DB::raw('COUNT(id) as applicants')])->whereNotNull('transaction_id')->where('campus_id', $campus)->groupBy('campus_id')->get()->map(function($row)use($campuses){
                     $row->campus_name = $campuses->where('id', $row->campus_id)->first()->name??'';
                     return $row;
                 });
@@ -1497,7 +1497,7 @@ class ProgramController extends Controller
     {
         # code...
         $data['title'] = "General Financial Reports";
-        $data['appls'] = ApplicationForm::where('year_id', \App\helpers\Helpers::instance()->getCurrentAccademicYear())->get();
+        $data['appls'] = ApplicationForm::where(['year_id'=>\App\helpers\Helpers::instance()->getCurrentAccademicYear()])->get();
         return view('admin.student.finance_general', $data);
     }
 
