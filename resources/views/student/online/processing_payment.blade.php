@@ -68,7 +68,7 @@
     }, 5000);
 
 
-    if("{{ $payment_url }}" != null){
+    if("{{ $payment_url??null }}" != null){
         // alert("{{ $payment_url }}");
         // let anchor = `<form id="redirector" method="get" action="{{ $payment_url }}" target="new"></form>`;
         // $('#_temp_use').html(anchor);
