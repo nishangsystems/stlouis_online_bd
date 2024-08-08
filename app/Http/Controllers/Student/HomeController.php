@@ -426,9 +426,7 @@ class HomeController extends Controller
         }
         $data['title'] = "Processing Transaction";
         $data['form_id'] = $application_id;
-        if($request->payment_url != null){
-            $data['payment_url'] = $request->payment_url;
-        }
+        $data['payment_url'] = $request->payment_url??null;
         $data['tranzak_credentials'] = json_decode(session()->get('tranzak_credentials'));
         $data['transaction'] = json_decode(session()->get('processing_tranzak_transaction_details'));
         // return $data;
