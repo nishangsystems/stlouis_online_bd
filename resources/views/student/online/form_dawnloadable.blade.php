@@ -219,8 +219,8 @@
             <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">9</span>{{ __('text.declaration_by_candidate_bilang') }}</h4>
             {{-- pair start --}}
             <div class="py-2" style="font-size: large;">
-                <p class="py-2">{!! __('text.student_application_confirmation', ['name'=>($application->first_name??null) .' '. ($application->surname??null),'school'=>'ST LOUIS UNIVERSITY INSTITUTE, DOUALA.']) !!}</p>
-                <p class="py-2">{!! __('text.student_application_confirmation_french', ['name'=>($application->first_name??null) .' '. ($application->surname??null), 'school'=>'L’INSTITUT UNIERSITAIRE ST LOUIS, DOUALA.']) !!}</p>
+                <p class="py-2">{!! __('text.student_application_confirmation', ['name'=>($application->first_name??null) .' '. ($application->surname??null),'school'=>'ST LOUIS UNIVERSITY INSTITUTE.']) !!}</p>
+                <p class="py-2">{!! __('text.student_application_confirmation_french', ['name'=>($application->first_name??null) .' '. ($application->surname??null), 'school'=>'L’INSTITUT UNIERSITAIRE ST LOUIS.']) !!}</p>
             </div>
             {{-- pair end --}}
             
