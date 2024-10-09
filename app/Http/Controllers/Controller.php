@@ -38,11 +38,11 @@ class Controller extends BaseController
 
     var $current_accademic_year;
     var $api_service;
-    public function __construct(ApiService $apiService)
+    public function __construct(ApiService $apiService, Helpers $helpers)
     {
         # code...
         $this->api_service = $apiService;
-        $this->current_accademic_year = Helpers::instance()->getCurrentAccademicYear();
+        $this->current_accademic_year = $helpers->getCurrentAccademicYear();
         ini_set('max_execution_time', 360);
     }
 

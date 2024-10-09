@@ -505,11 +505,11 @@ class HomeController  extends Controller
     {
         # code...
         $plcharge  = PlatformCharge::where('year_id', $this->current_accademic_year)->first();
-        $check = ['year_id'=>$this->current_accademic_year??Helpers::instance()->getCurrentAccademicYear(), 'student_id'=>$student_id, 'parent'=>0, 'type'=>'PLATFORM'];
+        $check = ['year_id'=>$this->current_accademic_year, 'student_id'=>$student_id, 'type'=>'PLATFORM'];
         if(\App\Models\Charge::where($check)->count() > 0){
             return back()->with('message', "Student has already paid for platform charges");
         }
-        $data = ['year_id'=>$this->current_accademic_year??Helpers::instance()->getCurrentAccademicYear(), 'student_id'=>$student_id, 'amount'=>$plcharge->amount??0, 'item_id'=>$plcharge->id??null, 'parent'=>0, 'type'=>'PLATFORM', 'used'=>1, 'financialTransactionId'=>time().'_'.$student_id.str_replace(' ', '_', $request->reason??'')];
+        $data = ['year_id'=>$this->current_accademic_year, 'student_id'=>$student_id, 'amount'=>$plcharge->amount??0, 'item_id'=>$plcharge->id??null, 'parent'=>0, 'type'=>'PLATFORM', 'used'=>1, 'financialTransactionId'=>(time().'_'.$student_id.str_replace(' ', '_', $request->reason??''))];
         $charge = new \App\Models\Charge($data);
         $charge->save();
         return back()->with('success', 'Done');

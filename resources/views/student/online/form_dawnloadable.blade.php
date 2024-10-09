@@ -14,7 +14,7 @@
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.first_name_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->name??null }}</span>
+                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ substr( $application->name, strlen(explode(" ", $application->name)[0])+1) }}</span>
             </div>
             <div class="row py-2">
                 <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.date_of_birth_bilang') }}</span>
