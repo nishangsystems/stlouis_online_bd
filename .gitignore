@@ -15,6 +15,7 @@
 /public/assets/images/header.jpg
 /assets/images/header.jpg
 /assets/images/letter-head.jpeg
+/app/Http/Controllers/API/TrnazakController.php
 .env
 .env.backup
 env
