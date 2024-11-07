@@ -3,6 +3,7 @@
     <div class="py-4">
         <form enctype="multipart/form-data" id="application_form" method="post">
             @csrf
+            &Rang;
             <div class="py-2 row text-capitalize bg-light">
                 
                 <div class="py-2 col-sm-6 col-md-6 col-lg-6">
