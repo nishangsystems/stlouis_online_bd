@@ -125,7 +125,7 @@ class ApiService{
     }
 
     public function program_provisioning_status_set(){
-        // dd(Helpers::instance()->getApiRoot()."/program_provisioning/all_status");
+        dd(Http::get(Helpers::instance()->getApiRoot()."/program_provisioning/all_status"));
         return Http::get(Helpers::instance()->getApiRoot()."/program_provisioning/all_status")->collect();
     }
 
