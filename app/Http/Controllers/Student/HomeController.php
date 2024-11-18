@@ -50,6 +50,7 @@ class HomeController extends Controller
     public function index()
     {
         $data['title'] = "Program Provisions";
+        dd($this->api_service->program_provisioning_status_set());
         $data['status_set'] = $this->api_service->program_provisioning_status_set()['data'];
         $status_collection = $this->api_service->program_provision_status_settings();
         if($status_collection->has('message')){
