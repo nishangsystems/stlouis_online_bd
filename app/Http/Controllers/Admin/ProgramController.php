@@ -1396,9 +1396,9 @@ class ProgramController extends Controller
                 }
 
                 $check = 0;
-                $next_count = substr('0000'.($max_count+1), -4);
-
+                
                 NEXT_ATTEMPT:
+                $next_count = substr('0000'.($max_count+1), -4);
                 $student_matric = $prefix.'/'.$year.'/'.$next_count;
 
                 if(ApplicationForm::where('matric', $student_matric)->count() == 0){
@@ -1410,7 +1410,7 @@ class ProgramController extends Controller
                     return view('admin.student.confirm_change_program', $data);
                 }
                 if($check <= 5){
-                    $next_count++;
+                    $max_count++;
                     goto NEXT_ATTEMPT;
                     $check++;
                 }
