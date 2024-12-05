@@ -1404,7 +1404,7 @@ class ProgramController extends Controller
                     $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $application->campus_id)->first();
                     return view('admin.student.confirm_change_program', $data);
                 }
-                return back()->with('error', 'Failed to generate matricule');
+                return back()->with('error', "Failed to generate matricule. {$student_matric}");
             }
         }
         return back()->with('success', 'Done');
