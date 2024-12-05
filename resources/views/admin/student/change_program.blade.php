@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-4">
-                    <label class="text-secondary  text-capitalize">{{ __('text.first_choice_bilang') }}</label>
+                    <label class="text-secondary  text-capitalize">@lang('text.current_program')</label>
                     <div class="">
                         <select class="form-control text-primary"  name="current_program" required>
                             <option>{{ __('text.select_program') }}</option>
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-4">
-                    <label class=" text-secondary text-capitalize">{{ __('text.second_choice_bilang') }}</label>
+                    <label class=" text-secondary text-capitalize">@lang('text.new_program')</label>
                     <div class="">
                         <select class="form-control text-primary"  name="new_program" required oninput="loadCplevels(event)">
                             <option></option>

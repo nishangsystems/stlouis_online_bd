@@ -991,5 +991,7 @@ return [
     'program_provision_status'=>'program provision status',
     'program_enrolment_status'=>'program enrolment status',
     'bank_payment'=>'bank payment',
+    'current_program'=>'current program',
+    'new_program'=>'new program',
     ''
 ];
