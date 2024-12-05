@@ -1371,14 +1371,15 @@ class ProgramController extends Controller
             return back()->with('error', $validity->errors()->first());
         }
         $data = ['program_first_choice'=>$request->new_program, 'level'=>$request->level];
-        ApplicationForm::find($id)->update($data);
+        session()->put('program_change_update', $data);
+        // ApplicationForm::find($id)->update($data);
 
         // UPDATE STUDENT IN SCHOOL SYSTEM.
         // 
         // GENERATE MATRICULE
         $application = ApplicationForm::find($id);
         if(($programs = json_decode($this->api_service->programs())->data) != null){
-            $program = collect($programs)->where('id', $application->program_first_choice)->first()??null;
+            $program = collect($programs)->where('id', $request->new_program)->first()??null;
             if($program != null){
 
                 $year = substr(Batch::find(Helpers::instance()->getCurrentAccademicYear())->name, 2, 2);
@@ -1393,7 +1394,11 @@ class ProgramController extends Controller
                 }else{
                     $max_count = intval(substr($max_matric, strlen($prefix)+4));
                 }
+
+                $check = 0;
                 $next_count = substr('0000'.($max_count+1), -4);
+
+                NEXT_ATTEMPT:
                 $student_matric = $prefix.'/'.$year.'/'.$next_count;
 
                 if(ApplicationForm::where('matric', $student_matric)->count() == 0){
@@ -1403,6 +1408,11 @@ class ProgramController extends Controller
                     $data['matricule'] = $student_matric;
                     $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $application->campus_id)->first();
                     return view('admin.student.confirm_change_program', $data);
+                }
+                if($check <= 5){
+                    $next_count++;
+                    goto NEXT_ATTEMPT;
+                    $check++;
                 }
                 return back()->with('error', "Failed to generate matricule. {$student_matric}");
             }
@@ -1426,7 +1436,10 @@ class ProgramController extends Controller
         if($resp != null){
             if($resp->status ==1){
                 // $application->matric = $request->matric;
-                $application->update(['matric'=>$request->matric, 'admitted'=>1]);
+                $update_data = session()->get('program_change_update');
+                $update_data['matric'] = $request->matric;
+                $update_data['admitted'] = 1;
+                $application->update($update_data);
 
                 // Send sms/email notification
                 return redirect(route('admin.applications.admit'))->with('success', "Program changed successfully.");
