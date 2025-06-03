@@ -4,9 +4,29 @@
         $campuses = collect(json_decode($_this->api_service->campuses())->data);
         $degrees = collect(json_decode($_this->api_service->degrees())->data);
         $programs = collect(json_decode($_this->api_service->programs())->data);
+        $years = \App\Models\Batch::all();
     @endphp
     <div class="py-3">
         <div class="py-2">
+            <div class="container-fluid">
+                <form method="get">
+                    <div class="row">
+                        <div class="col-9">
+                            <select name="year_id" id="" class="form-control">
+                                <option class=""></option>
+                                @foreach($years as $year)
+                                    <option value="{{ $year->id }}">{{ $year->name }}</option>
+                                @endforeach
+                            </select>
+                            <small class="text-secondary"><i>@lang('text.word_year')</i></small>
+                        </div>
+                        <div class="col-3 d-flex justify-content-end">
+                            <span><button type="submit" class="btn btn-xs btn-primary rounded">@lang('text.word_filter')</button></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <hr>
             <table cellpadding="0" cellspacing="0" border="0" class="table table-light table-stripped" id="hidden-table-info">
                 <thead>
                     <tr class="text-capitalize border-bottom border-dark">

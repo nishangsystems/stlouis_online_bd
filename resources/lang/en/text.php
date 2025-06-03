@@ -993,5 +993,6 @@ return [
     'bank_payment'=>'bank payment',
     'current_program'=>'current program',
     'new_program'=>'new program',
+    'word_filter'=>'filter',
     ''
 ];

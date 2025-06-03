@@ -1148,6 +1148,7 @@ class ProgramController extends Controller
 
         // return back();
         # code...
+        $year_id = request('year_id', Helpers::instance()->getCurrentAccademicYear());
         if($id == null){
             $data['title'] = "Send Student Admission Letter";
             $data['_this'] = $this;
@@ -1158,7 +1159,7 @@ class ProgramController extends Controller
                     if(($campus_id = auth()->user()->campus_id) != null){
                         $builder->where('campus_id', $campus_id);
                     }
-                })->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+                })->where('year_id', $year_id)->get();
             return view('admin.student.applications', $data);
         }
         if($request->has('_atn')){
@@ -1175,6 +1176,7 @@ class ProgramController extends Controller
         // TEMPORARILY HALTING SENDING OF ADMISSION LETTERS
         // return true;
 
+        $current_year = Helpers::instance()->getCurrentAccademicYear();
         
         $appl = ApplicationForm::find($id);
         if($appl != null){
