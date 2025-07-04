@@ -12,15 +12,13 @@
             <span class="d-block py-1">{!! __('text.admission_letter_phrase6', ['email'=>$help_email]) !!}</span><br>
             <table class="border table-stripped">
                 <thead class="py-1 text-capitalize">
-                    <th class="border-left border-right">{{ __('text.word_campus') }}</th>
                     <th class="border-left border-right">{{ __('text.word_address') }}</th>
                     <th class="border-left border-right">{{ __('text.word_username') }}</th>
                     <th class="border-left border-right">{{ __('text.word_password') }}</th>
                 </thead>
                 <tbody>
                     <tr class="py-1 border-top border-bottom">
-                        <td class="border-left border-right">{{ $campus }}</td>
-                        <td class="border-left border-right">{{ $platform_links[$campus] }}</td>
+                        <td class="border-left border-right">https://students.stlouissystems.org/</td>
                         <td class="border-left border-right">{{ $matric }}</td>
                         <td class="border-left border-right">12345678</td>
                     </tr>
