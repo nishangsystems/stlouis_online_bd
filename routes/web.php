@@ -371,6 +371,16 @@ Route::name('messages.')->prefix('messages')->group(function(){
 
 Route::get('search/students/boarders/{name}', 'HomeController@getStudentBoarders')->name('getStudentBoarder');
 
+Route::get('student/set_location', function(Request $request){
+    $student_id = $request->student_id;
+    $location = $request->location;
+    if($student_id != null){
+        \App\Models\Students::where('id', $student_id)->update(['location'=>$location]);
+        return back()->with('success', "User location updated successfully");
+    }else{
+        return back()->with('error', "Failed to update user location");
+    }
+})->name('student.set_location');
 
 Route::get('getColor/{label}', [HomeController::class, 'getColor'])->name('getColor');
 

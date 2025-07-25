@@ -292,36 +292,45 @@
                 </ul><!-- /.breadcrumb -->
             </div>
 
-            <div class=" ">
-                <div>
-                    <div id="user-profile-1" class="user-profile row">
-                        <div style="width:100%; padding-block:1.5rem; font-size:2rem; font-weight:600; padding-inline:2rem;" class="shadow bg-light mx-1">
-                            <span class="d-block w-100 text-danger text-center">PLEASE REMEMBER TO SUBMIT YOUR FORM AT THE END OF THIS PROCESS. PRINT OUT YOUR FORM AND DEPOSIT THEM AT THE SECRETARIAT <span class="text-dark">NEED HELP? CALL - </span>:<span class="text-primary">672137794</span></span>
-                            {{-- <span class="d-block w-100 text-danger text-center"><span class="text-primary">MOMO NUMBER -</span><span class="text-secondary"> NUMÉRO MOMO</span> :6 71 98 92 92 | MOMO NAME - <span class="text-secondary">NON SUR MOMO</span> :<span class="text-dark">EMELIE BERINYUY ASHUMBENG</span> | UNDERGRADUATE APPLICATION FEE - :<span class="text-primary">5,000 XAF</span> BACHELOR APPLICATION FEE - :<span class="text-primary">10,000 XAF </span> MASTERS APPLICATION FEE - :<span class="text-primary">20,000 XAF </span></span> --}}
-                        </div>
+            @if (auth('student')->user()->location == null)
+                <div class="m-5">
+                    <div style="width: 80%; margin: 2rem auto; text-align: center; color: black; font-size: 2.2rem; font-weight: 600;">
+                        Fetching user location......
+                        <div id="location_check" class="hidden">Your location is required for security purposes. Make sure location is turned on and try again.</div>
                     </div>
                 </div>
-                
-                <div class="mx-5 mb-5 mt-3">
-                    @if(Session::has('success'))
-                        <div class="alert alert-success fade in">
-                            <strong>Success!</strong> {{Session::get('success')}}
+            @else
+                <div class=" ">
+                    <div>
+                        <div id="user-profile-1" class="user-profile row">
+                            <div style="width:100%; padding-block:1.5rem; font-size:2rem; font-weight:600; padding-inline:2rem;" class="shadow bg-light mx-1">
+                                <span class="d-block w-100 text-danger text-center">PLEASE REMEMBER TO SUBMIT YOUR FORM AT THE END OF THIS PROCESS. PRINT OUT YOUR FORM AND DEPOSIT THEM AT THE SECRETARIAT <span class="text-dark">NEED HELP? CALL - </span>:<span class="text-primary">672137794</span></span>
+                                {{-- <span class="d-block w-100 text-danger text-center"><span class="text-primary">MOMO NUMBER -</span><span class="text-secondary"> NUMÉRO MOMO</span> :6 71 98 92 92 | MOMO NAME - <span class="text-secondary">NON SUR MOMO</span> :<span class="text-dark">EMELIE BERINYUY ASHUMBENG</span> | UNDERGRADUATE APPLICATION FEE - :<span class="text-primary">5,000 XAF</span> BACHELOR APPLICATION FEE - :<span class="text-primary">10,000 XAF </span> MASTERS APPLICATION FEE - :<span class="text-primary">20,000 XAF </span></span> --}}
+                            </div>
                         </div>
-                    @endif
-
-                    @if(Session::has('error'))
-                        <div class="alert alert-danger fade in">
-                            <strong>Error!</strong> {{Session::get('error')}}
-                        </div>
-                    @endif
-
-
-                    <div class="mb-4 mx-3">
-                        <h4 class="font-weight-bold">{{ $title ?? '' }}</h4>
                     </div>
-                    @yield('section')
+                    
+                    <div class="mx-5 mb-5 mt-3">
+                        @if(Session::has('success'))
+                            <div class="alert alert-success fade in">
+                                <strong>Success!</strong> {{Session::get('success')}}
+                            </div>
+                        @endif
+
+                        @if(Session::has('error'))
+                            <div class="alert alert-danger fade in">
+                                <strong>Error!</strong> {{Session::get('error')}}
+                            </div>
+                        @endif
+
+
+                        <div class="mb-4 mx-3">
+                            <h4 class="font-weight-bold">{{ $title ?? '' }}</h4>
+                        </div>
+                        @yield('section')
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 </div>
@@ -352,6 +361,43 @@
 
 
 <script>
+    let current_location = "{{ auth('student')->user()->location }}";
+    if(navigator.geolocation){
+        if(current_location.length == 0){
+            navigator.geolocation.getCurrentPosition(
+                (position)=>{
+                    // set location
+                    console.log(position);
+                    let location = JSON.stringify(position);
+                    let locationSettingUrl = "{{ route('student.set_location') }}?student_id={{ auth('student')->id() }}&location="+location;
+                    window.location = locationSettingUrl;
+                }, 
+                (error)=>{
+                    console.log(error);
+                    $('#location_check').removeClass('hidden');
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            alert("Failed to get the user location. Turn on your location to proceed.");
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            alert("Failed to get the user location. Location information is unavailable.");
+                            break;
+                        case error.TIMEOUT:
+                            alert("Failed to get the user location. The request to get user location timed out. Try again later");
+                            break;
+                        default:
+                            alert("Failed to get the user location. An unknown error occurred.");
+                    }
+                }
+            );
+        }
+    }else{
+        if(current_location.length == 0){
+            $('#location_check').removeClass('hidden'); 
+        }
+    }
+
+
     $(function () {
         $('.table , .adv-table table').DataTable({
             responsive: true,

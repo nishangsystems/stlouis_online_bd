@@ -172,6 +172,8 @@ class HomeController extends Controller
     {
         try {
 
+            
+
             if(auth('student')->user()->applicationForms()->whereNotNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->count() > 0){
                 return back()->with('error', "You are allowed to submit only one application form per year");
             }
