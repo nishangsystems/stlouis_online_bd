@@ -891,6 +891,7 @@
                 $('#momo_image_preview').attr('src', url);
             }
         }
+
         // Add and drop previous trainings form table rows
         let addTraining = function(){
             let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;

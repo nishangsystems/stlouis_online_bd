@@ -292,14 +292,14 @@
                 </ul><!-- /.breadcrumb -->
             </div>
 
-            @if (auth('student')->user()->location == null)
+            {{-- @if (auth('student')->user()->location == null)
                 <div class="m-5">
                     <div style="width: 80%; margin: 2rem auto; text-align: center; color: black; font-size: 2.2rem; font-weight: 600;">
                         Fetching user location......
                         <div id="location_check" class="hidden">Your location is required for security purposes. Make sure location is turned on and try again.</div>
                     </div>
                 </div>
-            @else
+            @else --}}
                 <div class=" ">
                     <div>
                         <div id="user-profile-1" class="user-profile row">
@@ -330,7 +330,7 @@
                         @yield('section')
                     </div>
                 </div>
-            @endif
+            {{-- @endif --}}
         </div>
     </div>
 </div>
@@ -361,7 +361,7 @@
 
 
 <script>
-    let current_location = "{{ auth('student')->user()->location }}";
+    {/* let current_location = "{{ auth('student')->user()->location }}";
     if(navigator.geolocation){
         if(current_location.length == 0){
             navigator.geolocation.getCurrentPosition(
@@ -395,7 +395,7 @@
         if(current_location.length == 0){
             $('#location_check').removeClass('hidden'); 
         }
-    }
+    } */}
 
 
     $(function () {
