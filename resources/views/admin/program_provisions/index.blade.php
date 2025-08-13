@@ -9,13 +9,13 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#{{ str_replace([' ', '-'], '_', $cname) }}_program_config" aria-expanded="false">
+                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#{{ str_replace([' ', '-', '(', ')'], '', $cname) }}_program_config" aria-expanded="false">
                                 <i class="bigger-110 ace-icon fa fa-angle-right" data-icon-hide="ace-icon fa fa-angle-down" data-icon-show="ace-icon fa fa-angle-right"></i>
                                 &nbsp; {{ $cname }}
                             </a>
                         </h4>
                     </div>
-                    <div class="panel-collapse collapse" id="{{ str_replace([' ', '-'], '_', $cname) }}_program_config" aria-expanded="false" style="height: 0px;">
+                    <div class="panel-collapse collapse" id="{{ str_replace([' ', '-', '(', ')'], '', $cname) }}_program_config" aria-expanded="false" style="height: 0px;">
                         <div class="panel-body">
                             <table class="table-stripped table-light">
                                 <thead class="text-capitalize border-bottom">
