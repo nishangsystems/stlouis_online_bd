@@ -556,14 +556,14 @@
             </li>
             @endif
         
-            {{-- <li>
+            <li>
                 <a href="{{route('admin.application.bypass')}}" class="text-capitalize">
                     <i  style="color: {{$bg1}};" class="fa fa-refresh menu-icon   "></i>
                     {{__('text.bypass_application')}}
                 </a>
                 <b class="arrow"></b>
             </li>
-             --}}
+            
             <li>
                 <a href="{{route('admin.platform.bypass')}}" class="text-capitalize">
                     <i  style="color: {{$bg1}};" class="fa fa-refresh menu-icon   "></i>
