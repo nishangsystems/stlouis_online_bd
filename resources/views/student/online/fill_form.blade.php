@@ -758,8 +758,8 @@
                         
                         <div class="col-sm-12 col-md-12 col-lg-12 py-4 mt-5 d-flex justify-content-center text-uppercase">
                             <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-lg btn-danger">{{ __('text.word_back') }}</a>
-                            <a href="{{ route('student.home') }}" class="px-4 py-1 btn btn-lg btn-success">{{ __('text.pay_later') }}</a>
-                            @if($application->fee_payer != null)<button type="submit" class="px-4 py-1 btn btn-lg btn-primary text-uppercase">{{ __('text.word_submit') }}</button>@endif
+                            <a href="{{ route('student.home') }}" class="px-4 py-1 btn btn-lg btn-success">{{ __('text.submit_later') }}</a>
+                            @if($application->fee_payer != null)<button type="submit" class="px-4 py-1 btn btn-lg btn-primary text-uppercase">{{ __('text.submit_form') }}</button>@endif
                         </div>
                     </div>
                 </form>
@@ -796,7 +796,7 @@
                                 </div>
                                 <div class="py-5 d-flex justify-content-center">
                                     <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-sm rounded-md btn-danger">{{ __('text.word_back') }}</a>
-                                    <input type="submit" class="px-4 py-1 btn btn-sm rounded-md btn-primary" value="{{ __('text.submit_form') }}">
+                                    <input type="submit" class="px-4 py-1 btn btn-sm rounded-md btn-primary" value="{{ __('text.save_and_continue') }}">
                                 </div>
                             </form>
                         </div>
