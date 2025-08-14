@@ -1251,7 +1251,7 @@ class ProgramController extends Controller
                     }
 
                     NEXT_MATRIC:
-                    $next_count = substr('0000'.(++$max_count), -4);
+                    $next_count = substr('00000'.(++$max_count), -5);
                     $student_matric = $prefix.'/'.$year.'/'.$next_count;
                     // dd($student_matric);
                     if(ApplicationForm::where('matric', $student_matric)->where('id', '!=', $id)->count() == 0){
@@ -1400,7 +1400,7 @@ class ProgramController extends Controller
                 $check = 0;
                 
                 NEXT_ATTEMPT:
-                $next_count = substr('0000'.($max_count+1), -4);
+                $next_count = substr('00000'.($max_count+1), -5);
                 $student_matric = $prefix.'/'.$year.'/'.$next_count;
 
                 if(ApplicationForm::where('matric', $student_matric)->count() == 0){
