@@ -343,6 +343,23 @@ class HomeController extends Controller
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }
+        elseif($step == 6){
+            ApplicationForm::where(['id'=>$application_id])->update(['transaction_id' => time().rand(10000, 99999)]);
+
+            // // SEND SMS
+            $phone_number = auth('student')->user()->phone;
+            if(str_starts_with($phone_number, '+')){
+                $phone_number = substr($phone_number, '1');
+            }
+            if(strlen($phone_number) <= 9){
+                $phone_number = '237'.$phone_number;
+            }
+            // dd($phone_number);
+            $message="Application form for ST. LOUIS UNIVERSITY INSTITUTE submitted successfully.";
+            $sent = $this->sendSMS($phone_number, $message);
+
+            return redirect(route('student.application.form.download'))->with('success', "Payment successful. ".($sent != true ? $sent : null));
+        }
         elseif($step ==7){
             // dd($request->all());
             $tk_counter = 0;

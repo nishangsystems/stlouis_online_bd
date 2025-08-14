@@ -796,7 +796,7 @@
                                 </div>
                                 <div class="py-5 d-flex justify-content-center">
                                     <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-sm rounded-md btn-danger">{{ __('text.word_back') }}</a>
-                                    <input type="submit" class="px-4 py-1 btn btn-sm rounded-md btn-primary" value="{{ __('text.save_and_continue') }}">
+                                    <input type="submit" class="px-4 py-1 btn btn-sm rounded-md btn-primary" value="{{ __('text.submit_form') }}">
                                 </div>
                             </form>
                         </div>
