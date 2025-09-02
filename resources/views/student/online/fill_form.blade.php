@@ -806,67 +806,6 @@
                 </div>
                 @break
         @endswitch
-        {{-- <!-- <div class="py-2">
-            <h4 class="text-dark my-4 text-uppercase">{{ __('text.admission_information') }}</h4>
-            <div class=" py-2 text-dark" style="font-size: 1.5rem;">
-                <div class="row"><b class="text-primary d-block py-2 col-sm-12">B. BONAMOUSSADI CAMPUS</b></div>
-                <div class="row border-bottom"><span class="col-sm-12 col-md-4">BANK:</span> <b class="col-sm-12 col-md-8">AZIRE COOPERATIVE CREDIT UNION</b>.</div>
-                <div class="row border-bottom"><span class="col-sm-12 col-md-4">ACCOUNT NAME/ NOM DE COMPTE:</span> <b class="col-sm-12 col-md-8">ST LOUIS HIGHER INSTITUTE OF AGRICULTURE</b></div>
-                <div class="row border-bottom"><span class="col-sm-12 col-md-4">ACCOUNT NO/ DE COMPTE:</span> <b class="col-sm-12 col-md-8">PN08_1252</b></div>
-                <div class="row"><b class="text-primary d-block py-2 col-sm-12">B. BONAMOUSSADI CAMPUS</b></div>
-                <div class="row border-bottom"><span class="col-sm-12 col-md-4">BANK:</span> <b class="col-sm-12 col-md-8">OPUS SECURITATIS SOLIDARITY LIMITED (OPSEC) (CATHOLIC CREDIT UNION)</b></div>
-                <div class="row border-bottom"><span class="col-sm-12 col-md-4">ACCOUNT NO:</span> <b class="col-sm-12 col-md-8">300737</b></div>
-                <div class="row border-bottom"><span class="col-sm-12 col-md-4">ACCOUNT NAME:</span> <b class="col-sm-12 col-md-8">ST LOUIS HIGHER INSTITUTE OF MEDICAL STUDIES</b></div>
-                <div class="border-bottom py-2">
-                    <p class=" py-3">Request a receipt for every amount paid at the bank and present it in school alongside a photocopy for cross
-                    checking. <b>Yourapplication shan only be processed upon payment of the Application fee</b>. Toujours demander
-                    un reçu pour chaque montant paye a la banque et le presenter a l'ecoomat de l'institute avec deux (02) photocopies
-                    pour verification. <b>Votre demande ne sera traitée qu'apres paiement (a la banque) des frais de dossier
-                    Admission Criteria /Criteres</b></p>
-                    <p class=" py-3">We admit science students With <b>2-25 points</b> in any of the departments of the St Louis of Medical Studies and the
-                    Institute of Engineering and Technology. study. Art students are usually admitted With <b>4-25 points</b> and can onlv
-                    study Nursing or Midwifery.</p>
-                    <p class=" py-3">We shall exceptionally admit arts students With <b>2 points</b> especially earned in the social sciences like <b>Economics</b>
-                    and <b>Geography</b>. This admission is <b>conditional and they must prove their worth</b> and stay along With the rest of
-                    the class otherwise they will be discontinued at the end of the year.</p>
-                    <p class=" py-3"><b>Les candidats avec un BACC scientifique peuvent être admis dans toutes les filières de l'Institut Médicales
-                    et de Technologie. Nous admettons ceux qui ont le BACC GI, G3 et A, uniquement dans les programmes
-                    suivants ; Soins Infirmier, Sage-Femme ou Agriculture. Cette admission est conditionnelle et ces candidats
-                    devront prouver leur valeur en avançant avec le reste de la promotion sinon a la fin de l'année ils seront
-                    conseiller de se retirer.</b></p>
-                </div>
-                <div class="border-bottom py-2">
-                    <p class="py-2">ST LOUIS HIGHER INSTITUTE OF MEDICÄL STUDIES</p>
-                    <p class="py-2">ST LOUIS HIGHER INSTITUTION OF ENGIENEERING AND TECHONOLOGY DOUALA - CAMEROON</p>
-                </div>
-            </div>
-            <form action="{{ route('student.application.start', [$step+1, 'new']) }}" method="post">
-                @csrf
-                <div class="py-4 d-flex justify-content-end">
-                    <button type="submit" class="px-4 py-1 rounded btn btn-sm btn-primary" >{{ __('text.new_application') }}</button>
-                </div>
-            </form>
-            <table class="table border">
-                <thead>
-                    <tr class="text-capitalize">
-                        <th>{{ __('text.word_name') }}</th>
-                        <th>{{ __('text.created_at') }}</th>
-                        <th>{{ __('text.updated_at') }}</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (auth('student')->user()->currentApplicationForms as $application)
-                        <tr class="border-bottom">
-                            <td>{{ $application->surname }} {{ $application->first_name }}</td>
-                            <td>{{ $application->created_at }}</td>
-                            <td>{{ $application->updated_at }}</td>
-                            <td><a href="{{ route('student.application.start', [$step+1, $application->id]) }}" class="px-4 py-1 rounded btn btn-sm btn-primary" >{{ __('text.word_proceed') }}</a></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div> --> --}}
     </div>
 @endsection
 @section('script')

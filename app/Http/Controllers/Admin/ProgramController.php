@@ -1055,9 +1055,11 @@ class ProgramController extends Controller
 
         # code...
         // return $this->api_service->campuses();
+        $data['status_set'] = $this->api_service->program_provisioning_status_set()['data'];
         $data['campuses'] = json_decode($this->api_service->campuses())->data;
         $data['application'] = ApplicationForm::find($id);
 
+        $data['degrees'] = collect(json_decode($this->api_service->degrees())->data);
         if($data['application']->degree_id != null){
             $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
         }
@@ -1084,12 +1086,32 @@ class ProgramController extends Controller
     public function update_application_form(Request $request, $id)
     {
         # code...
-        $validity = Validator::make($request->all(), ['name'=>'required']);
-        if($validity->fails()){
-            return back()->with('error', $validity->errors()->first());
+        $data = $data = $request->all();
+        $data_p1=[];
+        $_data = $request->previous_training;
+        // return $_data;
+        if($_data != null){
+            foreach ($_data['school'] as $key => $value) {
+                $data_p1[] = ['school'=>$value, 'year'=>$_data['year'][$key], 'course'=>$_data['course'][$key], 'certificate'=>$_data['certificate'][$key]];
+            }
+            $data['previous_training'] = json_encode($data_p1);
+            // return $data;
+        }
+        $data_p2 = [];
+        $e_data = $request->employments;
+        if($e_data != null){
+            foreach ($e_data['employer'] as $key => $value) {
+                $data_p2[] = ['employer'=>$value, 'post'=>$e_data['post'][$key], 'start'=>$e_data['start'][$key], 'end'=>$e_data['end'][$key], 'type'=>$e_data['type'][$key]];
+            }
+            $data['employments'] = json_encode($data_p2);
+            // return $data;
         }
 
-        $data = ['name'=>$request->name];
+    
+        $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
+        $application = ApplicationForm::updateOrInsert(['id'=> $id], $data);
+        // $application->update($data);
+        
         ApplicationForm::find($id)->update($data);
         return back()->with('success', __('text.word_done'));
     }
