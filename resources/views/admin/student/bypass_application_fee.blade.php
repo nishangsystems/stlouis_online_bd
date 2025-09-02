@@ -37,7 +37,7 @@
     <script>
         let search_student = (element)=>{
             let _student = $(element).val();
-            let _url = "{{ route('search_students', ['name'=>'__NAME__']) }}".replace('__NAME__', _student);
+            let _url = "{{ route('search_forms') }}";
             $.ajax({
                 url: _url, method: 'GET', data: {key: _student},
                 success: function(data){
@@ -51,7 +51,7 @@
                                 <td>${element.email}</td>
                                 <td>${element.phone}</td>
                                 <td>
-                                    <a class="btn btn-xs btn-primary rounded" href="{{ route('admin.platform.bypass', '__STID__') }}">bypass</a>
+                                    <a class="btn btn-xs btn-primary rounded" href="{{ route('admin.application.bypass', '__STID__') }}">bypass</a>
                                 </td>
                             </tr>`.replace('__STID__', element.id);
                     }

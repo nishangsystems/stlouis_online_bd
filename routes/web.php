@@ -314,6 +314,7 @@ Route::get('student-search', 'HomeController@student_get')->name('student-search
 Route::get('search-all-students/{name}', 'HomeController@searchStudents')->name('search-all-students');
 Route::get('search-all-students', 'HomeController@searchStudents_get')->name('get-search-all-students');
 Route::get('search-students', 'HomeController@search_students')->name('search_students');
+Route::get('search-forms', 'HomeController@search_forms')->name('search_forms');
 Route::get('student-fee-search', 'HomeController@fee')->name('student-fee-search');
 Route::get('student_rank', 'HomeController@rank')->name('student_rank');
 Route::post('student_rank', 'HomeController@rankPost')->name('student_rank');

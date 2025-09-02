@@ -14,6 +14,7 @@ use App\Http\Resources\SchoolUnitResource;
 use App\Http\Resources\StudentFee;
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\StudentResourceMain;
+use App\Models\ApplicationForm;
 use App\Models\Color;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
@@ -139,6 +140,12 @@ class HomeController extends Controller
         # code...
         $color = Color::where(['name'=>$label])->first();
         return $color == null ? null : $color->value;
+    }
+
+    public function search_forms(Request $request){
+        $search = $request->key;
+        $data = ApplicationForm::where('name', 'LIKE', '%'.$search.'%')->orWhere('email', 'LIKE', '%'.$search.'%')->select(['name', 'email', 'phone', 'id'])->get()->toArray();
+        return response()->json($data);
     }
     
 }
