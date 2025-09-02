@@ -19,6 +19,7 @@ use App\Models\Semester;
 use App\Models\Students;
 use App\Models\StudentSubject;
 use App\Models\Subjects;
+use App\Models\TranzakTransaction;
 use App\Models\User;
 use App\Models\Wage;
 use Illuminate\Http\Request;
@@ -526,8 +527,14 @@ class HomeController  extends Controller
         return view('admin.student.bypass_application_fee', $data);
     }
 
-    public function bypass_fee_application_fee(Request $request, $form_id)
+    public function bypass_save_application_fee(Request $request, $form_id)
     {
         # code...
+        // Create a fake transaction and update transaction-id for this application form
+        $data = ['request_id'=>rand(1000000001, 9999990009), 'amount'=>0, 'currency_code'=>'XAF', 'purpose'=>"APPLICATION FEE BYPASS", 'mobile_wallet_number'=>'Bypassed By transaction_ref', 'transaction_ref'=>auth()->id(), 'app_id'=>'------', 'transaction_id'=>'---------', 'transaction_time'=>now(), 'payment_method'=>'BYPASS', 'payer_user_id'=>0, 'payer_name'=>'--------', 'payer_account_id'=>'--------', 'merchant_fee'=>0, 'merchant_account_id'=>'--------', 'net_amount_recieved'=>'---------'];
+        $transaction = new TranzakTransaction($data);
+        $transaction->save();
+        ApplicationForm::findOrFail($form_id)->update(['transaction_id' => $transaction->id]);
+        return back()->with('success', 'Operation complete');
     }
 }
