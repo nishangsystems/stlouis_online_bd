@@ -1,7 +1,7 @@
 @extends('admin.layout')
 @section('section')
     <div class="py-3">
-        @isset($student)
+        @isset($form)
             <div class="container-fluid">
                 <form class="py-3 bg-light shadow px-4" method="POST">
                     @csrf

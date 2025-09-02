@@ -531,8 +531,8 @@ class HomeController  extends Controller
     {
         # code...
         // Create a fake transaction and update transaction-id for this application form
-        dd(123);
-        $data = ['request_id'=>rand(1000000001, 9999990009), 'amount'=>0, 'currency_code'=>'XAF', 'purpose'=>"APPLICATION FEE BYPASS", 'mobile_wallet_number'=>'Bypassed By transaction_ref', 'transaction_ref'=>auth()->id(), 'app_id'=>'------', 'transaction_id'=>'---------', 'transaction_time'=>now(), 'payment_method'=>'BYPASS', 'payer_user_id'=>0, 'payer_name'=>'--------', 'payer_account_id'=>'--------', 'merchant_fee'=>0, 'merchant_account_id'=>'--------', 'net_amount_recieved'=>'---------'];
+        // dd(123);
+        $data = ['request_id'=>rand(1000000001, 9999990009), 'amount'=>0, 'currency_code'=>'XAF', 'purpose'=>"APPLICATION FEE BYPASS", 'mobile_wallet_number'=>'Bypassed By payer_account_id', 'transaction_ref'=>$request->reason??'', 'app_id'=>'------', 'transaction_id'=>'---------', 'transaction_time'=>now(), 'payment_method'=>'BYPASS', 'payer_user_id'=>0, 'payer_name'=>'--------', 'payer_account_id'=> auth()->id() , 'merchant_fee'=>0, 'merchant_account_id'=>'--------', 'net_amount_recieved'=>'---------'];
         $transaction = new TranzakTransaction($data);
         $transaction->save();
         ApplicationForm::findOrFail($form_id)->update(['transaction_id' => $transaction->id]);
