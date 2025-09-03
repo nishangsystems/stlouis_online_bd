@@ -118,11 +118,12 @@
             setDivisions(region);
         }
 
-        let setDivisions = function(region){
+        /** let setDivisions = function(region){
             url = "{{ route('student.region.divisions', '__RID__') }}".replace('__RID__', region);
             $.ajax({
                 method: 'get', url: url, 
                 success: function(data){
+                    console.log(data);
                     let html = `<option></option>`
                     data.forEach(element => {
                         html+=`<option value="${element.id}" ${'{{ $application->division}}' == element.id ? 'selected' : '' }>${element.name}</option>`.replace('region_id', element.id)
@@ -130,7 +131,7 @@
                     $('#divisions').html(html);
                 }
             })
-        }
+        } */
 
         let campusDegreeCertPorgrams = function(event){
             cert_id = event.target.value;
@@ -151,19 +152,17 @@
             })
         }
 
-        alert('12234');
 
-        let loadCplevels = function(event){
+        /*let loadCplevels = function(event){
             campus_id = "{{ $application->campus_id }}";
             program_id = event.target.value;
 
             setLevels(program_id);
-        }
+        }*/
 
         let setLevels = function(program_id){
 
             campus_id = "{{ $application->campus_id }}";
-
             url = "{{ route('student.campus.program.levels', ['__CmpID__', '__PrgID__']) }}".replace('__CmpID__', campus_id).replace('__PrgID__', program_id);
             $.ajax({
                 method : 'get', url : url, 
@@ -317,7 +316,10 @@
                     <label class="text-secondary  text-capitalize">{{ __('text.word_division') }}</label>
                     <div class="">
                         <select class="form-control text-primary"  name="division" required id="divisions">
-                            
+                            <option value=""></option>
+                            @foreach ($divisions as $division)
+                                <option value="{{ $division->id }}" {{ $application->division == $division->id ? 'selected' : '' }}>{{ $division->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -418,7 +420,10 @@
                     <label class="text-secondary  text-capitalize">{{ __('text.word_level') }}</label>
                     <div class="">
                         <select class="form-control text-primary"  name="level" required id="cplevels">
-                            
+                            <option value=""></option>
+                            @foreach ($levels as $level)
+                                <option value="{{ $level->level }}" {{ $level->level == $application->level ? 'selected' : '' }}>{{ $level->level??'' }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
