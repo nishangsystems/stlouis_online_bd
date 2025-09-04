@@ -120,10 +120,8 @@ class HomeController extends Controller
 
             // return DB::select($sql);
             $students  = DB::table('students')
-                ->where(function($query)use($name){
-                    $query->where('students.name', 'LIKE', "%$name%")
-                    ->orWhere('students.matric', 'LIKE', "%$name%");
-                })
+                ->where('students.name', 'LIKE', "%$name%")
+                ->orWhere('students.matric', 'LIKE', "%$name%")
                 ->distinct()->take(10)
                 ->get(['students.*'])
                 ->toArray();
