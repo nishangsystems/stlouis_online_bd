@@ -556,21 +556,25 @@
             </li>
             @endif
         
-            <li>
-                <a href="{{route('admin.application.bypass')}}" class="text-capitalize">
-                    <i  style="color: {{$bg1}};" class="fa fa-refresh menu-icon   "></i>
-                    {{__('text.bypass_application')}}
-                </a>
-                <b class="arrow"></b>
-            </li>
+            @if(Auth::user()->hasPermissionTo('bypass_application_fee'))
+                <li>
+                    <a href="{{route('admin.application.bypass')}}" class="text-capitalize">
+                        <i  style="color: {{$bg1}};" class="fa fa-refresh menu-icon   "></i>
+                        {{__('text.bypass_application')}}
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            @endif
             
-            <li>
-                <a href="{{route('admin.platform.bypass')}}" class="text-capitalize">
-                    <i  style="color: {{$bg1}};" class="fa fa-refresh menu-icon   "></i>
-                    {{__('text.bypass_platform')}}
-                </a>
-                <b class="arrow"></b>
-            </li>
+            @if(Auth::user()->hasPermissionTo('bypass_platform_charges'))
+                <li>
+                    <a href="{{route('admin.platform.bypass')}}" class="text-capitalize">
+                        <i  style="color: {{$bg1}};" class="fa fa-refresh menu-icon   "></i>
+                        {{__('text.bypass_platform')}}
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            @endif
 
             <li>
                 <a onclick="event.preventDefault(); document.getElementById('logout-form').submit();"

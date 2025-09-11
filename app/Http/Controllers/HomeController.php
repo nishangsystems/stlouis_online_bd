@@ -122,6 +122,8 @@ class HomeController extends Controller
             $students  = DB::table('students')
                 ->where('students.name', 'LIKE', "%$name%")
                 ->orWhere('students.matric', 'LIKE', "%$name%")
+                ->orWhere('students.email', 'LIKE', "%$name%")
+                ->orWhere('students.phone', 'LIKE', "%$name%")
                 ->distinct()->take(10)
                 ->get(['students.*'])
                 ->toArray();
