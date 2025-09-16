@@ -266,7 +266,7 @@
                 <div class="py-2 col-sm-6 col-md-4 col-lg-5">
                     <label class="text-secondary  text-capitalize">{{ __('text.word_name_bilang') }}</label>
                     <div class="">
-                        <input type="text" class="form-control text-primary"  name="name" value="{{ $application->name??'' }}" readonly required>
+                        <input type="text" class="form-control text-primary"  name="name" value="{{ $application->name??'' }}" required>
                     </div>
                 </div>
                 <div class="py-2 col-sm-6 col-md-4 col-lg-3">
@@ -332,13 +332,13 @@
                 <div class="py-2 col-sm-6 col-md-4 col-lg-5">
                     <label class="text-secondary  text-capitalize">{{ __('text.telephone_number_bilang') }}</label>
                     <div class="">
-                        <input type="tel" class="form-control text-primary"  name="phone" value="{{ $application->phone??'' }}" readonly required>
+                        <input type="tel" class="form-control text-primary"  name="phone" value="{{ $application->phone??'' }}" required>
                     </div>
                 </div>
                 <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                     <label class="text-secondary  text-capitalize">{{ __('text.word_email_bilang') }}</label>
                     <div class="">
-                        <input type="email" class="form-control text-primary"  name="email" value="{{ $application->email??'' }}" required readonly>
+                        <input type="email" class="form-control text-primary"  name="email" value="{{ $application->email??'' }}" required>
                     </div>
                 </div>
                 <div class="py-2 col-sm-6 col-md-4 col-lg-3">
