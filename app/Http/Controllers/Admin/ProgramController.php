@@ -1030,7 +1030,7 @@ class ProgramController extends Controller
         $title = "APPLICATION FORM FOR ".$data['degree']->deg_name;
         $data['title'] = $title;
 
-        if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $id]))->with('message', "Make sure your form is correctly filled and try again.");}
+        // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $id]))->with('message', "Make sure your form is correctly filled and try again.");}
         // return view('student.online.form_dawnloadable', $data);
         $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
         $filename = $title.' - '.$application->name.'.pdf';
