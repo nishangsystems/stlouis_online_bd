@@ -63,8 +63,8 @@
                                     <span class="h4 fw-bolder">{{__('text.mtn_mobile_money')}}</span>
                                 </span> --}}
                                 <span class="mx-3 text-center d-inline-block">
-                                    <button type="submit" class="d-block border-0 btn-white rounded-md mb-4" onclick="event.preventDefault(); $('#p-channel').val('orangemoney'); $('#poster-form').submit()">
-                                        <img class="img img-responsive rounded" src="{{url('public/assets/images/Orange_Money.jpg')}}" style="height: 8rem; width: 12rem">
+                                    <button type="submit" class="d-block border-0 btn-white rounded-md mb-4" style="border: 1px solid steelblue; border-radius: 0.5rem; padding: 0.7rem 1.4rem; font-size: larger; font-weight: 700; color: steelblue;">
+                                        @lang('text.make_payment')
                                     </button>
                                     <span class="h4 fw-bolder">{{__('text.orange_money')}}</span>
                                 </span>

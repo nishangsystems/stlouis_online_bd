@@ -1027,7 +1027,8 @@ class ProgramController extends Controller
         $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
         
         // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
-        $title = "APPLICATION FORM FOR ".$data['degree']->deg_name;
+        $status = $application->program_status;
+        $title = "APPLICATION FORM FOR ".($data['degree']->deg_name??'')."(".$status.")";
         $data['title'] = $title;
 
         // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $id]))->with('message', "Make sure your form is correctly filled and try again.");}
