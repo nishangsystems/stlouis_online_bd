@@ -56,6 +56,9 @@
                             </tr>`.replace('__STID__', element.id);
                     }
                     $('#students_table_body').html(html);
+                },
+                error: (xhr, status, err)=>{
+                    console.log(xhr, status, err);
                 }
             })
         };
