@@ -37,7 +37,7 @@
     <script>
         let search_student = (element)=>{
             let _student = $(element).val();
-            let _url = "{{ route('search_students', ['name'=>'__NAME__']) }}".replace('__NAME__', _student);
+            let _url = "{{ route('search_students') }}";
             $.ajax({
                 url: _url, method: 'GET', data: {key: _student},
                 success: function(data){

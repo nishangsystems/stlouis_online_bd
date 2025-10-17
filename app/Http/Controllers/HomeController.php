@@ -17,6 +17,7 @@ use App\Http\Resources\StudentResourceMain;
 use App\Models\ApplicationForm;
 use App\Models\Color;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 use \PDF;
 
@@ -130,8 +131,9 @@ class HomeController extends Controller
                 ->toArray();
             
             return \response()->json(StudentResourceMain::collection($students));
-        } catch (\Throwable $th) {
-            return $th->getMessage();
+        } catch (Throwable $th) {
+            Log::error($th);
+            return response()->json(['data'=>$th->getMessage()]);
         }
     }
 
