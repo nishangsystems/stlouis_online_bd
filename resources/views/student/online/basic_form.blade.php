@@ -27,7 +27,7 @@
                             </div>
                             <div class="col-sm-12 col-md-6 col-lg-4">
                                 <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.applying_for_phrase') }}</span></label>
-                                <select name="degree_id" class="form-control text-primary"  id="degree_types" required>  
+                                <select name="degree_id" class="form-control text-primary"  id="degree_types" required onchange="loadCertificates(this)">  
                                     @if($application->degree_id != null)
                                                                                     
                                     @endif                                  
@@ -38,7 +38,7 @@
                                 <div class="">
                                     <select class="form-control text-primary"  name="entry_qualification" required>
                                         <option value=""></option>
-                                        @foreach ($certs as $cert)
+                                        @foreach ($certs??[] as $cert)
                                             <option value="{{ $cert->id }}" {{ $application->entry_qualification== $cert->id ? 'selected' : '' }}>{{ $cert->certi }}</option>
                                         @endforeach
                                     </select>
@@ -374,6 +374,18 @@
                     $('#cplevels').html(html);
                 }
             });
+        }
+
+        let loadCertificates = (elm)=>{
+            let degree_id = $(elm).val();
+            let url = "{{ route('admin.applications.degree_certificates') }}";
+            let data = {"degree_id": degree_id};
+            $.ajax({
+                method: 'GET', url: url, data: data,
+                success: (response)=>{
+                    log(response);
+                }
+            })
         }
 
     </script>
