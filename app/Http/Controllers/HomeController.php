@@ -16,6 +16,7 @@ use App\Http\Resources\StudentResource;
 use App\Http\Resources\StudentResourceMain;
 use App\Models\ApplicationForm;
 use App\Models\Color;
+use App\Models\Students;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -113,22 +114,20 @@ class HomeController extends Controller
     public function search_students()
     {
         $name = request('key');
-        // return $name;
         $name = str_replace('/', '\/', $name);
         try {
             //code...
             // $sql = "SELECT students.*, student_classes.student_id, student_classes.class_id, campuses.name as campus from students, student_classes, campuses where students.id = student_classes.student_id and students.campus_id = campuses.id and students.name like '%{$name}%' or students.matric like '%{$name}%'";
 
             // return DB::select($sql);
-            $students  = DB::table('students')
-                ->where(function($query)use($name){
-                    $query->where('students.name', 'LIKE', '%'.$name.'%')
-                    ->orWhere('students.email', 'LIKE', '%'.$name.'%')
-                    ->orWhere('students.phone', 'LIKE', '%'.$name.'%');
-                })
+            $students  = Students::where('students.name', 'LIKE', '%'.$name.'%')
+                ->orWhere('students.email', 'LIKE', '%'.$name.'%')
+                ->orWhere('students.phone', 'LIKE', '%'.$name.'%')
                 ->distinct()->take(10)
-                ->get(['students.*'])
-                ->toArray();
+                ->select(['students.*'])
+                ->get()->toArray();
+
+            return $students;
             
             return \response()->json(StudentResourceMain::collection($students));
         } catch (Throwable $th) {

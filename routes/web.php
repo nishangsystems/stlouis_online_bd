@@ -286,6 +286,8 @@ Route::prefix('student')->name('student.')->middleware(['isStudent', 'plcharge']
     Route::get('region/divisions/{region_id}', [Controller::class, 'regionDivisions'])->name('region.divisions');
     Route::get('programs/all', [StudentHomeController::class, 'all_programs'])->name('programs.index');
     Route::get('payment/data', [StudentHomeController::class, 'payment_data'])->name('payment.data');
+    Route::get('application/basic/{step}/{id?}', [StudentHomeController::class, 'start_basic_application'])->name('application.basic.start');
+    Route::post('application/basic/{step}/{id?}', [StudentHomeController::class, 'persist_basic_application']);
     Route::get('application/start/{step}/{id?}', [StudentHomeController::class, 'start_application'])->name('application.start');
     Route::post('application/start/{step}/{id?}', [StudentHomeController::class, 'persist_application']);
     Route::get('application/submit/{id?}', [StudentHomeController::class, 'submit_application'])->name('application.submit');

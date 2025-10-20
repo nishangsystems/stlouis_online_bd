@@ -994,5 +994,6 @@ return [
     'current_program'=>'current program',
     'new_program'=>'new program',
     'word_filter'=>'filter',
+    'basic_application'=>'basic application',
     ''
 ];
