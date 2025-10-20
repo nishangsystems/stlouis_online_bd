@@ -32,8 +32,10 @@ class CustomApplicationController extends Controller
 
     public function create_local(){
         $degrees = collect(json_decode($this->api_service->degrees())->data);
+        $campuses = collect(json_decode($this->api_service->campuses())->data);
         $data['title'] = "Admit Local Students";
         $data['degrees'] = $degrees;
+        $data['campuses'] = $campuses;
         return view('admin.student.custom_applications.create_local', $data);
     }
 
