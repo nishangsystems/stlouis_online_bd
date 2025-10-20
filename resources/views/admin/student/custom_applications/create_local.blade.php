@@ -36,8 +36,6 @@
                         }
                     }
                     $('#level_selection').html(html);
-                }, error: (xhr, status, err)=>{
-                    console.log(xhr, status, err);
                 }
             });
         }
@@ -82,7 +80,7 @@
                         <div class="col-lg-6">
                             <h4 class="text-center text-capitalize text-primary"><b>@lang('text.word_program')</b></h4>
                             <hr>
-                            <input type="hidden" name="campus_id" value="5">
+                            <input type="hidden" name="campus_id" value="8">
                             <div class="mb-3">
                                 <select name="degree_id" required class="form-control rounded border-top-0 border-left-0 border-right-0 border-bottom " id="" onchange="degreeChanged(event)">
                                     <option value=""></option>
