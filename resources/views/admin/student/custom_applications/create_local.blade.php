@@ -36,6 +36,8 @@
                         }
                     }
                     $('#level_selection').html(html);
+                }, error: (xhr, status, err)=>{
+                    console.log(xhr, status, err);
                 }
             });
         }
