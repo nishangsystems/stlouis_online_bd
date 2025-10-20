@@ -1027,10 +1027,11 @@ class ProgramController extends Controller
         $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
         
         // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
-        $title = "APPLICATION FORM FOR ".$data['degree']->deg_name;
+        $status = $application->program_status;
+        $title = "APPLICATION FORM FOR ".($data['degree']->deg_name??'')."(".$status.")";
         $data['title'] = $title;
 
-        if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $id]))->with('message', "Make sure your form is correctly filled and try again.");}
+        // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $id]))->with('message', "Make sure your form is correctly filled and try again.");}
         // return view('student.online.form_dawnloadable', $data);
         $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
         $filename = $title.' - '.$application->name.'.pdf';
@@ -1593,7 +1594,7 @@ class ProgramController extends Controller
         Mail::to($email)->send(new AdmissionMail($name, $campus, $program, $matric,  $fee1_dateline, $fee2_dateline, $help_email, $director_name, $dean_name, $degree,  $file, config('platform_links')[$campus]));
     }
 
-    public function degree_certificates($degree_id = null)
+    public function get_($degree_id = null)
     {
         # code...
         $data['title'] = __('text.configure_degree_certificates');
@@ -1618,6 +1619,12 @@ class ProgramController extends Controller
         if($response->status == 'success'){return back()->with('success', __('text.word_done'));}else{
             return back()->with('error', $response->message);
         }
+    }
+
+    public function get_degree_certificates(Request $request){
+        $degree_id = $request->degree_id;
+        $degree_certificates = collect(json_decode($this->api_service->degree_certificates($degree_id))->data);
+        return $degree_certificates->all();
     }
 
 }

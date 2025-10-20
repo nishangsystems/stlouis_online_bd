@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Admin\ProgramController;
 use App\Http\Controllers\Admin\ProgramProvisionController;
 use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\CustomApplicationController;
 use App\Http\Controllers\Auth\CustomForgotPasswordController;
 use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Controller;
@@ -180,8 +181,24 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('by_degree/{id?}', [ProgramController::class, 'applications_per_degree'])->name('by_degree');
         Route::get('by_campus/{id?}', [ProgramController::class, 'applications_per_campus'])->name('by_campus');
         Route::get('finance/general', [ProgramController::class, 'finance_general_report'])->name('finance.general');
+        Route::get('degree_certificates', [ProgramController::class, 'get_degree_certificates'])->name('degree_certificates');
 
     });
+
+    Route::prefix('custom/applications')->name('custom_applications.')->group(function(){
+        Route::get('', [CustomApplicationController::class, 'index'])->name('index');
+        Route::get('local/create', [CustomApplicationController::class, 'create_local'])->name('local.create');
+        Route::post('local/create', [CustomApplicationController::class, 'store_local']);
+        Route::get('create', [CustomApplicationController::class, 'create'])->name('create');
+        Route::post('create', [CustomApplicationController::class, 'store']);
+        Route::get('switch', [CustomApplicationController::class, 'switch_program'])->name('switch');
+        Route::post('switch', [CustomApplicationController::class, 'switch_generate_matricule']);
+        Route::post('switch_confirmed', [CustomApplicationController::class, 'switch_confirmed'])->name('switch_confirmed');
+        Route::get('importadmit', [CustomApplicationController::class, 'import_admit_students'])->name('import');
+        Route::post('importadmit', [CustomApplicationController::class, 'import_admit_students_save']);
+    });
+
+
     Route::prefix('reports')->name('reports.')->group(function(){
         Route::get('degree/{degree?}', [ProgramController::class, 'applicants_report_by_degree'])->name('applicants.by_degree');
         Route::get('program/{program?}', [ProgramController::class, 'applicants_report_by_program'])->name('applicants.by_program');
@@ -200,6 +217,9 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::post('config/{campus_id?}', [ProgramProvisionController::class, 'save_configuration']);
     });
 });
+
+Route::get('degree{degree_id}programs', [Controller::class, 'degree_programs'])->name('degree_programs');
+Route::get('program{program_id}levels', [Controller::class, 'program_levels'])->name('_program_levels');
 
 
 Route::prefix('student')->name('student.')->middleware(['isStudent', 'plcharge'])->group(function () {
@@ -286,6 +306,8 @@ Route::prefix('student')->name('student.')->middleware(['isStudent', 'plcharge']
     Route::get('region/divisions/{region_id}', [Controller::class, 'regionDivisions'])->name('region.divisions');
     Route::get('programs/all', [StudentHomeController::class, 'all_programs'])->name('programs.index');
     Route::get('payment/data', [StudentHomeController::class, 'payment_data'])->name('payment.data');
+    Route::get('application/basic/{step}/{id?}', [StudentHomeController::class, 'start_basic_application'])->name('application.basic.start');
+    Route::post('application/basic/{step}/{id?}', [StudentHomeController::class, 'persist_basic_application']);
     Route::get('application/start/{step}/{id?}', [StudentHomeController::class, 'start_application'])->name('application.start');
     Route::post('application/start/{step}/{id?}', [StudentHomeController::class, 'persist_application']);
     Route::get('application/submit/{id?}', [StudentHomeController::class, 'submit_application'])->name('application.submit');

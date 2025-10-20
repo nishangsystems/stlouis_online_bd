@@ -168,6 +168,257 @@ class HomeController extends Controller
         return view('student.online.programs', $data);
     }
 
+    public function start_basic_application (Request $request, $step, $application_id = null)
+    {
+        try {
+
+            
+
+            if(auth('student')->user()->applicationForms()->whereNotNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->count() > 0){
+                return back()->with('error', "You are allowed to submit only one application form per year");
+            }
+
+            // check if application is open now
+            if(!(Helpers::instance()->application_open())){
+                return redirect(route('student.home'))->with('error', 'Application closed for '.Batch::find(Config::all()->last()->year_id)->name);
+            }
+            # code...
+            $data['step'] = $step;
+            // return $this->api_service->campuses();
+            $data['campuses'] = json_decode($this->api_service->campuses())->data;
+            $application = ApplicationForm::where(['student_id'=>auth('student')->id(), 'year_id'=>Helpers::instance()->getCurrentAccademicYear()])->first();
+            if($application == null){
+                $application = new ApplicationForm();
+                $application->student_id = auth('student')->id();
+                $application->year_id = Helpers::instance()->getCurrentAccademicYear();
+                $application->save();
+            }
+            $data['application'] = $application;
+            $data['status_set'] = $this->api_service->program_provisioning_status_set()['data'];
+    
+            if($data['application']->degree_id != null){
+                $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
+            }
+            if($data['application']->campus_id != null){
+                $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
+            }
+            if($data['application']->degree_id != null){
+                // dd(json_decode($this->api_service->degree_certificates($data['application']->degree_id)));
+                $certs = json_decode($this->api_service->degree_certificates($data['application']->degree_id))->data;
+                if(is_array($certs) && count($certs)>0){ $data['certs'] = $certs;
+                }else{ $data['certs'] = json_decode($this->api_service->certificates())->data; }
+            }
+            if($data['application']->entry_qualification != null){
+                $program_status_config = $this->api_service->program_provision_status_settings($campus_id = $data['application']->campus_id, $status = $data['application']->program_status);
+                $programs = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
+                // dd($program_status_config);
+                if(($config = collect($program_status_config->get('data'))) != null){
+                    $config_programs = collect($config->first());
+                    $data['programs'] = collect($programs)->filter(function($rec)use($config_programs){
+                        return $config_programs->where('program_id', $rec->id)->count() > 0;
+                    });
+                }else{
+                    $data['programs'] = [];
+                }
+                // dd($data['programs']);
+                $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
+            }
+            if($data['application']->program_first_choice != null){
+                $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
+                $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
+                // return $data;
+            }
+            
+            $data['title'] = (isset($data['degree']) and ($data['degree'] != null)) ? $data['degree']->deg_name." APPLICATION FOR DOUALA-BONABERI" : "APPLICATION FOR DOUALA-BONABERI";
+            return view('student.online.basic_form', $data);
+        } catch (Throwable $th) {
+            throw $th;
+            return back()->with('error', $th->getMessage());
+        }
+    }
+    
+    public function persist_basic_application(Request $request, $step, $application_id)
+    {
+        # code...
+        // return $request->all();
+        
+        // check if application is open now
+        if(!(Helpers::instance()->application_open())){
+            return redirect(route('student.home'))->with('error', 'Application closed for '.Batch::find(Config::all()->last()->year_id)->name);
+        }
+        switch ($step) {
+            case 1:
+                # code...
+                $validity = Validator::make($request->all(), [
+                    'campus_id'=>'required', 'degree_id'=>'required'
+                ]);
+                break;
+            
+            case 2:
+                # code...
+                // return $request->all();
+                $validity = Validator::make($request->all(), [
+                    "name"=>'required',"gender"=> "required","dob"=> "required", "pob"=> "required", "nationality"=> "required",
+                    "region"=> "required", "division"=> "required", "residence"=> "required", "phone"=> "required", "email"=> "required|email",
+                    "referer"=> "required", "high_school"=> "required", "campus_id"=> "required", "entry_qualification"=> "required"
+                ]);
+                break;
+            
+            case 3:
+                # code...
+                $validity = Validator::make($request->all(), [
+                    'program_first_choice'=>'required', 'program_second_choice'=>'required',
+                ]);
+                break;
+            
+            case 4:
+                # code...
+                
+                $validity = Validator::make($request->all(), [
+                    // 'first_spoken_language'=>'required', 'first_written_language'=>'required',
+                    'employments'=>'array', 'previous_training'=>'array'
+                ]);
+                break;
+                
+            case 5:
+                # code...
+                // return $request->all();
+                // $validity = Validator::make($request->all(), [
+                //     'has_health_problem'=>'required|', 'has_health_allergy'=>'required', 'has_disability'=>'required',
+                //     'health_problem'=>'required_if:has_health_problem,yes', 'health_allergy'=>'required_if:has_health_allergy,yes', 
+                //     'disability'=>'required_if:has_disability,yes',
+                // ]);
+                $validity = Validator::make($request->all(), [
+                    'fee_payer'=>'required', 'fee_payer_name'=>'required', 'fee_payer_residence'=>'required',
+                    'fee_payer_tel'=>'required', 'fee_payer_occupation'=>'required'
+                ]);
+                break;
+                
+            case 6:
+                $validity = Validator::make($request->all(), [
+                    
+                ]);
+                # code...
+                break;
+            
+            case 7:
+                # code...
+                // return $request->all();
+                // momo-number validated with country code for cameroon: 237
+                $validity = Validator::make($request->all(), [
+                    "momo_number"=> "nullable|size:9", "amount"=> "nullable|numeric|min:1",
+                    // "momo_screenshot"=> "file"
+                ]);
+                break;
+            
+        }
+
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+        // return $request->all();
+
+        // persist data
+        $data = [];
+        if($step == 4){
+            $data_p1=[];
+            $_data = $request->previous_training;
+            // return $_data;
+            if($_data != null){
+                foreach ($_data['school'] as $key => $value) {
+                    $data_p1[] = ['school'=>$value, 'year'=>$_data['year'][$key], 'course'=>$_data['course'][$key], 'certificate'=>$_data['certificate'][$key]];
+                }
+                $data['previous_training'] = json_encode($data_p1);
+                // return $data;
+            }
+            $data_p2 = [];
+            $e_data = $request->employments;
+            if($e_data != null){
+                foreach ($e_data['employer'] as $key => $value) {
+                    $data_p2[] = ['employer'=>$value, 'post'=>$e_data['post'][$key], 'start'=>$e_data['start'][$key], 'end'=>$e_data['end'][$key], 'type'=>$e_data['type'][$key]];
+                }
+                $data['employments'] = json_encode($data_p2);
+                // return $data;
+            }
+            $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
+            $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
+        }
+        elseif($step ==7){
+            // dd($request->all());
+            $tk_counter = 0;
+            $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
+            $tranzak_credentials = TranzakCredential::where('campus_id', $application->campus_id)->first();
+            if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
+                // get and cache different token
+                // dd($request->all());
+                REQUEST_TOKEN:
+                $tk_counter++;
+                $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>$tranzak_credentials->app_id, 'appKey'=>$tranzak_credentials->api_key]);
+                if($response->status() == 200){
+                    // return json_decode($response->body())->data;
+                    // return Carbon::createFromTimestamp(time() + json_decode($response->body())->data->expiresIn);
+                    // cache token and token expiration to session
+                    cache([$tranzak_credentials->cache_token_key => json_decode($response->body())->data->token]);
+                    cache([$tranzak_credentials->cache_token_expiry_key=>Carbon::createFromTimestamp(time() + json_decode($response->body())->data->expiresIn)]);
+                }
+            }
+            $headers = ['Authorization'=>'Bearer '.cache($tranzak_credentials->cache_token_key)];
+            if($request->channel == 'bank'){
+                $return_url = "192.168.2.196/NISHANG/ssp2_univ_apl_port/api/tranzak/web_redirect/return_callback";
+                // $request_data = ['mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE", 'returnUrl'=>$return_url, 'cancelUrl'=>$return_url];
+                $request_data = ['mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE", 'returnUrl'=>route('tranzak.return_url'), 'cancelUrl'=>route('tranzak.return_url')];
+                $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.web_redirect_payment'), $request_data);
+                if($_response->status() == 200){
+                    \Illuminate\Support\Facades\Log::info("_____________REQUEST_TO_PAY___".json_encode($_response->collect()->toArray())."______________.");
+                    
+                    session()->put('processing_tranzak_transaction_details', json_encode(json_decode($_response->body())->data));
+                    session()->put('tranzak_credentials', json_encode($tranzak_credentials));
+                    $applxn = ApplicationForm::find($application_id);
+                    $data = ['student_id'=>auth('student')->id(), 'form_id'=>$application_id, 'requestId'=>$_response->collect()['data']['requestId'], 'payment_id'=>$applxn->degree_id??null, 'year_id'=>$applxn->year_id, 'campus_id'=>$applxn->campus_id, 'purpose'=>'APPLICATION', 'transaction'=>json_encode($_response->collect()['data'])];
+                    \App\Models\PendingTranzakTransaction::create($data);
+                    $payment_url = $_response->collect()['data']['links']['paymentAuthUrl'];
+                    return redirect()->to(route('student.application.payment.processing', $application_id)."?payment_url=".$payment_url);
+                }
+            }else{
+                $request_data = ['mobileWalletNumber'=>'237'.$request->momo_number, 'mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE"];
+                $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
+                if($_response->status() == 200){
+    
+                    session()->put('processing_tranzak_transaction_details', json_encode(json_decode($_response->body())->data));
+                    session()->put('tranzak_credentials', json_encode($tranzak_credentials));
+                    // create pending transaction
+                    $applxn = ApplicationForm::find($application_id);
+                    $data = ['student_id'=>auth('student')->id(), 'form_id'=>$application_id, 'requestId'=>$_response->collect()['data']['requestId'], 'payment_id'=>$applxn->degree_id??null, 'year_id'=>$applxn->year_id, 'campus_id'=>$applxn->campus_id, 'purpose'=>'APPLICATION', 'transaction'=>json_encode($_response->collect()['data'])];
+                    \App\Models\PendingTranzakTransaction::create($data);
+                    return redirect()->to(route('student.application.payment.processing', $application_id));
+                }
+            }
+            // dd($_response->collect());
+            if(count($_response->collect()['data']) == 0 and $tk_counter == 0){
+                goto REQUEST_TOKEN;
+            }
+
+        }else{
+            $data = $request->all();
+            $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
+            $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
+        }
+        // $application->update($data);
+        if($step == 3){
+            // Form fully filled
+            $appl = ApplicationForm::find($application_id);
+            // return 'xyz';
+                $degs = json_decode($this->api_service->campusDegrees($appl->campus_id))->data;
+                if (($degree = collect($degs)->where('id', $appl->degree_id)->first()) != null) {
+                    if($degree->deg_name != 'MASTER DEGREE PROGRAMS'){
+                        return redirect(route('student.application.start', [$step+1, $application_id]));
+                    }
+                }
+        }
+        $step = $request->step;
+        return redirect(route('student.application.start', [$step, $application_id]));
+    }
+
     public function start_application (Request $request, $step, $application_id = null)
     {
         try {
@@ -236,6 +487,7 @@ class HomeController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
+
 
     public function persist_application(Request $request, $step, $application_id)
     {
@@ -554,7 +806,8 @@ class HomeController extends Controller
             $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
             
             // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
-            $title = "APPLICATION FORM FOR ".$data['degree']->deg_name;
+            $status = $application->program_status;
+            $title = "APPLICATION FORM FOR ".($data['degree']->deg_name??'')."(".$status.")";
             $data['title'] = $title;
 
             // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
