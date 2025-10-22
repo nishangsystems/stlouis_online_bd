@@ -1061,7 +1061,7 @@ class ProgramController extends Controller
         $data['application'] = ApplicationForm::find($id);
         $data['levels'] = collect(json_decode($this->api_service->levels())->data);
         $data['degrees'] = collect(json_decode($this->api_service->degrees())->data);
-        $data['divisions'] = $data['application']->_region->divisions;
+        $data['divisions'] = $data['application']->_region?->divisions;
         if($data['application']->degree_id != null){
             $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
         }
