@@ -49,19 +49,19 @@
                     @foreach ($applications as $appl)
                         <tr class="border-bottom">
                             <td class="border-left border-right">{{ $k++ }}</td>
-                            <td class="border-left border-right">{{ $appl->name == null ? \App\Models\Students::find($appl->student_id)->name : $appl->name }}</td>
-                            <td class="border-left border-right">{{ $appl->email == null ? \App\Models\Students::find($appl->student_id)->email : $appl->email }}</td>
-                            <td class="border-left border-right">{{ $appl->phone == null ? \App\Models\Students::find($appl->student_id)->phone : $appl->phone }}</td>
-                            <td class="border-left border-right">{{ $campuses->where('id', $appl->campus_id)->first()->name??null }}</td>
-                            <td class="border-left border-right">{{ $degrees->where('id', $appl->degree_id)->first()->deg_name??null }}</td>
-                            <td class="border-left border-right">{{ $programs->where('id', $appl->program_first_choice)->first()->name??null }}</td>
-                            <td class="border-left border-right">{{ $programs->where('id', $appl->program_second_choice)->first()->name??null }}</td>
+                            <td class="border-left border-right">{{ $appl?->name == null ? (\App\Models\Students::find($appl->student_id)?->name??'') : ($appl->name??'') }}</td>
+                            <td class="border-left border-right">{{ $appl?->email == null ? (\App\Models\Students::find($appl->student_id)?->email??'') : ($appl->email??'') }}</td>
+                            <td class="border-left border-right">{{ $appl?->phone == null ? (\App\Models\Students::find($appl->student_id)?->phone??'') : ($appl->phone??'') }}</td>
+                            <td class="border-left border-right">{{ $campuses?->where('id', $appl?->campus_id??0)->first()->name??null }}</td>
+                            <td class="border-left border-right">{{ $degrees?->where('id', $appl?->degree_id??0)->first()->deg_name??null }}</td>
+                            <td class="border-left border-right">{{ $programs?->where('id', $appl?->program_first_choice??0)->first()->name??null }}</td>
+                            <td class="border-left border-right">{{ $programs?->where('id', $appl?->program_second_choice??0)->first()->name??null }}</td>
                             <td class="border-left border-right">
                                 @if(isset($action))
-                                    <a href="{{ Request::url().'/'.$appl->id }}" class="btn btn-xs btn-primary mt-1">{{ $action }}</a>
+                                    <a href="{{ Request::url().'/'.$appl?->id??0 }}" class="btn btn-xs btn-primary mt-1">{{ $action }}</a>
                                 @endif
                                 @if(isset($download))
-                                   <a href="{{ Request::url() }}/{{  $appl->id }}?_atn=_dld" class="btn btn-xs btn-primary mt-1">{{ $download }}</a>
+                                   <a href="{{ Request::url() }}/{{  $appl?->id??0 }}?_atn=_dld" class="btn btn-xs btn-primary mt-1">{{ $download }}</a>
                                 @endif
                             </td>
                         </tr>
