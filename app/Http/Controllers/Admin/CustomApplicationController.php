@@ -396,7 +396,7 @@ class CustomApplicationController extends Controller
         }
 
         try{
-            $level = collect(json_decode($this->api_service->campusProgramLevels($request->campus_id, $request->proram_id))?->data??[])->first()?->level??'';
+            $level = collect(json_decode($this->api_service->campusProgramLevels($request->campus_id, $request->program_id))?->data??[])->first()?->level??'';
             if($level == null){
                 session()->flash('error', "No levels have been associated to this program in the selected campus. Add levels to proceed");
                 return back()->withInput();
