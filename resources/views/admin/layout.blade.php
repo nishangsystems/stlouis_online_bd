@@ -432,14 +432,14 @@
 
                         <b class="arrow"></b>
                     </li> --}}
-                    {{-- <li>
+                    <li>
                         <a href="{{route('admin.custom_applications.mass_import')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.mass_import')}}
                         </a>
 
                         <b class="arrow"></b>
-                    </li> --}}
+                    </li>
 
                 </ul>
             </li>
