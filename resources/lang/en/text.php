@@ -1000,5 +1000,6 @@ return [
     'admit_foreigners'=>'admit foreigners',
     'switch_program'=>'switch program',
     'new_applicant'=>'new applicant',
+    'mass_import'=>'mass import',
     ''
 ];

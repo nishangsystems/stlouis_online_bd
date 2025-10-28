@@ -8,6 +8,7 @@ use App\Models\Batch;
 use App\Models\Students;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CustomApplicationController extends Controller
@@ -373,6 +374,87 @@ class CustomApplicationController extends Controller
         }catch(\Throwable $th){
             session()->flash('error', $th->getMessage());
             return back();
+        }
+    }
+
+    public function import(Request $request){
+        $programs = collect(json_decode($this->api_service->programs())->data);
+        $degrees = collect(json_decode($this->api_service->degrees())->data);
+        $campuses = collect(json_decode($this->api_service->campuses())->data);
+        $data['title'] = "Import Student Application Forms";
+        $data['programs'] = $programs;
+        $data['degrees'] = $degrees;
+        $data['campuses'] = $campuses;
+        return view('admin.student.custom_applications.import_forms', $data);
+    }
+
+    public function import_save(Request $request){
+        $validity = Validator::make($request->all(), ['program_id'=>'required', 'file'=>'required|file|mimetypes:text/csv']);
+        if($validity->fails()){
+            session()->flash('error', $validity->errors()->first());
+            return back()->withInput();
+        }
+
+        try{
+            $level = collect(json_decode($this->api_service->campusProgramLevels($request->campus_id, $request->proram_id))?->data??[])->first()?->level??'';
+            if($level == null){
+                session()->flash('error', "No levels have been associated to this program in the selected campus. Add levels to proceed");
+                return back()->withInput();
+            }
+            $transaction_id = 1 - time();
+
+            if(($file = $request->file('file')) != null){
+                $file_name = 'extra_space_used_'.time().'.'.$file->getClientOriginalExtension();
+                $file->move(storage_path('files'), $file_name);
+                $reader = fopen(storage_path('files/'.$file_name), 'r');
+                $year = \App\Helpers\Helpers::instance()->getCurrentAccademicYear();
+
+                DB::beginTransaction();
+
+                $imported = [];
+                while(($row = fgetcsv($reader, 1000, ',')) != null){
+                    $record = [
+                        'name' => $row[0],
+                        'gender' => $row[1],
+                        'phone' => $row[2],
+                        'whatsapp' => $row[3],
+                        'email' => $row[4],
+                        'dob' => $row[5],
+                        'pob' => $row[6],
+                        'campus_id' => $request->campus_id,
+                        'year_id' => $year,
+                        'program_first_choice' => $request->program_id,
+                        'degree_id'=>$request->degree_id,
+                        'level' => $level,
+                        'transaction_id' => $transaction_id,
+                        'program_status' => 'ON-CAMPUS',
+                        'admitted' => false
+                    ];
+                    if(in_array($record['gender'], ['sex', 'SEX', 'gender', 'GENDER'])){continue;}
+                    $imported[] = $record;
+                }
+
+                $errors = '';
+                foreach($imported as $item){
+                    if(ApplicationForm::where(['name'=>$item['name'], 'year_id' => $item['year_id']])->count() > 0){
+                        $errors .= "Application form with name \"".$item['name']."\" already exist for the current accademic year and is not re-imported.\n";
+                        continue;
+                    }
+
+                    ApplicationForm::create($item);
+                }
+                DB::commit();
+            }
+            if(strlen($errors) > 0){
+                session()->flash('error', $errors);
+            }
+            session()->flash('success', "Operation complete");
+            return redirect()->route('admin.applications.admit');
+        }catch(\Throwable $th){
+            DB::rollBack();
+            // throw $th;
+            session()->flash('error', "Operation failed: ".$th->getMessage()." At ".$th->getFile()." Line ".$th->getLine().". Initial system state restored.");
+            return back()->withInput();
         }
     }
 }

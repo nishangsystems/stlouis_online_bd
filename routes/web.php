@@ -196,6 +196,8 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::post('switch_confirmed', [CustomApplicationController::class, 'switch_confirmed'])->name('switch_confirmed');
         Route::get('importadmit', [CustomApplicationController::class, 'import_admit_students'])->name('import');
         Route::post('importadmit', [CustomApplicationController::class, 'import_admit_students_save']);
+        Route::get('import', [CustomApplicationController::class, 'import'])->name('mass_import');
+        Route::post('import', [CustomApplicationController::class, 'import_save']);
     });
 
 
