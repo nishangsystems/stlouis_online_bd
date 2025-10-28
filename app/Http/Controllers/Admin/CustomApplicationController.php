@@ -375,4 +375,13 @@ class CustomApplicationController extends Controller
             return back();
         }
     }
+
+    public function import(Request $request){
+        $programs = collect(json_decode($this->api_service->programs())->data);
+        $data['title'] = "Import Student Application Forms";
+        $data['programs'] = $programs;
+        return view('admin.student.custom_applications.import_forms', $data);
+    }
+
+    public function import_save(Request $request){}
 }
