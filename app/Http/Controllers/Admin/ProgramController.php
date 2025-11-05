@@ -1266,7 +1266,7 @@ class ProgramController extends Controller
                     if($prefix == null){
                         return back()->with('error', 'Matricule generation prefix not set.');
                     }
-                    $max_matric = json_decode($this->api_service->max_matric($prefix, $year))->data; //matrics starting with '$prefix' sort
+                    $max_matric = json_decode(json: $this->api_service->max_matric($prefix, $year, ['type' => 'degree', 'degree_id' => $application->degree_id]))->data; //matrics starting with '$prefix' sort
                     // dd($max_matric);
                     if($max_matric == null){
                         $max_count = 0;
@@ -1414,7 +1414,7 @@ class ProgramController extends Controller
                 if($prefix == null){
                     return back()->with('error', 'Matricule generation prefix not set.');
                 }
-                $max_matric = json_decode($this->api_service->max_matric($prefix, $year))->data; //matrics starting with '$prefix' sort
+                $max_matric = json_decode($this->api_service->max_matric($prefix, $year, ['type' => 'degree', 'degree_id' => $application->degree_id]))->data; //matrics starting with '$prefix' sort
                 if($max_matric == null){
                     $max_count = 0;
                 }else{
