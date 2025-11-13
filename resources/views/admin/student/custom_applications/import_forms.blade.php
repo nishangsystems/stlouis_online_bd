@@ -66,7 +66,16 @@
                     <input type="file" name="file" required class="form-control">
                     <span class="text-info text-capitalize">@lang('text.word_file') <span class="text-danger text-capitalize">*</span></span>
                 </div>
-                <div class="col-md-12 col-xl-8" style="margin-block: 0.7rem;">
+                <div class="col-md-6 col-xl-4" style="margin-block: 0.7rem;">
+                    <select name="level" id="" class="form-control" required>
+                        <option value="">@lang('text.select_program')</option>
+                        @foreach ($levels as $level)
+                            <option value="{{ $level->level }}">{{ $level->level }}</option>
+                        @endforeach
+                    </select>
+                    <span class="text-info text-capitalize">@lang('text.word_level') <span class="text-danger">*</span> </span>
+                </div>
+                <div class="col-md-12 col-xl-4" style="margin-block: 0.7rem;">
                     <input type="submit" value="{{ __('text.word_import') }}" class="form-control btn btn-primary btn-md rounded">
                 </div>
             </div>
