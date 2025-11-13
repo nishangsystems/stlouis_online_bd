@@ -381,26 +381,24 @@ class CustomApplicationController extends Controller
         $programs = collect(json_decode($this->api_service->programs())->data);
         $degrees = collect(json_decode($this->api_service->degrees())->data);
         $campuses = collect(json_decode($this->api_service->campuses())->data);
+        $levels = collect(json_decode($this->api_service->levels())->data);
         $data['title'] = "Import Student Application Forms";
         $data['programs'] = $programs;
         $data['degrees'] = $degrees;
         $data['campuses'] = $campuses;
+        $data['levels'] = $levels;
         return view('admin.student.custom_applications.import_forms', $data);
     }
 
     public function import_save(Request $request){
-        $validity = Validator::make($request->all(), ['program_id'=>'required', 'file'=>'required|file|mimetypes:text/csv']);
+        $validity = Validator::make($request->all(), ['program_id'=>'required', 'file'=>'required|file|mimetypes:text/csv', 'level'=>'required']);
         if($validity->fails()){
             session()->flash('error', $validity->errors()->first());
             return back()->withInput();
         }
 
         try{
-            $level = collect(json_decode($this->api_service->campusProgramLevels($request->campus_id, $request->program_id))?->data??[])->first()?->level??'';
-            if($level == null){
-                session()->flash('error', "No levels have been associated to this program in the selected campus. Add levels to proceed");
-                return back()->withInput();
-            }
+            $level = $request->level;
             $transaction_id = 1 - time();
 
             if(($file = $request->file('file')) != null){
