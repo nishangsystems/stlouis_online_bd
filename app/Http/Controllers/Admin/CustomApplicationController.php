@@ -398,7 +398,6 @@ class CustomApplicationController extends Controller
         }
 
         try{
-            $level = $request->level;
             $transaction_id = 1 - time();
 
             if(($file = $request->file('file')) != null){
@@ -423,7 +422,7 @@ class CustomApplicationController extends Controller
                         'year_id' => $year,
                         'program_first_choice' => $request->program_id,
                         'degree_id'=>$request->degree_id,
-                        'level' => $level,
+                        'level' => $request->level,
                         'transaction_id' => $transaction_id,
                         'program_status' => 'ON-CAMPUS',
                         'admitted' => false
