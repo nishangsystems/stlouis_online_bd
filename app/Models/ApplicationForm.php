@@ -14,7 +14,7 @@ class ApplicationForm extends Model
         'student_id', 'year_id', 'gender', 'name', 'dob', 'pob', 'region', 'division', 'residence', 'phone', 'email',
         'program_first_choice', 'program_second_choice', 'first_spoken_language', 'first_written_language', 'second_spoken_language', 
         'second_written_language', 'has_health_problem', 'has_health_allergy', 'has_disability', 'health_problem', 'health_allergy', 'disability',
-        'awaiting_results', 'previous_training', 'employments', 'fee_payer', 'fee_payer_name', 'fee_payer_residence', 'matric',
+        'awaiting_results', 'previous_training', 'employments', 'fee_payer', 'fee_payer_name', 'fee_payer_residence', 'matric', 'level',
         'fee_payer_tel', 'fee_payer_occupation', 'candidate_declaration', 'parent_declaration', 'campus_id', 'degree_id', 'transaction_id', 'admitted'
     ];
 

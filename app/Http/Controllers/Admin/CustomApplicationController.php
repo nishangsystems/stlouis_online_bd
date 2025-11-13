@@ -432,6 +432,7 @@ class CustomApplicationController extends Controller
                 }
 
                 $errors = '';
+                // dd($imported);
                 foreach($imported as $item){
                     if(ApplicationForm::where(['name'=>$item['name'], 'year_id' => $item['year_id']])->count() > 0){
                         $errors .= "Application form with name \"".$item['name']."\" already exist for the current accademic year and is not re-imported.\n";
