@@ -666,13 +666,13 @@ class HomeController extends Controller
             // return $request->all();
     
             // BRIDGE PROCESS BY PAYING WITH TRANZAK
-            {
-                $data = $request->all();
-                $data_key = $request->payment_purpose == '_TRANSCRIPT_' ? config('tranzak.tranzak._transcript_data') : config('tranzak.tranzak.platform_data');
-                session()->put($data_key, $data);
-                // dd($data);
-                return $this->tranzak_pay($request->payment_purpose, $request);
-            }
+            // {
+            //     $data = $request->all();
+            //     $data_key = $request->payment_purpose == '_TRANSCRIPT_' ? config('tranzak.tranzak._transcript_data') : config('tranzak.tranzak.platform_data');
+            //     session()->put($data_key, $data);
+            //     // dd($data);
+            //     return $this->tranzak_pay($request->payment_purpose, $request);
+            // }
     
             try {
                 //code...
