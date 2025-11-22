@@ -379,7 +379,7 @@
             </li>
             @endif
 
-            {{-- @if (\Auth::user()->hasPermissionTo('manage_custom_applications')) --}}
+            @if (\Auth::user()->hasPermissionTo('manage_custom_applications'))
             <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
                     <i  style="color: {{$bg1}}"class="menu-icon  fa fa-file"></i>
@@ -443,7 +443,7 @@
 
                 </ul>
             </li>
-            {{-- @endif --}}
+            @endif
             
             @if (\Auth::user()->hasPermissionTo('access_reports'))
             <li>
