@@ -93,10 +93,10 @@ class ApiService{
         return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.levels'))->body();
     }
 
-    public function max_matric($prefix, $year)
+    public function max_matric($prefix, $year, $params = [])
     {
         # code...
-        return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.max_matric').'/'.$prefix.'/'.$year)->body();
+        return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.max_matric').'/'.$prefix.'/'.$year.'?'.http_build_query($params))->body();
         // return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.max_matric').'/'.$prefix)->body();
     }
 

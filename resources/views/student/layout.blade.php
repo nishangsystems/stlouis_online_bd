@@ -228,6 +228,14 @@
             </li>
 
             <li>
+                <a href="{{route('student.application.basic.start', 0)}}">
+                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
+                    <span class="menu-text text-capitalize">{{__('text.basic_application')}}</span>
+                </a>
+                <b class="arrow"></b>
+            </li>
+
+            <li>
                 <a href="{{route('student.application.submit')}}">
                     <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
                     <span class="menu-text text-capitalize">{{__('text.submit_form')}}</span>

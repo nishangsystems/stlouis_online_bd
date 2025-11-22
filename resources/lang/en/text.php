@@ -994,5 +994,12 @@ return [
     'current_program'=>'current program',
     'new_program'=>'new program',
     'word_filter'=>'filter',
+    'basic_application'=>'basic application',
+    'custom_applications'=>'custom applications',
+    'admit_locals'=>'admit locals',
+    'admit_foreigners'=>'admit foreigners',
+    'switch_program'=>'switch program',
+    'new_applicant'=>'new applicant',
+    'mass_import'=>'mass import',
     ''
 ];
