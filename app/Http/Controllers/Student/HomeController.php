@@ -912,7 +912,6 @@ class HomeController extends Controller
         ]);
         try {
             //code...
-            dd($request->all());
             if ($validator->fails()) {
                 # code...
                 return back()->with('error', $validator->errors()->first());
