@@ -391,7 +391,7 @@ class CustomApplicationController extends Controller
     }
 
     public function import_save(Request $request){
-        $validity = Validator::make($request->all(), ['program_id'=>'required', 'file'=>'required|file|mimes:csv', 'level'=>'required']);
+        $validity = Validator::make($request->all(), ['program_id'=>'required', 'file'=>'required|file', 'level'=>'required']);
         if($validity->fails()){
             session()->flash('error', $validity->errors()->first());
             return back()->withInput();
@@ -400,7 +400,8 @@ class CustomApplicationController extends Controller
         try{
             $transaction_id = 1 - time();
 
-            if(($file = $request->file('file')) != null){
+            $errors = '';
+            if(($file = $request->file('file')) != null and $file->getClientOriginalExtension() == 'csv'){
                 $file_name = 'extra_space_used_'.time().'.'.$file->getClientOriginalExtension();
                 $file->move(storage_path('files'), $file_name);
                 $reader = fopen(storage_path('files/'.$file_name), 'r');
@@ -431,7 +432,6 @@ class CustomApplicationController extends Controller
                     $imported[] = $record;
                 }
 
-                $errors = '';
                 // dd($imported);
                 foreach($imported as $item){
                     if(ApplicationForm::where(['name'=>$item['name'], 'year_id' => $item['year_id']])->count() > 0){
@@ -442,6 +442,8 @@ class CustomApplicationController extends Controller
                     ApplicationForm::create($item);
                 }
                 DB::commit();
+            }else{
+                $errors .= "File not readable";
             }
             if(strlen($errors) > 0){
                 session()->flash('error', $errors);
