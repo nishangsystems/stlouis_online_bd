@@ -1428,7 +1428,7 @@ class ProgramController extends Controller
                 
                 
                 NEXT_ATTEMPT:
-                $next_count = substr('0000'.($max_count++), -4);
+                $next_count = substr('0000'.(++$max_count), -4);
                 $student_matric = $prefix.'/'.$year.'/'.$next_count;
                 
                 if(ApplicationForm::where('matric', $student_matric)->count() == 0){
