@@ -66,7 +66,6 @@
                                     <button type="submit" class="d-block border-0 btn-white rounded-md mb-4" style="border: 1px solid steelblue; border-radius: 0.5rem; padding: 0.7rem 1.4rem; font-size: larger; font-weight: 700; color: steelblue;">
                                         @lang('text.make_payment')
                                     </button>
-                                    <span class="h4 fw-bolder">{{__('text.orange_money')}}</span>
                                 </span>
                             </div>
                         </div>
