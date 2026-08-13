@@ -1001,5 +1001,8 @@ return [
     'switch_program'=>'switch program',
     'new_applicant'=>'new applicant',
     'mass_import'=>'mass import',
+    'bank_receipt_number' => 'bank receipt number',
+    'select_bank' => 'select bank',
+    'bank_payment_details' => 'bank payment details',
     ''
 ];

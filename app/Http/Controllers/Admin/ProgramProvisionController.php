@@ -29,7 +29,7 @@ class ProgramProvisionController extends Controller
     public function configure(request $request, $campus_id = null){
         $data['title'] = "Configure Program Provision Status";
         $data['campuses'] = collect(json_decode($this->api_service->campuses())->data);
-        $data['status_set'] = $this->api_service->program_provisioning_status_set()['data'];
+        $data['status_set'] = $this->api_service->program_provisioning_status_set()->get('data');
         if($campus_id != null){
             $data['title'] = "Configure Program Provision Status For ".optional($data['campuses']->where('id', $campus_id)->first())->name??'';
             $data['status_collection'] = collect($this->api_service->program_provision_status_settings($campus_id = $campus_id)['data']);
