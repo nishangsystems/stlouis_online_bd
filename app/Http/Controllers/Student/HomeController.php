@@ -229,7 +229,11 @@ class HomeController extends Controller
                 // return $data;
             }
             
-            $data['title'] = (isset($data['degree']) and ($data['degree'] != null)) ? $data['degree']->deg_name." APPLICATION FOR DOUALA-BONABERI" : "APPLICATION FOR DOUALA-BONABERI";
+            $data['title'] = (isset($data['degree']) and ($data['degree'] != null)) ? $data['degree']->deg_name." APPLICATION" : "APPLICATION";
+            if($data['campus'] != null){
+                $data['title'] .= $data['campus']->name??'';
+            }
+
             return view('student.online.basic_form', $data);
         } catch (Throwable $th) {
             throw $th;
@@ -453,6 +457,9 @@ class HomeController extends Controller
             if($data['application']->campus_id != null){
                 $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
             }
+            if($data['campus'] != null){
+                $data['banks'] = $data['application']->campus_banks;
+            }
             if($data['application']->degree_id != null){
                 // dd(json_decode($this->api_service->degree_certificates($data['application']->degree_id)));
                 $certs = json_decode($this->api_service->degree_certificates($data['application']->degree_id))->data;
@@ -654,8 +661,12 @@ class HomeController extends Controller
                 goto REQUEST_TOKEN;
             }
             */
-            $inputs = $request->only(['bank', 'bank_receipt_number']);
+            $request->validate(['campus_bank_id', 'bank_receipt_id']);
+            $inputs = $request->only(['campus_bank_id', 'bank_receipt_id']);
+            $inputs['transaction_id'] = "cbnk{$inputs['campus_bank_id']}bnkrcp{$inputs['bank_receipt_id']}";
             $application->update($inputs);
+            session()->flash('success', "You have successfully completed your application process. You can now download your application form");
+            return redirect()->route('student.application.form.download');
 
         }else{
             $data = $request->all();

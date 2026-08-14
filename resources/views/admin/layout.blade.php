@@ -287,6 +287,14 @@
 
                         <b class="arrow"></b>
                     </li>
+                    <li>
+                        <a href="{{route('admin.banks.campus_bank.index')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.manage_campus_banks')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
                 </ul>
             </li>
             @endif
@@ -683,7 +691,7 @@
                 </div>
 
 
-                <div class="mb-4 mx-3">
+                <div class="mb-4 mx-3 border-bottom">
                     <h4 id="title" class="font-weight-bold text-capitalize">{!! $title ?? '' !!}</h4>
                 </div>
                 @if ((auth()->user()->password_reset != 1) && (now()->diffInDays(\Illuminate\Support\Carbon::createFromTimestamp(auth()->user()->created_at)) >= 14) && (url()->current() != route('admin.reset_password')))

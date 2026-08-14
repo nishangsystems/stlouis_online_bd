@@ -780,16 +780,16 @@
                                 <div class="py-3">
                                     <h4 class="text-center text-capitalize"><b>@lang('text.bank_payment_details')</b></h4>
                                     <label class="text-secondary text-capitalize">{{ __('text.select_bank') }} </label>
-                                    <input type="text" class="form-control" name="bank" required>
-                                        {{-- <option></option>
+                                    <select type="text" class="form-control" name="campus_bank_id" required>
+                                        <option></option>
                                         @foreach ($banks as $bank)
-                                            <option value="{{ $bank->id }}" {{ $application->bank_id == $bank->id ? 'selected' : '' }}>{{ $bank->name }}</option>
+                                            <option value="{{ $bank->id }}" {{ $application->campus_bank_id == $bank->id ? 'selected' : '' }}>{{ $bank->bank_name }}</option>
                                         @endforeach
-                                    </select> --}}
+                                    </select>
                                 </div>
                                 <div class="py-3">
                                     <label class="text-secondary text-capitalize">{{ __('text.bank_receipt_number') }} </label>
-                                    <input type="text" class="form-control" name="bank_receipt_number" required>
+                                    <input type="text" class="form-control" name="bank_receipt_id" required value="{{ $application->bank_receipt_id }}">
                                 </div>
                                 <div class="py-5 d-flex justify-content-end">
                                     <input type="submit" class="px-4 py-1 btn btn-lg rounded btn-primary text-capitalize" value="{{ __('text.word_save') }}">

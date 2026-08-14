@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CustomApplicationController;
 use App\Http\Controllers\Auth\CustomForgotPasswordController;
 use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\Student\HomeController as StudentHomeController;
@@ -217,6 +218,16 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('index', [ProgramProvisionController::class, 'index'])->name('index');
         Route::get('config/{campus_id?}', [ProgramProvisionController::class, 'configure'])->name('config');
         Route::post('config/{campus_id?}', [ProgramProvisionController::class, 'save_configuration']);
+    });
+
+
+    Route::prefix('banks')->name('banks.')->group(function(){
+        Route::get('campus_banks/index', [Controllers\Admin\BankManagement::class, 'index'])->name('campus_bank.index');
+        Route::post('campus_banks/save', [Controllers\Admin\BankManagement::class, 'save_campus_bank'])->name('campus_bank.save');
+        Route::get('campus_banks/edit/{id}', [Controllers\Admin\BankManagement::class, 'edit_campus_bank'])->name('campus_bank.edit');
+        Route::post('campus_banks/edit/{id}', [Controllers\Admin\BankManagement::class, 'update_campus_bank'])->name('campus_bank.update');
+        Route::delete('campus_banks/delete/{id}', [Controllers\Admin\BankManagement::class, 'delete_campus_bank'])->name('campus_bank.delete');
+        
     });
 });
 
