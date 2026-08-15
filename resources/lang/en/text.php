@@ -1001,5 +1001,16 @@ return [
     'switch_program'=>'switch program',
     'new_applicant'=>'new applicant',
     'mass_import'=>'mass import',
+    'bank_receipt_number' => 'bank receipt number',
+    'select_bank' => 'select bank',
+    'bank_payment_details' => 'bank payment details',
+    'manage_campus_banks' => 'manage campus banks',
+    'create_campus_bank' => 'create campus bank',
+    'bank_name' => 'bank name',
+    'bank_account_name' => 'bank account name',
+    'bank_account_number' => 'bank account number',
+    'save_record' => 'save record',
+    'edit_campus_bank' => 'edit campus bank',
+    'update_record' => 'update record',
     ''
 ];

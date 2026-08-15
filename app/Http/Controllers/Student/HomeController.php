@@ -229,7 +229,11 @@ class HomeController extends Controller
                 // return $data;
             }
             
-            $data['title'] = (isset($data['degree']) and ($data['degree'] != null)) ? $data['degree']->deg_name." APPLICATION FOR DOUALA-BONABERI" : "APPLICATION FOR DOUALA-BONABERI";
+            $data['title'] = (isset($data['degree']) and ($data['degree'] != null)) ? $data['degree']->deg_name." APPLICATION" : "APPLICATION";
+            if($data['campus'] != null){
+                $data['title'] .= $data['campus']->name??'';
+            }
+
             return view('student.online.basic_form', $data);
         } catch (Throwable $th) {
             throw $th;
@@ -436,7 +440,7 @@ class HomeController extends Controller
             # code...
             $data['step'] = $step;
             // return $this->api_service->campuses();
-            $data['campuses'] = json_decode($this->api_service->campuses())->data;
+            $data['campuses'] = json_decode($this->api_service->campuses())?->data??null;
             $application = ApplicationForm::where(['student_id'=>auth('student')->id(), 'year_id'=>Helpers::instance()->getCurrentAccademicYear()])->first();
             if($application == null){
                 $application = new ApplicationForm();
@@ -453,6 +457,9 @@ class HomeController extends Controller
             if($data['application']->campus_id != null){
                 $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
             }
+            if($data['campus'] != null){
+                $data['banks'] = $data['application']->campus_banks;
+            }
             if($data['application']->degree_id != null){
                 // dd(json_decode($this->api_service->degree_certificates($data['application']->degree_id)));
                 $certs = json_decode($this->api_service->degree_certificates($data['application']->degree_id))->data;
@@ -461,7 +468,7 @@ class HomeController extends Controller
             }
             if($data['application']->entry_qualification != null){
                 $program_status_config = $this->api_service->program_provision_status_settings($campus_id = $data['application']->campus_id, $status = $data['application']->program_status);
-                $programs = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
+                $programs = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))?->data??null;
                 // dd($program_status_config);
                 if(($config = collect($program_status_config->get('data'))) != null){
                     $config_programs = collect($config->first());
@@ -480,7 +487,8 @@ class HomeController extends Controller
                 // return $data;
             }
             
-            $data['title'] = (isset($data['degree']) and ($data['degree'] != null)) ? $data['degree']->deg_name." APPLICATION FOR DOUALA-BONABERI" : "APPLICATION FOR DOUALA-BONABERI";
+            $data['title'] = (isset($data['degree']) and ($data['degree'] != null)) ? $data['degree']->deg_name." APPLICATION" : "APPLICATION";
+            $data['title'] .= (isset($data['campus']) and ($data['campus'] != null)) ? " FOR ".$data['campus']->name : "";
             return view('student.online.fill_form', $data);
         } catch (\Throwable $th) {
             throw $th;
@@ -599,6 +607,7 @@ class HomeController extends Controller
             // dd($request->all());
             $tk_counter = 0;
             $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
+            /*
             $tranzak_credentials = TranzakCredential::where('campus_id', $application->campus_id)->first();
             if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
                 // get and cache different token
@@ -616,7 +625,8 @@ class HomeController extends Controller
             }
             $headers = ['Authorization'=>'Bearer '.cache($tranzak_credentials->cache_token_key)];
             if($request->channel == 'bank'){
-                $return_url = "192.168.2.196/NISHANG/ssp2_univ_apl_port/api/tranzak/web_redirect/return_callback";
+
+                $return_url = url("/api/tranzak/web_redirect/return_callback");
                 // $request_data = ['mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE", 'returnUrl'=>$return_url, 'cancelUrl'=>$return_url];
                 $request_data = ['mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE", 'returnUrl'=>route('tranzak.return_url'), 'cancelUrl'=>route('tranzak.return_url')];
                 $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.web_redirect_payment'), $request_data);
@@ -645,10 +655,18 @@ class HomeController extends Controller
                     return redirect()->to(route('student.application.payment.processing', $application_id));
                 }
             }
+            
             // dd($_response->collect());
             if(count($_response->collect()['data']) == 0 and $tk_counter == 0){
                 goto REQUEST_TOKEN;
             }
+            */
+            $request->validate(['campus_bank_id', 'bank_receipt_id']);
+            $inputs = $request->only(['campus_bank_id', 'bank_receipt_id']);
+            $inputs['transaction_id'] = "cbnk{$inputs['campus_bank_id']}bnkrcp{$inputs['bank_receipt_id']}";
+            $application->update($inputs);
+            session()->flash('success', "You have successfully completed your application process. You can now download your application form");
+            return redirect()->route('student.application.form.download');
 
         }else{
             $data = $request->all();

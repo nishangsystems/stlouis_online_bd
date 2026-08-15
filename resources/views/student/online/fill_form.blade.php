@@ -774,11 +774,30 @@
                                 @csrf
                                 <input type="hidden" name="channel" value="bank">
                                 <input type="hidden" name="amount" value="{{ $degree->amount }}">
-                                <div class="py-5 d-flex justify-content-end">
-                                    <input type="submit" class="px-4 py-1 btn btn-lg rounded btn-primary text-capitalize" value="{{ __('text.bank_payment') }}">
+                                {{-- <div class="py-5 d-flex justify-content-end">
+                                    <button class="px-4 py-1 btn btn-lg rounded btn-primary text-capitalize" type="submit" onclick="show_bank_fields(this)">{{ __('text.bank_payment') }}</button>
+                                </div> --}}
+                                <div class="py-3">
+                                    <h4 class="text-center text-capitalize"><b>@lang('text.bank_payment_details')</b></h4>
+                                    <label class="text-secondary text-capitalize">{{ __('text.select_bank') }} </label>
+                                    <select type="text" class="form-control" name="campus_bank_id" required>
+                                        <option></option>
+                                        @foreach ($banks as $bank)
+                                            <option value="{{ $bank->id }}" {{ $application->campus_bank_id == $bank->id ? 'selected' : '' }}>{{ $bank->bank_name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
+                                <div class="py-3">
+                                    <label class="text-secondary text-capitalize">{{ __('text.bank_receipt_number') }} </label>
+                                    <input type="text" class="form-control" name="bank_receipt_id" required value="{{ $application->bank_receipt_id }}">
+                                </div>
+                                <div class="py-5 d-flex justify-content-end">
+                                    <input type="submit" class="px-4 py-1 btn btn-lg rounded btn-primary text-capitalize" value="{{ __('text.word_save') }}">
+                                </div>
+                                {{-- <div style="display: none; border-bottom: 2px inset grey;" id="show_bank_fields">
+                                </div> --}}
                             </form>
-                            <form enctype="multipart/form-data" target="_blank" id="application_form" method="post" action="{{ route('student.application.start', [7, $application->id]) }}">
+                            {{-- <form enctype="multipart/form-data" target="_blank" id="application_form" method="post" action="{{ route('student.application.start', [7, $application->id]) }}">
                                 @csrf
                                 <div class="py-4 text-info text-center ">You are about to make a payment of {{ $degree->amount }} CFA for application fee
                                 </div>
@@ -798,7 +817,7 @@
                                     <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-sm rounded-md btn-danger">{{ __('text.word_back') }}</a>
                                     <input type="submit" class="px-4 py-1 btn btn-sm rounded-md btn-primary" value="{{ __('text.save_and_continue') }}">
                                 </div>
-                            </form>
+                            </form> --}}
                         </div>
                     </div>
                     
@@ -984,5 +1003,9 @@
             });
         }
 
+        let show_bank_fields = (elm)=>{
+            $('#show_bank_fields').show();
+            $(elm).hide();
+        }
     </script>
 @endsection

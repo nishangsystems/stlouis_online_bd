@@ -15,7 +15,8 @@ class ApplicationForm extends Model
         'program_first_choice', 'program_second_choice', 'first_spoken_language', 'first_written_language', 'second_spoken_language', 
         'second_written_language', 'has_health_problem', 'has_health_allergy', 'has_disability', 'health_problem', 'health_allergy', 'disability',
         'awaiting_results', 'previous_training', 'employments', 'fee_payer', 'fee_payer_name', 'fee_payer_residence', 'matric', 'level',
-        'fee_payer_tel', 'fee_payer_occupation', 'candidate_declaration', 'parent_declaration', 'campus_id', 'degree_id', 'transaction_id', 'admitted'
+        'fee_payer_tel', 'fee_payer_occupation', 'candidate_declaration', 'parent_declaration', 'campus_id', 'degree_id', 'transaction_id', 'admitted',
+        'bank_receipt_id', 'campus_bank_id'
     ];
 
     public function student()
@@ -50,7 +51,11 @@ class ApplicationForm extends Model
 
     public function campus_banks()
     {
-        return CampusBank::where('campus_id', $this->campus_id);
+        return $this->hasMany(CampusBank::class, 'campus_id', 'campus_id');
+    }
+
+    public function campus_bank(){
+        return $this->belongsTo(CampusBank::class, 'campus_program_id');
     }
 
 }

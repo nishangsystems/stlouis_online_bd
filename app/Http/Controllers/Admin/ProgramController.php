@@ -1010,7 +1010,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.word_print');
             $data['download'] = __('text.word_download');
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
 
@@ -1350,6 +1350,7 @@ class ProgramController extends Controller
     public function application_form_change_program(Request $request, $id = null)
     {
         # code...
+        $data['programs'] = json_decode($this->api_service->programs())->data;
         if($id == null){
             $data['title'] = "Change Student Program";
             $data['_this'] = $this;
@@ -1433,7 +1434,6 @@ class ProgramController extends Controller
                 
                 if(ApplicationForm::where('matric', $student_matric)->count() == 0){
 
-                    // dd($student_matric);
                     $matric_exist = json_decode($this->api_service->matric_exist($student_matric))->data??0;
                     if($matric_exist == 1){
                         goto NEXT_ATTEMPT;
@@ -1445,6 +1445,8 @@ class ProgramController extends Controller
                     $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $application->campus_id)->first();
                     return view('admin.student.confirm_change_program', $data);
                 }else{
+                    $max_count++;
+
                     goto NEXT_ATTEMPT;
                 }
                 
