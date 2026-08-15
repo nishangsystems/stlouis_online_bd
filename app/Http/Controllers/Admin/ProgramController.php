@@ -1367,7 +1367,7 @@ class ProgramController extends Controller
         // return $this->api_service->campuses();
         $data['campuses'] = json_decode($this->api_service->campuses())->data;
         $data['application'] = ApplicationForm::find($id);
-
+        
         if($data['application']->degree_id != null){
             $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
         }
@@ -1389,6 +1389,7 @@ class ProgramController extends Controller
         if($data['application']->level != null){
             $data['levels'] = json_decode($this->api_service->levels())->data;
         }
+        // dd($data);
         
         $data['title'] = "CHANGE PROGRAM FOR ".$data['degree']->deg_name;
         return view('admin.student.change_program', $data);
@@ -1412,7 +1413,7 @@ class ProgramController extends Controller
         if(($programs = json_decode($this->api_service->programs())->data) != null){
             $program = collect($programs)->where('id', $request->new_program)->first()??null;
             if($program != null){
-
+                
                 $year = substr(Batch::find(Helpers::instance()->getCurrentAccademicYear())->name, 2, 2);
                 $prefix = $program->prefix;//3 char length
                 $max_count = '';
@@ -1425,14 +1426,14 @@ class ProgramController extends Controller
                 }else{
                     $max_count = intval(substr($max_matric, strlen($prefix)+4));
                 }
-
-                $check = 0;
+                
                 
                 NEXT_ATTEMPT:
-                $next_count = substr('0000'.($max_count+1), -4);
+                $next_count = substr('0000'.(++$max_count), -4);
                 $student_matric = $prefix.'/'.$year.'/'.$next_count;
-
+                
                 if(ApplicationForm::where('matric', $student_matric)->count() == 0){
+
                     $matric_exist = json_decode($this->api_service->matric_exist($student_matric))->data??0;
                     if($matric_exist == 1){
                         goto NEXT_ATTEMPT;
@@ -1445,9 +1446,10 @@ class ProgramController extends Controller
                     return view('admin.student.confirm_change_program', $data);
                 }else{
                     $max_count++;
+
                     goto NEXT_ATTEMPT;
-                    $check++;
                 }
+                
                 return back()->with('error', "Failed to generate matricule. {$student_matric}");
             }
         }
