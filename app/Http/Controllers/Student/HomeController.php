@@ -456,9 +456,9 @@ class HomeController extends Controller
             }
             if($data['application']->campus_id != null){
                 $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
-            }
-            if($data['campus'] != null){
-                $data['banks'] = $data['application']->campus_banks;
+                if(($data['campus']??null) != null){
+                    $data['banks'] = $data['application']->campus_banks;
+                }
             }
             if($data['application']->degree_id != null){
                 // dd(json_decode($this->api_service->degree_certificates($data['application']->degree_id)));
