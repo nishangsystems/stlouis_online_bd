@@ -1012,5 +1012,7 @@ return [
     'save_record' => 'save record',
     'edit_campus_bank' => 'edit campus bank',
     'update_record' => 'update record',
+    'account_number' => 'account number',
+    'account_name' => 'account name',
     ''
 ];
