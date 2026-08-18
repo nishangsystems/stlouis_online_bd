@@ -652,7 +652,7 @@ class HomeController extends Controller
 
         }else{
             $data = $request->all();
-            if($data['referer_id'] != null){
+            if(($data['referer_id']??null) != null){
                 $data['referer'] .= ': '.$data['referer_id'];
                 unset($data['referer_id']);
             }
