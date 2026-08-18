@@ -652,6 +652,10 @@ class HomeController extends Controller
 
         }else{
             $data = $request->all();
+            if($data['referer_id'] != null){
+                $data['referer'] .= ': '.$data['referer_id'];
+                unset($data['referer_id']);
+            }
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }

@@ -58,6 +58,9 @@
             @case(1)
                 <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [2, $application->id]) }}">
                     @csrf
+                    @php
+                        $referer_id = explode(':', $application->referer)[1]??null;
+                    @endphp
                     <div class="py-2 row bg-light border-top shadow">
                         <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 1: {{ __('text.personal_details_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->deg_name }} PROGRAM</span></h4>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-5">
@@ -138,19 +141,28 @@
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.where_did_you_hear_about_us') }}</label>
                             <div class="">
-                                <select class="form-control text-primary"  name="referer" required>
+                                <select class="form-control text-primary"  name="referer" required onchange="loadRefererId(this)">
                                     <option value=""></option>
-                                    <option value="OTHERS" {{ $application->referer== 'OTHERS' ? 'selected' : '' }}>OTHERS</option>
-                                    <option value="CHURCH" {{ $application->referer== 'CHURCH' ? 'selected' : '' }}>CHURCH</option>
-                                    <option value="CURRENT STUDENT OF THE SCHOOL" {{ $application->referer== 'CURRENT STUDENT OF THE SCHOOL' ? 'selected' : '' }}>CURRENT STUDENT OF THE SCHOOL</option>
-                                    <option value="FACEBOOK" {{ $application->referer== 'FACEBOOK' ? 'selected' : '' }}>FACEBOOK</option>
-                                    <option value="FLYERS" {{ $application->referer== 'FLYERS' ? 'selected' : '' }}>FLYERS</option>
+                                    <option value="WEBSITE" {{ $application->referer== 'WEBSITE' ? 'selected' : '' }}>WEBSITE</option>
+                                    <option value="PREPARATORY CENTRE" {{ $application->referer== 'PREPARATORY CENTRE' ? 'selected' : '' }}>PREPARATORY CENTRE</option>
+                                    <option value="PUBLICITY TEAM" {{ $application->referer== 'PUBLICITY TEAM' ? 'selected' : '' }}>PUBLICITY TEAM</option>
+                                    <option value="CURRENT STUDENT OF THE SCHOOL" {{ str_starts_with($application->referer, 'CURRENT STUDENT OF THE SCHOOL') ? 'selected' : '' }} data-referer-id="Student Matric and/or Name">CURRENT STUDENT OF THE SCHOOL</option>
+                                    <option value="HIGH SCHOOL STAFF" {{ str_starts_with($application->referer, 'HIGH SCHOOL STAFF') ? 'selected' : '' }} data-referer-id="Staff Name">HIGH SCHOOL STAFF</option>
                                     <option value="FROM A FRIEND" {{ $application->referer== 'FROM A FRIEND' ? 'selected' : '' }}>FROM A FRIEND</option>
                                     <option value="MOSQUE" {{ $application->referer== 'MOSQUE' ? 'selected' : '' }}>MOSQUE</option>
                                     <option value="THE BRAINS" {{ $application->referer== 'THE BRAINS' ? 'selected' : '' }}>THE BRAINS</option>
                                     <option value="THROUGH MIA" {{ $application->referer== 'THROUGH MIA' ? 'selected' : '' }}>THROUGH MIA</option>
-                                    <option value="TV" {{ $application->referer== 'TV' ? 'selected' : '' }}>TV</option>
+                                    <option value="FACEBOOK" {{ $application->referer== 'FACEBOOK' ? 'selected' : '' }}>FACEBOOK</option>
+                                    <option value="FLYERS" {{ $application->referer== 'FLYERS' ? 'selected' : '' }}>FLYERS</option>
+                                    <option value="CHURCH" {{ $application->referer== 'CHURCH' ? 'selected' : '' }}>CHURCH</option>
+                                    <option value="OTHERS" {{ str_starts_with($application->referer, 'OTHERS') ? 'selected' : '' }} data-referer-id="Specify (optional)">OTHERS</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="py-2 col-md-8 col-lg-6 {{ $referer_id == null and $referer_id == '' ? 'hidden' : '' }}" id="referer_id_field">
+                            <label for="" class="text-secondary text-capitalize">@lang('text.referer_name')</label>
+                            <div>
+                                <input type="text" class="form-control text-primary" name="referer_id" placeholder="Enter referer name" value="{{ $referer_id??'' }}">
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
@@ -982,6 +994,22 @@
                     $('#cplevels').html(html);
                 }
             });
+        }
+
+
+        let loadRefererId = (elm) => {
+            // get selected option and check if it requires a referer ID
+            let selected_option = $(elm).find('option:selected').data('referer-id');
+            if(selected_option == null){
+                // hide the referer ID field
+                $('#referer_id_field').addClass('hidden');
+                return;
+            }else{
+                // show referer ID field
+                $('#referer_id_field').find('label').text(selected_option);
+                $('#referer_id_field').removeClass('hidden');
+                return;
+            }
         }
 
     </script>

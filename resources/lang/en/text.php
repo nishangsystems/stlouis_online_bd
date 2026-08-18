@@ -1001,5 +1001,6 @@ return [
     'switch_program'=>'switch program',
     'new_applicant'=>'new applicant',
     'mass_import'=>'mass import',
+    'referer_name' => 'referer name',
     ''
 ];
