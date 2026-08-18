@@ -1642,7 +1642,8 @@ class ProgramController extends Controller
         try{
             $data['title'] = "Applications Referal Report";
             $year = $request->year_id ?: Helpers::instance()->getCurrentAccademicYear();
-            $data['instances'] = ApplicationForm::where('year_id', $year)->where('referer', 'LIKE', '%:%')->whereNotNull('transaction_id')->get(['id', 'referer'])
+            $data['years'] = Batch::where('id', '<=', Helpers::instance()->getCurrentAccademicYear())->orderByDesc('id')->get();
+            $data['records'] = ApplicationForm::where('year_id', $year)->whereNotNull('transaction_id')->get(['id', 'referer'])
                 ->map(function($rec){
                     $ref = $rec->referer;
                     $rec->referer = explode(':', $ref)[0];
@@ -1654,6 +1655,31 @@ class ProgramController extends Controller
                 });
 
             return view('admin.applications.reports.referal_reports', $data);
+        }catch(\Throwable $th){
+            logger()->error($th);
+            session()->flash('error'. $th->getMessage());
+            return back();
+        }
+    }
+
+
+    public function application_referal_report_details(Request $request){
+        try{
+            $data['title'] = "Applications Referal Report Details &Rang; ";
+            $item = $request->item;
+            if(empty($item)){
+                return redirect()->route('admin.reports.application.referal_report');
+            }
+            $data['title'] .= $item;
+            $year = $request->year_id ?: Helpers::instance()->getCurrentAccademicYear();
+            $programs = collect(json_decode($this->api_service->programs())->data??[]);
+            $data['records'] = ApplicationForm::where('year_id', $year)->where('referer', 'LIKE', $item.'%')->whereNotNull('transaction_id')->get(['id', 'name', 'program_first_choice', 'program_second_choice', 'referer'])
+                ->map(function($rec)use($programs){
+                    $rec->program = $programs->where('id', $rec->program_first_choice)->first()?->name;
+                    return $rec;
+                });
+
+            return view('admin.applications.reports.referal_report_details', $data);
         }catch(\Throwable $th){
             logger()->error($th);
             session()->flash('error'. $th->getMessage());

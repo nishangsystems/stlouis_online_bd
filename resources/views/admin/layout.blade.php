@@ -494,8 +494,7 @@
                             </li>
                         </ul>
                     </li>
-                </ul>
-                <ul class="submenu">
+                
                     <li>
                         <a href="#" class="dropdown-toggle text-capitalize">
                             <i  style="color: {{$bg1}}"class="menu-icon  fa fa-cog"></i>
@@ -516,6 +515,15 @@
                                 <b class="arrow"></b>
                             </li>
                         </ul>
+                    </li>
+                
+                    <li>
+                        <a href="{{route('admin.reports.application.referal_report')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.referal_report')}}
+                        </a>
+
+                        <b class="arrow"></b>
                     </li>
                 </ul>
             </li>

@@ -1002,5 +1002,8 @@ return [
     'new_applicant'=>'new applicant',
     'mass_import'=>'mass import',
     'referer_name' => 'referer name',
+    'info_channel' =>'info channel',
+    'referal_report' => 'referal report',
+    'word_referer' => 'referer',
     ''
 ];
