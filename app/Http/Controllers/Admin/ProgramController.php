@@ -1637,4 +1637,28 @@ class ProgramController extends Controller
         return $degree_certificates->all();
     }
 
+
+    public function application_referal_report(Request $request){
+        try{
+            $data['title'] = "Applications Referal Report";
+            $year = $request->year_id ?: Helpers::instance()->getCurrentAccademicYear();
+            $data['instances'] = ApplicationForm::where('year_id', $year)->where('referer', 'LIKE', '%:%')->whereNotNull('transaction_id')->get(['id', 'referer'])
+                ->map(function($rec){
+                    $ref = $rec->referer;
+                    $rec->referer = explode(':', $ref)[0];
+                    return $rec;
+                })->groupBy('referer')->map(function($grp, $key){
+                    $rec = $grp->first();
+                    $rec->count = $grp->count();
+                    return $rec;
+                });
+
+            return view('admin.applications.reports.referal_reports', $data);
+        }catch(\Throwable $th){
+            logger()->error($th);
+            session()->flash('error'. $th->getMessage());
+            return back();
+        }
+    }
+
 }

@@ -205,6 +205,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('degree/{degree?}', [ProgramController::class, 'applicants_report_by_degree'])->name('applicants.by_degree');
         Route::get('program/{program?}', [ProgramController::class, 'applicants_report_by_program'])->name('applicants.by_program');
         Route::get('finance/general', [ProgramController::class, 'finance_report_general'])->name('applicants.by_program');
+        Route::get('application/referals', [ProgramController::class, 'application_referal_report'])->name('application.referal_report');
     });
 
     Route::get('platform/bypass/{student_id?}', [AdminHomeController::class, 'bypass_platform_charges'])->name('platform.bypass');
