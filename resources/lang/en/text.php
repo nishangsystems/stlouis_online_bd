@@ -1005,5 +1005,7 @@ return [
     'info_channel' =>'info channel',
     'referal_report' => 'referal report',
     'word_referer' => 'referer',
+    'word_option' => 'option',
+    'notify_applicants' => 'notify applicants',
     ''
 ];

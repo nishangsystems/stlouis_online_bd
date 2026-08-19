@@ -727,7 +727,7 @@ class HomeController extends Controller
                     }
                     // dd($phone_number);
                     $message="Application form for ST. LOUIS UNIVERSITY INSTITUTE submitted successfully.";
-                    $sent = $this->sendSMS($phone_number, $message);
+                    $sent = $this->tranzak_sms_service->send([$phone_number], $message);
     
                     return redirect(route('student.application.form.download'))->with('success', "Payment successful. ".($sent != true ? $sent : null));
                     break;

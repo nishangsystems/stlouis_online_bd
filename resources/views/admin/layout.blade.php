@@ -287,6 +287,14 @@
 
                         <b class="arrow"></b>
                     </li>
+                    <li>
+                        <a href="{{url('admin/applicants/notify/sms')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.notify_applicants')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
                 </ul>
             </li>
             @endif
