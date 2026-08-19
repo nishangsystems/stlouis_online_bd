@@ -7,21 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Mail\AdmissionMail;
 use App\Models\ApplicationForm;
 use App\Models\Batch;
-use App\Models\CampusBank;
-use App\Models\ClassSubject;
+use App\Services\TranzakSMSService;
 use App\Models\Config;
-use App\Models\EntryQualification;
-use App\Models\Level;
-use App\Models\ProgramLevel;
-use App\Models\School;
-use App\Models\SchoolUnits;
-use App\Models\StudentClass;
-use App\Models\Students;
-use App\Models\Subjects;
 use App\Models\Transaction;
-use App\Session;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -29,6 +18,13 @@ use Illuminate\Support\Facades\Validator;
 
 class ProgramController extends Controller
 {
+
+
+    public $tranzak_sms_service;
+
+    public function __construct(TranzakSMSService $tranzakSMSService){
+        $this->tranzak_sms_service = $tranzakSMSService;
+    }
 
     public function open_admission(Request $request)
     {

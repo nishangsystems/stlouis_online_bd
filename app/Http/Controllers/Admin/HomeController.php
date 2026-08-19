@@ -5,34 +5,28 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\StudentFee;
+use App\Services\TranzakSMSService;
 use App\Models\ApplicationForm;
-use App\Models\Background;
-use App\Models\Batch;
-use App\Models\CampusSemesterConfig;
 use App\Models\Config;
 use App\Models\File;
 use App\Models\PlatformCharge;
-use App\Models\Resit;
-use App\Models\SchoolUnits;
-use App\Models\Semester;
 use App\Models\Students;
-use App\Models\StudentSubject;
-use App\Models\Subjects;
 use App\Models\TranzakTransaction;
-use App\Models\User;
-use App\Models\Wage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config as FacadesConfig;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use MongoDB\Driver\Session;
-use Barryvdh\DomPDF\Facade\Pdf;
 
-use function PHPUnit\Framework\returnSelf;
 
 class HomeController  extends Controller
 {
+
+
+    public $tranzak_sms_service;
+
+    public function __construct(TranzakSMSService $tranzakSMSService){
+        $this->tranzak_sms_service = $tranzakSMSService;
+    }
+
     public function index()
     {
         return view('admin.dashboard');

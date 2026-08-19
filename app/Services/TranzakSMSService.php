@@ -44,7 +44,7 @@ class TranzakSMSService{
                     goto ERROR;
                 }else{
                     ERROR:
-                    throw new Exception("Error authentication SMS servers. Contact service provider if this persists");
+                    logger()->error("Error authentication SMS servers. Contact service provider if this persists");
                 }
             }
         } catch (\Illuminate\Http\Client\ConnectionException $err) {
