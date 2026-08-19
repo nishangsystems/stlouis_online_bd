@@ -37,7 +37,7 @@ class TranzakSMSService{
                 if($response->status() == 200){
                     // cache token and token expirationtot session
                     $data = $response->collect('data');
-                    if(in_array('token', $data)){
+                    if(in_array('token', $data->toArray())){
                         cache([$this->cache_api_token_key => $data['token']]);
                         cache([$this->cache_api_token_key.'_expiry'=>Carbon::createFromTimestamp(time() + $data['expiresIn'])]);
                     }else
