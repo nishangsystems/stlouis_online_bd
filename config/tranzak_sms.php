@@ -3,16 +3,16 @@
 return [
     // API DETAILS
     
-    'nishang_sms_app_id'=>'apgp0qkft9r0gj',
-    'nishang_sms_api_key'=>'PROD_914BD53103B44527AB46A22B40C794BC',
-    'nishang_sms_sender_id'=>'NISHANG',
-    'errandia_sms_app_id'=>'apaft0xrqe9kbi',
-    'errandia_sms_api_key'=>'PROD_ECA65323BB134EBF9A222A9775CAA63E',
-    'errandia_sms_sender_id'=>'ERRANDIA',
-    'biaka_sms_app_id'=>'apnxwqcrve5s7l',
-    'biaka_sms_api_key'=>'PROD_4178E5BB64DF486FA778B5716C3E06AA',
-    'sms_sender_id_alt'=>'VAMVAM',
-    'biaka_sms_sender_id'=>'BUIB',
+    // 'nishang_sms_app_id'=>'apgp0qkft9r0gj',
+    // 'nishang_sms_api_key'=>'PROD_914BD53103B44527AB46A22B40C794BC',
+    // 'nishang_sms_sender_id'=>'NISHANG',
+    // 'errandia_sms_app_id'=>'apaft0xrqe9kbi',
+    // 'errandia_sms_api_key'=>'PROD_ECA65323BB134EBF9A222A9775CAA63E',
+    // 'errandia_sms_sender_id'=>'ERRANDIA',
+    // 'biaka_sms_app_id'=>'apnxwqcrve5s7l',
+    // 'biaka_sms_api_key'=>'PROD_4178E5BB64DF486FA778B5716C3E06AA',
+    // 'sms_sender_id_alt'=>'VAMVAM',
+    // 'biaka_sms_sender_id'=>'BUIB',
 
 
     // END POINTS
