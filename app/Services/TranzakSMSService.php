@@ -59,7 +59,7 @@ class TranzakSMSService{
     public function custom_trim($phones){
         return array_map(function($item){
             if(is_array($item)){
-                $item = implode('', $item);
+                return implode(',', $this->custom_trim($item));
             }
             $item = str_replace([' ', ','], '', $item);
             $item = strlen($item) <= 9 ? '237'.$item : $item;
