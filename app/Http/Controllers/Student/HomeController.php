@@ -596,6 +596,7 @@ class HomeController extends Controller
                 // return $data;
             }
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
+
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }
         elseif($step ==7){
@@ -657,8 +658,8 @@ class HomeController extends Controller
             $data = $request->all();
             if(($data['referer_id']??null) != null){
                 $data['referer'] .= ': '.$data['referer_id'];
-                unset($data['referer_id']);
             }
+            unset($data['referer_id']);
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }
