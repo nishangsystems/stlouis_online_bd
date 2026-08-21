@@ -1,9 +1,10 @@
 @extends('admin.layout')
 @section('section')
     @php
-        $campuses = collect(json_decode($_this->api_service->campuses())->data);
-        $degrees = collect(json_decode($_this->api_service->degrees())->data);
-        $programs = collect(json_decode($_this->api_service->programs())->data);
+        $api_service_instance = new \App\Http\Services\ApiService();
+        $campuses = collect(json_decode($api_service_instance->campuses())->data);
+        $degrees = collect(json_decode($api_service_instance->degrees())->data);
+        $programs = collect(json_decode($api_service_instance->programs())->data);
         $years = \App\Models\Batch::all();
     @endphp
     <div class="py-3">
