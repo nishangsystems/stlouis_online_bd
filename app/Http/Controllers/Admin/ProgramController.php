@@ -8,6 +8,7 @@ use App\Mail\AdmissionMail;
 use App\Models\ApplicationForm;
 use App\Models\Batch;
 use App\Services\TranzakSMSService;
+use App\Http\Services\ApiService;
 use App\Models\Config;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -20,10 +21,11 @@ class ProgramController extends Controller
 {
 
 
-    public $tranzak_sms_service;
+    public $tranzak_sms_service, $api_service;
 
-    public function __construct(TranzakSMSService $tranzakSMSService){
+    public function __construct(TranzakSMSService $tranzakSMSService, ApiService $apiService){
         $this->tranzak_sms_service = $tranzakSMSService;
+        $this->api_service = $apiService;
     }
 
     public function open_admission(Request $request)

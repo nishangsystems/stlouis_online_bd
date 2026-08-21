@@ -12,6 +12,7 @@ use App\Models\File;
 use App\Models\PlatformCharge;
 use App\Models\Students;
 use App\Models\TranzakTransaction;
+use App\Http\Services\ApiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -22,9 +23,11 @@ class HomeController  extends Controller
 
 
     public $tranzak_sms_service;
+    public $api_service;
 
-    public function __construct(TranzakSMSService $tranzakSMSService){
+    public function __construct(TranzakSMSService $tranzakSMSService, ApiService $apiService){
         $this->tranzak_sms_service = $tranzakSMSService;
+        $this->api_service = $apiService;
     }
 
     public function index()
