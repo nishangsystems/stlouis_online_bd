@@ -162,7 +162,7 @@
                         <div class="py-2 col-md-8 col-lg-6 {{ $referer_id == null and $referer_id == '' ? 'hidden' : '' }}" id="referer_id_field">
                             <label for="" class="text-secondary text-capitalize">@lang('text.referer_name')</label>
                             <div>
-                                <input type="text" class="form-control text-primary" name="referer_id" placeholder="Enter referer name" value="{{ $referer_id??'' }}">
+                                <input type="text" class="form-control text-primary" name="referer_id" placeholder="Enter referer name (student matricule where possible)" value="{{ $referer_id??'' }}">
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
