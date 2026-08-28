@@ -213,7 +213,7 @@ class HomeController  extends Controller
         if(\App\Models\Charge::where($check)->count() > 0){
             return back()->with('message', "Student has already paid for platform charges");
         }
-        $data = ['year_id'=>$this->current_accademic_year, 'student_id'=>$student_id, 'amount'=>$plcharge->amount??0, 'item_id'=>$plcharge->id??null, 'parent'=>0, 'type'=>'PLATFORM', 'used'=>1, 'financialTransactionId'=>(time().'_'.$student_id.str_replace(' ', '_', $request->reason??''))];
+        $data = ['year_id'=>Helpers::instance()->getCurrentAccademicYear(), 'student_id'=>$student_id, 'amount'=>$plcharge->amount??0, 'item_id'=>$plcharge->id??null, 'parent'=>0, 'type'=>'PLATFORM', 'used'=>1, 'financialTransactionId'=>(time().'_'.$student_id.str_replace(' ', '_', $request->reason??''))];
         $charge = new \App\Models\Charge($data);
         $charge->save();
         return back()->with('success', 'Done');
