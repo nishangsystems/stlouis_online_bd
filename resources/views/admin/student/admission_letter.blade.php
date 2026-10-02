@@ -18,7 +18,7 @@
                 </thead>
                 <tbody>
                     <tr class="py-1 border-top border-bottom">
-                        <td class="border-left border-right">https://students.stlouissystems.org/</td>
+                        <td class="border-left border-right">https://bdaonline.stlouissystems.org/</td>
                         <td class="border-left border-right">{{ $matric }}</td>
                         <td class="border-left border-right">12345678</td>
                     </tr>

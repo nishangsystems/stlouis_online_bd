@@ -399,15 +399,6 @@
                 <b class="arrow"></b>
 
                 <ul class="submenu">
-                    
-                    {{-- <li>
-                        <a href="{{route('admin.custom_applications.index')}}" class="text-capitalize">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.word_all')}}
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li> --}}
                     <li>
                         <a href="{{route('admin.custom_applications.local.create')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -416,14 +407,6 @@
 
                         <b class="arrow"></b>
                     </li>
-                    {{-- <li>
-                        <a href="{{route('admin.custom_applications.create')}}" class="text-capitalize">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.admit_foreigners')}}
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li> --}}
                     <li>
                         <a href="{{route('admin.custom_applications.switch')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -432,14 +415,6 @@
 
                         <b class="arrow"></b>
                     </li>
-                    {{-- <li>
-                        <a href="{{route('admin.custom_applications.import')}}" class="text-capitalize">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.word_import')}}
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li> --}}
                     <li>
                         <a href="{{route('admin.custom_applications.mass_import')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -724,7 +699,7 @@
                 </div>
 
 
-                <div class="mb-4 mx-3">
+                <div class="mb-4 mx-3 border-bottom">
                     <h4 id="title" class="font-weight-bold text-capitalize">{!! $title ?? '' !!}</h4>
                 </div>
                 @if ((auth()->user()->password_reset != 1) && (now()->diffInDays(\Illuminate\Support\Carbon::createFromTimestamp(auth()->user()->created_at)) >= 14) && (url()->current() != route('admin.reset_password')))
