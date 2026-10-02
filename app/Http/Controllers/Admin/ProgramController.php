@@ -1470,7 +1470,7 @@ class ProgramController extends Controller
         $update_data = session()->get('program_change_update');
         $program = collect(json_decode($this->api_service->programs())->data)->where('id', $update_data['program_first_choice'])->first()??null;
         $resp = json_decode($this->api_service->update_student($application->matric, ['program'=>$update_data['program_first_choice'], 'level'=>$update_data['level'], 'matric'=>$request->matric]))->data??null;
-        // dd($resp);
+        dd($resp);
         if($resp != null){
             if($resp->status ==1){
                 // $application->matric = $request->matric;
