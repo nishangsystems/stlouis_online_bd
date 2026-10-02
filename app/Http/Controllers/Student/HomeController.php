@@ -15,6 +15,7 @@ use App\Models\TranzakCredential;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
+use App\Services\TranzakSMSService;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Support\Carbon;
@@ -25,6 +26,7 @@ class HomeController extends Controller
 {
     private $years;
     private $batch_id;
+    public $tranzak_sms_service;
     private $select = [
         'students.id as student_id',
         'collect_boarding_fees.id',
@@ -117,7 +119,7 @@ class HomeController extends Controller
     }
 
 
-    public function __construct( ApiService $service)
+    public function __construct( ApiService $service, TranzakSMSService $tranzakSMSService)
     {
         // $this->middleware('isStudent');
         // $this->boarding_fee =  BoardingFee::first();
@@ -125,6 +127,7 @@ class HomeController extends Controller
         $this->batch_id = Batch::find(Helpers::instance()->getCurrentAccademicYear())->id;
         $this->years = Batch::all();
         $this->api_service = $service;
+        $this->tranzak_sms_service = $tranzakSMSService;
     }
 
 
@@ -601,6 +604,7 @@ class HomeController extends Controller
                 // return $data;
             }
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
+
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }
         elseif($step ==7){
@@ -670,6 +674,10 @@ class HomeController extends Controller
 
         }else{
             $data = $request->all();
+            if(($data['referer_id']??null) != null){
+                $data['referer'] .= ': '.$data['referer_id'];
+            }
+            unset($data['referer_id']);
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }
@@ -741,7 +749,7 @@ class HomeController extends Controller
                     }
                     // dd($phone_number);
                     $message="Application form for ST. LOUIS UNIVERSITY INSTITUTE submitted successfully.";
-                    $sent = $this->sendSMS($phone_number, $message);
+                    $sent = $this->tranzak_sms_service->send([$phone_number], $message);
     
                     return redirect(route('student.application.form.download'))->with('success', "Payment successful. ".($sent != true ? $sent : null));
                     break;

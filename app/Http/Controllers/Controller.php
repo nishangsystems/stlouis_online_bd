@@ -38,11 +38,14 @@ class Controller extends BaseController
 
     var $current_accademic_year;
     var $api_service;
-    public function __construct(ApiService $apiService, Helpers $helpers)
+
+    var $tranzak_sms_service;
+    public function __construct(ApiService $apiService, Helpers $helpers, \App\Services\TranzakSMSService $tranzakSMSService)
     {
         # code...
         $this->api_service = $apiService;
         $this->current_accademic_year = $helpers->getCurrentAccademicYear();
+        $this->tranzak_sms_service = $tranzakSMSService;
         ini_set('max_execution_time', 360);
     }
 

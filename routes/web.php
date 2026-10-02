@@ -35,31 +35,7 @@ Route::get('/clear', function () {
 });
 
 // test mail sender
-Route::get('send_sms', [Controller::class, 'sendSMS']/*function(){
-    // $mailer = new MailService();
-    // $subject = "Form Submission Notification";
-    // $text = "Your application form has been submitted successfully";
-    // $data = ['name'=>"GERMANUS K", 'email'=>"germanuskeming@gmail.com"];
-    // if(@mail($data['email'], $subject, $text)){
-    //     return "success";
-    // }else{return "failed";}
-    // $mailer->sendPlainMail($subject, $text, $data);
-
-    // $basic  = new \Vonage\Client\Credentials\Basic("8d8bbcf8", "04MLvso1he1b8ANc");
-    // $client = new \Vonage\Client($basic);
-
-    // $response = $client->sms()->send(
-    //     new \Vonage\SMS\Message\SMS("237699131895", '+237672908239', 'A text message sent using the Nexmo SMS API')
-    // );
-    
-    // $message = $response->current();
-    
-    // if ($message->getStatus() == 0) {
-    //     echo "The message was sent successfully\n";
-    // } else {
-    //     echo "The message failed with status: " . $message->getStatus() . "\n";
-    // }
-}*/);
+Route::get('send_sms', [Controller::class, 'sendSMS']);
 
 Route::get('set_local/{lang}', [Controller::class, 'set_local'])->name('lang.switch');
 
@@ -165,6 +141,8 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::get('admission/admit/{id}', [ProgramController::class, 'admit_student'])->name('admission.admit');
     Route::get('admission/show/{id}', [ProgramController::class, 'application_details'])->name('admission.show');
     Route::get('applications', [ProgramController::class, 'applications'])->name('applications.all');
+    Route::get('applicants/notify/sms', [AdminHomeController::class, 'notify_applicants_by_sms'])->name('applicants.sms.notify');
+    Route::post('applicants/notify/sms', [AdminHomeController::class, 'notify_applicants_by_sms_send']);
     Route::name('applications.')->prefix('applications')->group(function(){
         Route::get('print_form/{id?}', [ProgramController::class, 'print_application_form'])->name('print_form');
         Route::get('edit/{id?}', [ProgramController::class, 'edit_application_form'])->name('update');
@@ -206,6 +184,8 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('degree/{degree?}', [ProgramController::class, 'applicants_report_by_degree'])->name('applicants.by_degree');
         Route::get('program/{program?}', [ProgramController::class, 'applicants_report_by_program'])->name('applicants.by_program');
         Route::get('finance/general', [ProgramController::class, 'finance_report_general'])->name('applicants.by_program');
+        Route::get('application/referals', [ProgramController::class, 'application_referal_report'])->name('application.referal_report');
+        Route::get('application/referal/details', [ProgramController::class, 'application_referal_report_details'])->name('application.referal_report.details');
     });
 
     Route::get('platform/bypass/{student_id?}', [AdminHomeController::class, 'bypass_platform_charges'])->name('platform.bypass');

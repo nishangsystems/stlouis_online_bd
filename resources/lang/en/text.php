@@ -1014,5 +1014,11 @@ return [
     'update_record' => 'update record',
     'account_number' => 'account number',
     'account_name' => 'account name',
+    'referer_name' => 'referer name',
+    'info_channel' =>'info channel',
+    'referal_report' => 'referal report',
+    'word_referer' => 'referer',
+    'word_option' => 'option',
+    'notify_applicants' => 'notify applicants',
     ''
 ];
