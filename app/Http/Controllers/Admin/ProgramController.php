@@ -766,7 +766,7 @@ class ProgramController extends Controller
         Mail::to($email)->send(new AdmissionMail($name, $campus, $program, $matric,  $fee1_dateline, $fee2_dateline, $help_email, $director_name, $dean_name, $degree,  $file, config('platform_links')[$campus]));
     }
 
-    public function get_($degree_id = null)
+    public function degree_certificates($degree_id = null)
     {
         # code...
         $data['title'] = __('text.configure_degree_certificates');
