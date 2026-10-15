@@ -118,7 +118,7 @@
             setDivisions(region);
         }
 
-        /** let setDivisions = function(region){
+        let setDivisions = function(region){
             url = "{{ route('student.region.divisions', '__RID__') }}".replace('__RID__', region);
             $.ajax({
                 method: 'get', url: url, 
@@ -131,7 +131,7 @@
                     $('#divisions').html(html);
                 }
             })
-        } */
+        }
 
         let campusDegreeCertPorgrams = function(event){
             cert_id = event.target.value;
@@ -183,7 +183,7 @@
             }
         });
 
-        {/* let campusDegreeCertPorgrams = function(event){
+         let campusDegreeCertPorgrams = function(event){
             cert_id = event.target.value;
             campus_id = "{{ $application->campus_id }}";
             degree_id = "{{ $application->degree_id }}";
@@ -200,16 +200,16 @@
 
                 }
             })
-        } */}
+        } 
 
-        {/* let loadCplevels = function(event){
+        let loadCplevels = function(event){
             campus_id = "{{ $application->campus_id }}";
             program_id = event.target.value;
 
             setLevels(program_id);
-        } */}
+        }
 
-        {/* let setLevels = function(program_id){
+        let setLevels = function(program_id){
 
             campus_id = "{{ $application->campus_id }}";
 
@@ -225,7 +225,7 @@
                     $('#cplevels').html(html);
                 }
             });
-        } */}
+        } 
 
     </script>
 @endsection
@@ -317,7 +317,7 @@
                     <div class="">
                         <select class="form-control text-primary"  name="division" required id="divisions">
                             <option value=""></option>
-                            @foreach ($divisions as $division)
+                            @foreach ($divisions??[] as $division)
                                 <option value="{{ $division->id }}" {{ $application->division == $division->id ? 'selected' : '' }}>{{ $division->name }}</option>
                             @endforeach
                         </select>
@@ -395,7 +395,7 @@
                     <div class="">
                         <select class="form-control text-primary"  name="program_first_choice" required oninput="loadCplevels(event)">
                             <option>{{ __('text.select_program') }}</option>
-                            @forelse ($programs as $program)
+                            @forelse ($programs??[] as $program)
                                 <option value="{{ $program->id }}" {{ $application->program_first_choice == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
                             @empty
                                 <option>{{ __('text.no_data_available') }}</option>
@@ -408,7 +408,7 @@
                     <div class="">
                         <select class="form-control text-primary"  name="program_second_choice" required>
                             <option>{{ __('text.select_program') }}</option>
-                            @forelse ($programs as $program)
+                            @forelse ($programs??[] as $program)
                                 <option value="{{ $program->id }}" {{ $application->program_second_choice == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
                             @empty
                                 <option>{{ __('text.no_data_available') }}</option>
@@ -421,7 +421,7 @@
                     <div class="">
                         <select class="form-control text-primary"  name="level" required id="cplevels">
                             <option value=""></option>
-                            @foreach ($levels as $level)
+                            @foreach ($levels??[] as $level)
                                 <option value="{{ $level->level }}" {{ $level->level == $application->level ? 'selected' : '' }}>{{ $level->level??'' }}</option>
                             @endforeach
                         </select>

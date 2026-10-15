@@ -235,6 +235,8 @@ class ProgramController extends Controller
             $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
             // return $data;
         }
+
+        // dd($data);
         
         $data['title'] = "APPLICATION FORM FOR ".$data['degree']->deg_name;
         return view('admin.student.edit_form', $data);
