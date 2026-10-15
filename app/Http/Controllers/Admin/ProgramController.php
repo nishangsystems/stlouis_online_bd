@@ -235,6 +235,8 @@ class ProgramController extends Controller
             $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
             // return $data;
         }
+
+        // dd($data);
         
         $data['title'] = "APPLICATION FORM FOR ".$data['degree']->deg_name;
         return view('admin.student.edit_form', $data);
@@ -626,7 +628,11 @@ class ProgramController extends Controller
         $update_data = session()->get('program_change_update');
         $program = collect(json_decode($this->api_service->programs())->data)->where('id', $update_data['program_first_choice'])->first()??null;
         $resp = json_decode($this->api_service->update_student($application->matric, ['program'=>$update_data['program_first_choice'], 'level'=>$update_data['level'], 'matric'=>$request->matric]))->data??null;
-        dd($resp);
+        
+        if($resp != null and is_string($resp)){
+            return back()->with('error', $resp);
+        }
+        
         if($resp != null){
             if($resp->status ==1){
                 // $application->matric = $request->matric;
@@ -762,7 +768,7 @@ class ProgramController extends Controller
         Mail::to($email)->send(new AdmissionMail($name, $campus, $program, $matric,  $fee1_dateline, $fee2_dateline, $help_email, $director_name, $dean_name, $degree,  $file, config('platform_links')[$campus]));
     }
 
-    public function get_($degree_id = null)
+    public function degree_certificates($degree_id = null)
     {
         # code...
         $data['title'] = __('text.configure_degree_certificates');
